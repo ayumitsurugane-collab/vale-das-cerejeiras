@@ -2,6 +2,7 @@
 <title>Vale das Cerejeiras · EuComoSushi</title>
 <meta name="description" content="Cultive, explore e construa sua fazenda no Vale das Cerejeiras.">
 <style>html,body{min-height:100%;background:#16271f}
+.living-options{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.npc-speech{background:#304c3b;border:1px solid #6c805d;border-radius:12px;padding:18px;color:#f4e7c7;font-size:15px;line-height:1.8;white-space:pre-wrap}.chat-label{font-size:12px;color:#c5cfae}#npcQuestion{width:100%;box-sizing:border-box;background:#182f26;border:1px solid #748467;border-radius:8px;color:#f2e5c8;padding:12px;font:14px/1.5 sans-serif;resize:vertical}#npcQuestion:focus{outline:2px solid #d7c58c}#npcAiStatus{display:block;color:#aebf9f;font-size:10px}.living-routines{display:grid;grid-template-columns:1fr 1fr;gap:8px}.living-routines>div,.life-log{padding:12px;background:#294637;border:1px solid #47664d;border-radius:8px}.living-routines b{font-size:13px}.living-routines span{display:block;font-size:11px;color:#b9c8ad;margin-top:4px}.life-log p{font-size:12px;line-height:1.6}.living-empty{padding:18px;border:1px dashed #778869;border-radius:8px}
 body{padding:12px!important;display:grid!important;align-content:center;min-height:100dvh!important}
 .app{width:100%;max-width:min(1500px,calc((100dvh - 112px)*1.9333))!important;gap:10px!important}
 .valley-bar{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:45px;padding:0 3px}
@@ -15,7 +16,7 @@ body{padding:12px!important;display:grid!important;align-content:center;min-heig
 @media(max-width:760px){body{padding:6px!important}.app{max-width:100%!important}.valley-bar{align-items:flex-start;flex-direction:column;gap:10px}.valley-brand strong{font-size:20px}.valley-bar nav{width:100%;display:grid;grid-template-columns:repeat(4,1fr)}.valley-bar button{padding:8px 5px;font-size:10px}.valley-bar kbd{display:none}.valley-footer{flex-wrap:wrap;gap:5px}.valley-footer #hint{order:3;flex-basis:100%;text-align:left}.save-note{font-size:8px}.project-grid,.destinations{grid-template-columns:1fr 1fr}.expansion-card{padding:13px}.expansion-card h2{font-size:21px}.card p{font-size:12px}.resource{grid-template-columns:10px 1fr 25px 110px;font-size:11px;gap:6px}.resource .btn{font-size:10px;padding:6px}.project{padding:11px}.order,.recipe{padding:10px;gap:8px}.stage:has(#modal:not([hidden])){overflow:visible;z-index:20}#modal{position:fixed!important;z-index:100!important;inset:0!important;background:rgba(9,24,18,.9);padding:12px}.card{max-height:90dvh}.atlas svg{max-height:180px}}
 @media(max-height:540px) and (orientation:landscape){body{padding:3px!important}.app{max-width:calc((100dvh - 65px)*1.9333)!important;gap:4px!important}.valley-bar{min-height:30px;flex-direction:row;align-items:center}.valley-brand strong{font-size:15px}.valley-brand small,.brand-mark,.save-note{display:none}.valley-bar nav{display:flex;width:auto}.valley-bar button{padding:5px 7px;font-size:10px}.valley-footer{font-size:9px}.valley-footer #hint{font-size:9px!important;order:0;flex-basis:auto}.stage:has(#modal:not([hidden])){overflow:visible}#modal{position:fixed!important;inset:0!important;z-index:100!important}.card{max-height:90dvh}}
 .journey-wallet{display:flex;justify-content:space-between;gap:15px;padding:12px 15px;border:1px solid #6a7859;border-radius:8px;color:#f5d896;font-weight:bold;background:#344d3d}.journey-wallet span{font-size:11px;color:#bdc9af;font-weight:normal;align-self:center}.journey-quest{background:#344d3d;border:1px solid #7f8962;border-left:4px solid #ddbb78;border-radius:8px;padding:16px;display:grid;gap:10px}.journey-quest p{font-size:13px;line-height:1.65;margin:0}.journey-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.journey-stats span{display:grid;gap:5px;background:#2b4537;border-radius:8px;padding:12px;font-size:10px;color:#c3ccae}.journey-stats b{font:26px 'Pixelify Sans',monospace;color:#f0d59e}.chapter-list{display:grid;gap:8px}.chapter{display:flex;gap:12px;align-items:center;border-bottom:1px solid #49644c;padding:10px}.chapter>span{color:#d8c08c;border:1px solid #718263;border-radius:50%;width:25px;height:25px;display:grid;place-items:center;flex:none}.chapter.complete>span{background:#adc28e;color:#274236}.chapter small{display:block;margin-top:4px}.chapter b{font-size:13px}.journey-note{font-size:11px!important;color:#acbba4}.trade-row{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #47614b}.trade-row small{display:block;margin-top:5px}.trade-row b{font-size:14px;color:#eddfbe}.travel-card{border:1px solid #506a52;border-radius:8px;padding:15px;background:#294436}.travel-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.travel-options .btn{display:grid;gap:5px;padding:11px 5px}.travel-options small{font-size:10px;white-space:normal}.travel-options button:disabled{opacity:.42}.world-atlas{border:4px solid #829674;border-radius:10px;background:#243e37;position:relative;line-height:0}.world-atlas svg{width:100%;max-height:310px}.world-atlas>span{display:block;text-align:center;line-height:1.4;padding:9px;font-size:11px;color:#e8dcbd}.region-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.region-grid article{background:#2b4536;padding:13px;border:1px solid #536c50;border-radius:8px;display:flex;flex-direction:column;gap:8px}.region-grid h3{font-size:14px}.region-grid p{font-size:11px;line-height:1.6;flex:1;margin:0}.journey-links{display:flex;gap:8px;flex-wrap:wrap}.valley-bar nav{flex-wrap:nowrap}.valley-bar button{padding:9px 10px}.valley-bar{gap:12px}.valley-brand strong{font-size:21px}.expansion-card{max-height:85dvh;overflow:auto}.stage:has(#modal:not([hidden])){z-index:20}#modal{position:fixed!important;inset:0!important;padding:18px;z-index:100!important;background:#0a1d16cf}.expansion-card button:disabled{cursor:not-allowed}.world-atlas svg text{font-family:'Pixelify Sans',monospace}
-@media(max-width:900px){.valley-bar{flex-direction:column;align-items:stretch;gap:9px}.valley-bar nav{display:grid;grid-template-columns:repeat(6,1fr)}.valley-bar button{padding:8px 5px;font-size:10px}.valley-bar kbd{display:none}.valley-brand strong{font-size:20px}.app{max-width:100%!important}}
+@media(max-width:900px){.valley-bar{flex-direction:column;align-items:stretch;gap:9px}.valley-bar nav{display:grid;grid-template-columns:repeat(4,1fr)}.valley-bar button{padding:8px 5px;font-size:10px}.valley-bar kbd{display:none}.valley-brand strong{font-size:20px}.app{max-width:100%!important}}
 @media(max-width:540px){.valley-bar nav{grid-template-columns:repeat(3,1fr)}.region-grid{grid-template-columns:1fr 1fr}.journey-stats{grid-template-columns:1fr 1fr}.journey-quest{padding:12px}.journey-wallet{font-size:13px;flex-wrap:wrap;gap:6px}.trade-row{grid-template-columns:1fr 1fr;gap:7px}.trade-row>div{grid-column:1/-1}.trade-row .btn{font-size:11px}.world-atlas svg{max-height:240px}.world-atlas svg text{font-size:17px}.expansion-card{max-height:92dvh}.travel-options small{font-size:9px}.travel-options .btn{font-size:11px}#modal{padding:8px}}
 </style>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -207,7 +208,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
 </style>
 
 <main class="app">
-  <div class="valley-bar"><div class="valley-brand"><span class="brand-mark">✿</span><div><strong>Vale das Cerejeiras</strong><small>EuComoSushi · ALÉM DO HORIZONTE</small></div></div><nav aria-label="Exploração"><button data-exp="map">Mundo <kbd>M</kbd></button><button data-exp="journey">Jornada</button><button data-exp="travel">Transportes</button><button data-exp="journal">Encomendas</button><button data-exp="build">Construções</button><button data-exp="resources">Recursos</button></nav></div>
+  <div class="valley-bar"><div class="valley-brand"><span class="brand-mark">✿</span><div><strong>Vale das Cerejeiras</strong><small>EuComoSushi · CIDADE VIVA</small></div></div><nav aria-label="Exploração"><button data-exp="map">Mundo <kbd>M</kbd></button><button data-exp="journey">Jornada</button><button data-exp="travel">Transportes</button><button data-exp="journal">Encomendas</button><button data-exp="build">Construções</button><button data-exp="resources">Recursos</button><button data-exp="life">Acontecimentos</button></nav></div>
   <header class="top" hidden>
     <div class="brand"><h1 id="gameName">Vale Pequeno</h1></div>
     <div class="top-actions">
@@ -486,6 +487,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     showModal('<div class="card expansion-card'+(wide?' wide':'')+'"><div class="card-head"><div><span class="eyebrow">VALE DAS CEREJEIRAS</span><h2>'+title+'</h2></div><button class="btn small" data-a="close" aria-label="Fechar janela">Fechar</button></div><p>'+sub+'</p>'+body+'</div>');
   }
   function openFacility(id) {
+    if((id==='workshop'||id==='mine')&&!atCounter(id)){enterFacilityRoom(id);return;}
     var f=facilityById(id);
     if(f.cost&&!S.exp.built[id]){openProjects(id);return;}
     if(id==='board'){openJournal();return;}
@@ -530,15 +532,18 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     panel('Encomendas da vila','Três pedidos por dia. Os itens entregues saem do seu estoque. '+S.exp.totalOrders+' encomendas concluídas.',html,true);
   }
   function startRecipe(id) {
+    if(!atCounter('workshop'))return false;
     var r=RECIPES.find(function(r){return r.id===id;});if(!r||S.exp.jobs.length>=3||!canMake(r.need))return false;
     consume(r.need);S.exp.jobs.push({id:id,left:r.days});save();return true;
   }
   function collectRecipe(i) {
+    if(!atCounter('workshop'))return false;
     var j=S.exp.jobs[i];if(!j||j.left>0)return false;var r=RECIPES.find(function(r){return r.id===j.id;});
     if(r.energy)S.energy=Math.min(energyMax(),S.energy+r.energy);else earn(r.value);
     S.exp.jobs.splice(i,1);save();return true;
   }
   function openWorkshop() {
+    if(!atCounter('workshop')){enterFacilityRoom('workshop');return;}
     var jobs=S.exp.jobs.map(function(j,i){var r=RECIPES.find(function(r){return r.id===j.id;});return '<div class="production"><span><b>'+r.name+'</b><small>'+(j.left?j.left+' noite(s) restante(s)':'Pronto!')+'</small></span><button class="btn '+(!j.left?'primary':'')+'" data-a="exp-collect" data-id="'+i+'" '+(j.left?'disabled':'')+'>'+(r.energy?'Consumir':'Vender')+'</button></div>';}).join('');
     var recipes=RECIPES.map(function(r){var ok=canMake(r.need)&&S.exp.jobs.length<3;return '<article class="recipe"><div><h3>'+r.name+'</h3><p>'+r.desc+'</p><small>'+requirements(r.need)+' · '+r.days+' noite(s)</small></div><button class="btn '+(ok?'primary':'')+'" data-a="exp-craft" data-id="'+r.id+'" '+(!ok?'disabled':'')+'>Preparar</button></article>';}).join('');
     panel('Oficina da vila','Até três produções ao mesmo tempo. Durma para avançar o preparo.',(jobs?'<div class="production-list">'+jobs+'</div>':'')+recipes,true);
@@ -548,7 +553,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     var html=Object.keys(RESOURCE_NAMES).map(function(k){return '<div class="resource"><span class="resource-gem" style="background:'+RESOURCE_COLORS[k]+'"></span><span>'+RESOURCE_NAMES[k]+'</span><strong>'+S.exp.resources[k]+'</strong>'+(SELL_RESOURCES[k]?'<button class="btn small" data-a="exp-sell" data-id="'+k+'" '+(!S.exp.resources[k]?'disabled':'')+'>Vender 1 · '+SELL_RESOURCES[k]+'</button>':'<small>Construção / produção</small>')+'</div>';}).join('');
     panel('Recursos do vale','Materiais coletados ficam neste depósito, separados da mochila de colheitas e peixes.',html);
   }
-  function mineOnce() {if(S.exp.mined>=5||!spend(12))return false;S.exp.mined++;S.exp.resources.stone+=2;S.exp.resources.ore++;if(S.exp.mined%2===0)S.exp.resources.crystal++;save();return true;}
+  function mineOnce() {if(!atCounter('mine'))return false;if(S.exp.mined>=5||!spend(12))return false;S.exp.mined++;S.exp.resources.stone+=2;S.exp.resources.ore++;if(S.exp.mined%2===0)S.exp.resources.crystal++;save();return true;}
   function handleExpansionAction(b) {
     var a=b.dataset.a,id=b.dataset.id;
     if(a.indexOf('exp-')!==0)return false;
@@ -752,8 +757,8 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     return d;
   }
   function nearPoint(x,y,range) {return Math.abs(S.px-x)+Math.abs(S.py-y)<=(range||3);}
-  function nearNpc(n) {return !!n&&regionOpen(n.region)&&nearPoint(n.x,n.y,3);}
-  function nearPlace(p) {return !!p&&S.px>=p.x-2&&S.px<=p.x+p.w+1&&S.py>=p.y-2&&S.py<=p.y+p.h+1&&regionOpen(regionAt(p.x,p.y).id);}
+  function oldNearNpc(n) {return !!n&&regionOpen(n.region)&&nearPoint(n.x,n.y,3);}
+  function oldNearPlace(p) {return !!p&&S.px>=p.x-2&&S.px<=p.x+p.w+1&&S.py>=p.y-2&&S.py<=p.y+p.h+1&&regionOpen(regionAt(p.x,p.y).id);}
   function journeyAct(x,y) {
     var t=tile(x,y);
     if(t.npc){openNpc(t.npc);return true;}
@@ -761,7 +766,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     if(!regionOpen(regionAt(x,y).id)){toast('Essa rota ainda está fechada. Consulte sua Jornada.');return true;}
     return false;
   }
-  function walkToJourney(x,y) {closeModal();onMapClick(x*TS+16,y*TS+16);}
+  function oldWalkToJourney(x,y) {closeModal();onMapClick(x*TS+16,y*TS+16);}
   function currentChapter() {return CHAPTERS[S.journey.chapter];}
   function completeChapter(npcId) {
     var q=currentChapter(),n=npcById(npcId);
@@ -809,33 +814,34 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     if(q&&q.npc===id)quest='<section class="journey-quest"><span class="eyebrow">HISTÓRIA PRINCIPAL</span><h3>'+q.title+'</h3><p>'+q.desc+'</p><p>'+requirements(q.need)+'</p><button class="btn primary" data-a="journey-deliver" data-id="'+id+'" '+(!canMake(q.need)?'disabled':'')+'>Entregar · +'+q.reward+' ouro</button></section>';
     var req=TRAVEL_REQUESTS[id],done=S.journey.requests[id];
     var rows=n.goods.map(function(k){var left=8-(S.journey.stock[id+':'+k]||0),price=tradePrice(n,k,true);return '<div class="trade-row"><div><b>'+itemName(k)+'</b><small>Você: '+quantity(k)+' · Estoque: '+left+'</small></div><button class="btn" data-a="journey-buy" data-id="'+id+'" data-item="'+k+'" '+(S.gold<price||!left?'disabled':'')+'>Comprar · '+price+'</button><button class="btn" data-a="journey-sell" data-id="'+id+'" data-item="'+k+'" '+(!quantity(k)?'disabled':'')+'>Vender · '+tradePrice(n,k,false)+'</button></div>';}).join('');
-    panel(n.name+' · '+n.role,'“'+n.text+'”','<div class="journey-wallet">'+S.gold+' ouro <span>Reputação '+S.journey.rep+' · comércio local</span></div>'+quest+'<h3>Mercadorias</h3>'+rows+'<section class="journey-quest"><h3>Pedido do dia</h3><p>'+requirements(req.need)+' → '+req.reward+' ouro e +1 reputação</p><button class="btn" data-a="journey-request" data-id="'+id+'" '+(done||!canMake(req.need)?'disabled':'')+'>'+(done?'Entregue hoje':'Entregar pedido')+'</button></section>',true);
+    panel(n.name+' · '+n.role,'“'+contextDialogue(n.id)+'”','<button class="btn" data-a="life-talk" data-id="'+id+'">Conversar com '+n.name+'</button><div class="journey-wallet">'+S.gold+' ouro <span>Reputação '+S.journey.rep+' · comércio local</span></div>'+quest+'<h3>Mercadorias</h3>'+rows+'<section class="journey-quest"><h3>Pedido do dia</h3><p>'+requirements(req.need)+' → '+req.reward+' ouro e +1 reputação</p><button class="btn" data-a="journey-request" data-id="'+id+'" '+(done||!canMake(req.need)?'disabled':'')+'>'+(done?'Entregue hoje':'Entregar pedido')+'</button></section>',true);
   }
   function openJourney() {
     var q=currentChapter();
     var lead=q?'<section class="journey-quest"><span class="eyebrow">SEU PRÓXIMO PASSO</span><h3>'+q.title+'</h3><p>'+q.desc+'</p><p>'+requirements(q.need)+'</p><button class="btn primary" data-a="journey-find" data-id="'+q.npc+'">Encontrar '+npcById(q.npc).name+'</button></section>':'<section class="journey-quest"><h3>Viajante das Cerejeiras</h3><p>O festival está pronto. Todas as regiões estão abertas! Continue cultivando, negociando e atendendo aos pedidos diários.</p></section>';
     panel('Além do horizonte','Uma fazenda é o seu começo. As pessoas que você conhece abrem o resto do caminho.','<div class="journey-stats"><span><b>'+Object.keys(S.journey.visited).length+'/6</b>regiões visitadas</span><span><b>'+S.journey.rep+'</b>reputação</span><span><b>'+S.journey.trades+'</b>negociações</span><span><b>'+S.journey.chapter+'/5</b>capítulos</span></div>'+lead+'<div class="chapter-list">'+CHAPTERS.map(function(c,i){return '<div class="chapter '+(i<S.journey.chapter?'complete':'')+'"><span>'+(i<S.journey.chapter?'✓':i+1)+'</span><div><b>'+c.title.slice(4)+'</b><small>'+npcById(c.npc).name+' · '+REGIONS.find(function(r){return r.id===npcById(c.npc).region;}).name+(c.unlock?' · abre uma nova região':'')+'</small></div></div>';}).join('')+'</div><h3>Encontre os viajantes</h3><div class="destinations">'+NPCS.map(function(n){return '<button data-a="journey-find" data-id="'+n.id+'" '+(!regionOpen(n.region)?'disabled':'')+'><span>✦</span><div><b>'+n.name+'</b><small>'+n.role+'</small></div></button>';}).join('')+'</div><p class="journey-note">Rotas de comércio: folhas de chá do bosque valem mais em Hanami; especiarias do porto valem mais na serra; tecidos de Hanami valem mais no santuário. Desconte o custo da viagem do seu lucro.</p><p class="journey-note">Os viajantes são personagens do jogo. Estoques e pedidos se renovam ao dormir. Seu progresso continua salvo neste navegador.</p>',true);
   }
-  function openPlace(id) {
+  function openPlaceService(id) {
     var p=placeById(id);if(!nearPlace(p))return;
     if(p.kind==='station'||p.kind==='stop'){openTransport();return;}
-    if(p.kind==='market'){var n=npcById(id==='fishMarket'?'rui':'hana');panel(p.name,'Os comerciantes atendem nas barracas do lado de fora.','<button class="btn primary" data-a="journey-find" data-id="'+n.id+'">Caminhar até '+n.name+'</button>');return;}
-    if(p.kind==='guild'||p.kind==='temple'){openJourney();return;}
+    if(p.kind==='market'){openNpc(id==='fishMarket'?'rui':'hana');return;}
+    if(p.kind==='temple'){openNpc('mei');return;} if(p.kind==='guild'){openCityLife();return;}
     if(p.kind==='garage'){
       panel(p.name,'Um carro próprio leva você entre todas as regiões liberadas. Cada viagem usa 1 combustível.','<div class="journey-wallet">'+S.gold+' ouro <span>Combustível: '+S.journey.fuel+'/10</span></div><p>O carro custa 1.200 de ouro e vem com 3 combustíveis. O táxi continua disponível sem precisar comprar um veículo.</p><button class="btn primary" data-a="journey-car" '+(S.journey.car||S.gold<1200?'disabled':'')+'>'+(S.journey.car?'Seu carro está pronto':'Comprar carro · 1.200 ouro')+'</button><button class="btn" data-a="journey-fuel" '+(!S.journey.car||S.journey.fuel>=10||S.gold<18?'disabled':'')+'>Abastecer +1 · 18 ouro</button>');return;
     }
     if(p.kind==='cafe'){
       panel(p.name,'Uma pausa na cidade antes da próxima viagem.','<p>Uma refeição recupera 60 de energia, até seu limite.</p><button class="btn primary" data-a="journey-meal" '+(S.gold<35||S.energy>=energyMax()?'disabled':'')+'>Comer · 35 ouro</button>');return;
     }
+    if(p.id==='lodge'){openNpc('tomo');return;}
     if(p.kind==='inn'){
       panel(p.name,'Passe a noite aqui. As plantações crescem e os viajantes renovam suas mercadorias.','<p>Você acorda na entrada da pousada. A diária custa 25 de ouro.</p><button class="btn primary" data-a="journey-inn" data-id="'+p.id+'" '+(S.gold<25?'disabled':'')+'>Dormir aqui · 25 ouro</button>');return;
     }
-    if(p.kind==='tent'){panel(p.name,'Aya troca mercadorias e conhece os caminhos do bosque.','<button class="btn primary" data-a="journey-find" data-id="aya">Encontrar Aya</button>');return;}
+    if(p.kind==='tent'){openNpc('aya');return;}
     panel(p.name,p.kind==='tower'?'O farol guia as caravanas que chegam pelo mar.':'Um cantinho de Hanami, entre cerejeiras e ruas tranquilas.','<p>Explore a praça, converse com os viajantes e acompanhe sua Jornada para descobrir novas rotas.</p><button class="btn" data-a="journey-log">Abrir Jornada</button>');
   }
   function buyCar() {if(!nearPlace(placeById('garage'))||S.journey.car||S.gold<1200)return false;S.gold-=1200;S.journey.car=true;S.journey.fuel=3;save();return true;}
   function buyFuel() {if(!nearPlace(placeById('garage'))||!S.journey.car||S.journey.fuel>=10||S.gold<18)return false;S.gold-=18;S.journey.fuel++;save();return true;}
-  function transitPoint() {return PLACES.find(function(p){return (p.kind==='station'||p.kind==='stop')&&nearPlace(p);});}
+  function oldTransitPoint() {return PLACES.find(function(p){return (p.kind==='station'||p.kind==='stop')&&nearPlace(p);});}
   function travelQuote(id,mode) {
     var r=REGIONS.find(function(r){return r.id===id;}),here=regionAt(S.px,S.py),point=transitPoint();
     if(!r||!regionOpen(id)||here.id===id)return {ok:false,reason:'Destino indisponível'};
@@ -852,7 +858,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   function travel(id,mode) {
     var q=travelQuote(id,mode);if(!q.ok){toast(q.reason);return false;}
     var r=REGIONS.find(function(r){return r.id===id;});
-    S.gold-=q.price;if(mode==='car')S.journey.fuel--;S.minutes+=q.minutes;
+    S.indoor=null;S.gold-=q.price;if(mode==='car')S.journey.fuel--;S.minutes+=q.minutes;
     S.px=r.spawn[0];S.py=r.spawn[1];S.dir='down';S.journey.visited[id]=true;S.journey.trips++;
     if(fishing)stopFish('Você recolheu a linha.');mouseClear();mouse.down=null;dirStack.length=0;resetView();closeModal();save();updateHud();
     var label=(mode==='train'?'De trem':mode==='taxi'?'De táxi':'De carro')+' · '+r.name;
@@ -881,8 +887,8 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     if(a==='journey-log')openJourney();
     if(a==='journey-transit')openTransport();
     if(a==='journey-farm-map')openFarmAtlas();
-    if(a==='journey-find'){var n=npcById(id);if(n&&regionOpen(n.region))walkToJourney(n.x,n.y);else toast('Libere essa região na Jornada.');}
-    if(a==='journey-place'){var p=placeById(id);if(p&&regionOpen(regionAt(p.x,p.y).id))walkToJourney(p.x,p.y+p.h-1);}
+    if(a==='journey-find')findResident(id);
+    if(a==='journey-place'){var p=placeById(id);if(p&&regionOpen(regionAt(p.x,p.y).id))walkToJourney(p.x+Math.floor(p.w/2),p.y+p.h-1);}
     if(a==='journey-walk'){var r=REGIONS.find(function(r){return r.id===id;});if(r&&regionOpen(id))walkToJourney(r.spawn[0],r.spawn[1]);}
     if(a==='journey-deliver'){completeChapter(id);openNpc(id);}
     if(a==='journey-request'){completeRequest(id);openNpc(id);}
@@ -936,8 +942,8 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     });
     // Tall torii at the sanctuary entrance, using the same vermilion language as home.
     if(camX>105*TS&&camY>44*TS){var gx=123*TS,gy=73*TS;ctx.fillStyle='#ad4f46';ctx.fillRect(gx,gy,8,92);ctx.fillRect(gx+117,gy,8,92);ctx.fillRect(gx-12,gy,150,10);ctx.fillRect(gx-8,gy+23,142,7);ctx.fillStyle='#344d3a';ctx.fillRect(gx-17,gy-9,160,10);}
-    drawVehicle(77*TS,18*TS,'train',true);drawVehicle(78*TS,68*TS,'train',false);drawVehicle(122*TS,22*TS,'train',false);
-    drawVehicle(80*TS,30*TS,'taxi',true);drawVehicle(72*TS,41*TS,S.journey.car?'car':'taxi',false);
+    drawScheduledTrains();
+    drawTraffic();
     if(regionAt(S.px,S.py).id==='city'){
       for(var i=0;i<8;i++){var lx=(62+i*6)*TS,ly=33*TS;ctx.fillStyle='#52695e';ctx.fillRect(lx,ly,3,27);ctx.fillStyle='#eddba3';ctx.fillRect(lx-3,ly-7,9,9);}
       [[74,24],[87,26],[83,40],[95,41],[73,33],[89,49],[68,21],[92,21]].forEach(function(p){var bx=p[0]*TS,by=p[1]*TS;ctx.fillStyle='#947252';ctx.fillRect(bx,by+17,40,13);ctx.fillStyle='#60916c';ctx.fillRect(bx+3,by+8,34,12);ctx.fillStyle='#e6a2b5';for(var j=0;j<4;j++)ctx.fillRect(bx+6+j*8,by+6+(j%2)*4,5,5);});
@@ -945,7 +951,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     }
   }
   function drawVehicle(x,y,type,animated) {
-    if(animated)x+=Math.round(Math.sin(clock*.22)*36);
+    
     var train=type==='train',w=train?170:65,h=train?35:29;
     if(x+w<camX||x>camX+LW||y+h<camY||y>camY+LH)return;
     ctx.fillStyle='#2c3d37';ctx.fillRect(x+8,y+h-3,w-16,8);ctx.fillStyle=train?'#538b91':type==='taxi'?'#e7bf57':'#cc8074';ctx.fillRect(x,y,w,h);ctx.fillRect(x+10,y-8,w-22,12);
@@ -953,7 +959,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     if(type==='taxi'){ctx.fillStyle='#f2e7c2';ctx.fillRect(x+24,y-13,19,7);}
   }
   function drawJourneyPeople() {
-    NPCS.forEach(function(n){var x=n.x*TS,y=n.y*TS;if(x<camX-32||x>camX+LW||y<camY-32||y>camY+LH)return;
+    NPCS.forEach(function(n){if(NPC_ROOMS[n.id])return;var x=n.x*TS,y=n.y*TS;if(x<camX-32||x>camX+LW||y<camY-32||y>camY+LH)return;
       ell(x+16,y+29,12,4,'#38504155');ctx.fillStyle='#3e5352';ctx.fillRect(x+9,y+22,6,10);ctx.fillRect(x+19,y+22,6,10);ctx.fillStyle=n.color;ctx.fillRect(x+7,y+10,20,15);ctx.fillStyle='#e3bc8e';ctx.fillRect(x+10,y-4,15,15);ctx.fillRect(x+3,y+14,5,8);ctx.fillRect(x+27,y+14,5,8);ctx.fillStyle='#655445';ctx.fillRect(x+8,y-7,19,6);ctx.fillRect(x+8,y-2,4,7);ctx.fillStyle='#34463c';ctx.fillRect(x+21,y+1,2,2);
       var q=currentChapter(),active=q&&q.npc===n.id;ctx.fillStyle=active?'#f5d67e':'#e7e1c8';ctx.fillRect(x+9,y-27+Math.round(Math.sin(clock*2)*2),16,15);ctx.fillStyle='#35564a';ctx.font='bold 12px monospace';ctx.textAlign='center';ctx.fillText(active?'!':'…',x+17,y-15+Math.round(Math.sin(clock*2)*2));ctx.textAlign='left';
       ctx.font='700 10px "Pixelify Sans",monospace';ctx.fillStyle='#243e35';var tw=ctx.measureText(n.name).width+8;ctx.fillRect(x+16-tw/2,y+34,tw,14);ctx.fillStyle='#f5e9cf';ctx.textAlign='center';ctx.fillText(n.name,x+16,y+44);ctx.textAlign='left';
@@ -973,6 +979,196 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     var r=regionAt(S.px,S.py);if(!S.journey.visited[r.id]){S.journey.visited[r.id]=true;save();}
     if(lastJourneyRegion!==r.id){lastJourneyRegion=r.id;$('regionName').textContent=r.name;}
   }
+
+  /* Cidade Viva: interiores, rotinas urbanas, acontecimentos e conversas. */
+  var NPC_ROOMS={hana:'market',nico:'garage',aya:'camp',rui:'fishMarket',tomo:'lodge',mei:'temple'};
+  var EXTRA_ROOMS=[
+    {id:'marta',name:'Loja da Marta',kind:'seeds',x:23,y:1,w:4,h:3,roof:'#bd8e71',label:'LOJA DA MARTA'},
+    {id:'home',name:'Minha casa',kind:'house',x:2,y:1,w:4,h:3,roof:'#ad786b',label:'LAR'},
+    {id:'workshop',name:'Oficina da vila',kind:'workshop',x:35,y:3,w:6,h:4,roof:'#528b83',label:'OFICINA'},
+    {id:'mine',name:'Mina da Aurora',kind:'mine',x:48,y:3,w:7,h:4,roof:'#787c97',label:'MINA'}
+  ];
+  var roomMotion=null,roomPath=[],roomPending=null,roomClock=0;
+  function roomById(id){return placeById(id)||EXTRA_ROOMS.find(function(p){return p.id===id;});}
+  function roomEntrance(p){return p.id==='marta'?[24,4]:p.id==='home'?[4,4]:[p.x+Math.floor(p.w/2),p.y+p.h];}
+  function upgradeLiving(s){
+    if(!s.life)s.life={version:3,log:[],resolved:[],event:null,eventDay:-1,talks:{},seen:0};
+    if(!s.life.mapped){
+      NPCS.forEach(function(n){if(NPC_ROOMS[n.id]){var t=s.tiles[idx(n.x,n.y)];if(t&&t.npc===n.id)s.tiles[idx(n.x,n.y)]={t:T.PATH,pave:n.region==='city'?'paving':'trail',crop:null,wet:false};}});
+      TAXI_ROUTES.forEach(function(route){route.stops.forEach(function(a,i){var b=route.stops[(i+1)%route.stops.length],dx=Math.sign(b.x-a.x),dy=Math.sign(b.y-a.y),x=a.x,y=a.y;for(var k=0;k<100;k++){var t=s.tiles[idx(x,y)];if(t&&!t.place&&!t.npc&&!SOLID[t.t])t.pave='asphalt';if(x===b.x&&y===b.y)break;x+=dx;y+=dy;}});});
+      s.life.mapped=true;
+    }
+    if(s.indoor&&!roomById(s.indoor.id))s.indoor=null;
+    if(s.indoor&&!roomWalkable(s.indoor.x,s.indoor.y,s.indoor.id)){s.indoor.x=8;s.indoor.y=10;}
+    return s;
+  }
+  function atCounter(id){return !!S.indoor&&S.indoor.id===id&&S.indoor.y===5&&S.indoor.x>=6&&S.indoor.x<=10;}
+  function nearNpc(n){if(!n)return false;return NPC_ROOMS[n.id]?atCounter(NPC_ROOMS[n.id]):!S.indoor&&regionOpen(n.region)&&nearPoint(n.x,n.y,3);}
+  function nearPlace(p){if(!p)return false;if(p.kind==='stop')return !S.indoor&&oldNearPlace(p);return atCounter(p.id);}
+  function transitPoint(){return S.indoor?(atCounter(S.indoor.id)&&roomById(S.indoor.id).kind==='station'?roomById(S.indoor.id):null):PLACES.find(function(p){return p.kind==='stop'&&oldNearPlace(p);});}
+  function enterRoom(id){
+    var p=roomById(id);if(!p||p.kind==='stop'||!regionOpen(regionAt(p.x,p.y).id))return false;
+    var entrance=roomEntrance(p);if(S.indoor||!nearPoint(entrance[0],entrance[1],1))return false;
+    S.px=entrance[0];S.py=entrance[1];S.indoor={id:id,x:8,y:10,dir:'up'};resetView();roomMotion=null;roomPath=[];roomPending=null;mouseClear();mouse.down=null;dirStack.length=0;actEdge=false;actHeld=false;
+    closeModal();save();toast('Entre e caminhe até o balcão para ser atendido.');return true;
+  }
+  function exitRoom(){if(!S.indoor)return false;var p=roomById(S.indoor.id),e=roomEntrance(p);S.indoor=null;S.px=e[0];S.py=e[1];S.dir='down';roomMotion=null;roomPath=[];roomPending=null;mouseClear();dirStack.length=0;actEdge=false;actHeld=false;resetView();closeModal();lastJourneyRegion='';save();return true;}
+  function openPlace(id){
+    var p=placeById(id);if(!p)return;
+    if(p.kind==='stop'){if(nearPlace(p))openTransport();return;}
+    if(S.indoor){if(atCounter(id))serveCounter();return;}
+    var e=roomEntrance(p);if(nearPoint(e[0],e[1],1))enterRoom(id);else walkToJourney(e[0],e[1]-1);
+  }
+  function enterFacilityRoom(id){if(S.indoor)return;var p=roomById(id),e=roomEntrance(p);if(nearPoint(e[0],e[1],1))enterRoom(id);else walkToJourney(e[0],e[1]-1);}
+  function findResident(id){var n=npcById(id);if(!n||!regionOpen(n.region)){toast('Libere essa região na Jornada.');return;}var p=roomById(NPC_ROOMS[id]);if(S.indoor){if(p&&p.id===S.indoor.id){closeModal();planRoomPath(8,4);return;}exitRoom();}if(p){var e=roomEntrance(p);walkToJourney(e[0],e[1]-1);}else walkToJourney(n.x,n.y);}
+  function walkToJourney(x,y){if(S.indoor){toast('Saia pela porta antes de seguir para outro lugar.');closeModal();return;}oldWalkToJourney(x,y);}
+  function roomFurniture(id){
+    var p=roomById(id),kind=p.kind,items=[{x:1,y:2,w:3,h:1,type:'shelf'},{x:12,y:2,w:3,h:1,type:'shelf'},{x:1,y:8,w:1,h:1,type:'plant'},{x:15,y:8,w:1,h:1,type:'plant'}];
+    if(kind==='cafe'||kind==='inn'||kind==='tent'){items.push({x:3,y:7,w:2,h:2,type:'table'},{x:12,y:7,w:2,h:2,type:'table'});}
+    else if(kind==='house'||kind==='home'){items.push({x:2,y:6,w:3,h:3,type:'bed'},{x:12,y:7,w:2,h:2,type:'table'});}
+    else if(kind==='garage'){items.push({x:2,y:6,w:3,h:3,type:'car'},{x:12,y:7,w:3,h:1,type:'tools'});}
+    else if(kind==='station'){items.push({x:2,y:7,w:3,h:1,type:'bench'},{x:12,y:7,w:3,h:1,type:'bench'});}
+    else{items.push({x:2,y:7,w:2,h:2,type:'crate'},{x:13,y:7,w:2,h:2,type:'crate'});}
+    return items;
+  }
+  function roomWalkable(x,y,id){if(x===8&&y===11)return true;if(x<1||x>15||y<3||y>10)return false;if(y===4&&x>=5&&x<=11)return false;return !roomFurniture(id).some(function(f){return x>=f.x&&x<f.x+f.w&&y>=f.y&&y<f.y+f.h;});}
+  function roomFindPath(sx,sy,goals,id){var q=[[sx,sy]],head=0,prev={},key=function(x,y){return y*17+x;};prev[key(sx,sy)]=null;while(head<q.length){var p=q[head++];if(goals.some(function(g){return g[0]===p[0]&&g[1]===p[1];})){var out=[],k=key(p[0],p[1]);while(prev[k]!==null){out.unshift([k%17,Math.floor(k/17)]);k=prev[k];}return out;}[[1,0],[-1,0],[0,1],[0,-1]].forEach(function(d){var nx=p[0]+d[0],ny=p[1]+d[1],nk=key(nx,ny);if(roomWalkable(nx,ny,id)&&!(nk in prev)){prev[nk]=key(p[0],p[1]);q.push([nx,ny]);}});}return null;}
+  function planRoomPath(x,y){var r=S.indoor;if(!r)return;var counter=y<=4&&x>=5&&x<=11,door=x===8&&y>=10;var goals=counter?[[8,5],[7,5],[9,5]]:door?[[8,11]]:[[x,y]];var path=roomFindPath(r.x,r.y,goals,r.id);if(path){roomPath=path;roomPending=counter?'counter':door?'exit':null;}else toast('Esse caminho está ocupado pelos móveis.');}
+  function roomMetrics(){var z=Math.min((LW-36)/(17*TS),(LH-112)/(12*TS));return {z:z,x:(LW-17*TS*z)/2,y:52+(LH-112-12*TS*z)/2};}
+  function interiorClick(x,y){var m=roomMetrics(),tx=Math.floor((x-m.x)/m.z/TS),ty=Math.floor((y-m.y)/m.z/TS);if(y<43){openCityLife();return;}if(tx>=0&&tx<17&&ty>=0&&ty<12)planRoomPath(tx,ty);}
+  function roomStep(dx,dy){var r=S.indoor;if(!r||!roomWalkable(r.x+dx,r.y+dy,r.id))return false;r.dir=dirOf(dx,dy);roomMotion={fx:r.x,fy:r.y,tx:r.x+dx,ty:r.y+dy,t:0};r.x+=dx;r.y+=dy;return true;}
+  function updateInterior(dt){
+    var r=S.indoor;if(!r)return;acc+=dt;roomClock+=dt;if(acc>=2.8){acc-=2.8;S.minutes+=10;onTime();}
+    if(roomMotion){roomMotion.t+=dt/.16;if(roomMotion.t>=1)roomMotion=null;}
+    if(!roomMotion){if(r.x===8&&r.y===11){exitRoom();return;}if(dirStack.length){roomPath=[];roomPending=null;var d=DIRS[dirStack[dirStack.length-1]];roomStep(d[0],d[1]);}else if(roomPath.length){var next=roomPath.shift();roomStep(next[0]-r.x,next[1]-r.y);}else if(roomPending){var pending=roomPending;roomPending=null;if(pending==='counter'){r.dir='up';serveCounter();}else exitRoom();}}
+    if((actEdge||actHeld)&&clock>=actCool){actEdge=false;actCool=clock+.25;interiorAct();}
+  }
+  function interiorAct(){if(!S.indoor)return;if(atCounter(S.indoor.id))serveCounter();else if(S.indoor.x===8&&S.indoor.y>=10)exitRoom();else toast('Caminhe até o balcão ou até a porta de saída.');}
+  function interiorHint(){return atCounter(S.indoor.id)?'<b>E:</b> conversar no balcão':'Clique no balcão para caminhar até ele · saída na porta ao sul';}
+  function serveCounter(){
+    if(!S.indoor||!atCounter(S.indoor.id))return;
+    serveCounterService();
+    var id=S.indoor&&S.indoor.id;if(!id||modalEl.hidden)return;
+    var npc=Object.keys(NPC_ROOMS).find(function(n){return NPC_ROOMS[n]===id;})||id;
+    var card=modalEl.querySelector('.card');
+    if(card&&!modalEl.querySelector('[data-a="life-talk"]'))card.insertAdjacentHTML('beforeend','<div class="living-options"><button class="btn" data-a="life-talk" data-id="'+npc+'">Conversar</button>'+(id==='garage'?'<button class="btn" data-a="life-nico">Mercadorias do Nico</button>':'')+(id==='lodge'?'<button class="btn" data-a="journey-inn" data-id="lodge">Dormir · 25 ouro</button>':'')+'</div>');
+  }
+  function serveCounterService(){
+    if(!S.indoor||!atCounter(S.indoor.id))return;var id=S.indoor.id,p=roomById(id);
+    if(id==='marta'){openShop();return;}if(id==='home'){openSleep();return;}
+    if(id==='workshop'||id==='mine'){openFacility(id);return;}
+    if(p.kind==='home'||p.kind==='tower'){openLocalCounter(id);return;}
+    openPlaceService(id);
+  }
+  function openLocalCounter(id){var p=roomById(id);panel(p.name,'“'+contextDialogue(id)+'”','<p>Converse com quem mora aqui e fique por dentro do que acontece na cidade.</p><div class="living-options"><button class="btn primary" data-a="life-talk" data-id="'+id+'">Conversar</button><button class="btn" data-a="life-news">Acontecimentos</button></div>');}
+  function renderInterior(dt){
+    var r=S.indoor,p=roomById(r.id),m=roomMetrics();ctx.setTransform(gScale,0,0,gScale,0,0);ctx.fillStyle='#14271f';ctx.fillRect(0,0,LW,LH);hudBlocks.length=0;hudSlots.length=0;
+    ctx.save();ctx.translate(m.x,m.y);ctx.scale(m.z,m.z);
+    ctx.fillStyle='#0c1b16';ctx.fillRect(-8,-8,560,400);
+    for(var y=0;y<12;y++)for(var x=0;x<17;x++){ctx.fillStyle=(x+y)%2?'#c19a70':'#bb936a';ctx.fillRect(x*32,y*32,32,32);ctx.fillStyle='#a47c55';ctx.fillRect(x*32,y*32+29,32,2);}
+    ctx.fillStyle=p.kind==='mine'?'#6d7777':'#e4cc9f';ctx.fillRect(0,0,544,88);ctx.fillStyle=p.roof||'#70988c';ctx.fillRect(0,0,544,13);ctx.fillRect(0,77,544,12);ctx.fillStyle='#4c6255';ctx.fillRect(0,88,14,296);ctx.fillRect(530,88,14,296);
+    [88,392].forEach(function(wx){ctx.fillStyle='#6da7ab';ctx.fillRect(wx,29,62,38);ctx.fillStyle='#f0dfba';ctx.fillRect(wx+29,29,4,38);ctx.fillRect(wx,46,62,4);ctx.fillStyle='#a46b68';ctx.fillRect(wx-8,25,12,47);ctx.fillRect(wx+58,25,12,47);});
+    ctx.fillStyle='#a75965';ctx.fillRect(198,197,148,126);ctx.fillStyle='#d5b785';ctx.strokeStyle='#d5b785';ctx.lineWidth=3;ctx.strokeRect(206,205,132,110);
+    roomFurniture(r.id).forEach(drawRoomFurniture);
+    drawCitizenSprite(8*32,3*32,p.roof||'#c7829b',0,'down');
+    ctx.fillStyle='#76533a';ctx.fillRect(160,128,224,32);ctx.fillStyle='#d7b681';ctx.fillRect(154,122,236,14);ctx.fillStyle='#9c774d';for(var k=0;k<7;k++)ctx.fillRect(162+k*32,145,28,12);
+    ctx.fillStyle='#ead8a8';ctx.fillRect(248,132,48,18);ctx.font='bold 9px monospace';ctx.textAlign='center';ctx.fillStyle='#624e36';ctx.fillText('BALCÃO',272,144);ctx.textAlign='left';
+    // Shelved goods vary with the establishment; customers queue and walk to the exit.
+    if(p.kind==='market'||p.kind==='seeds'){for(k=0;k<5;k++){ctx.fillStyle=['#df9378','#9bb976','#dbbd70','#b19abd','#d9c28f'][k];ctx.fillRect(172+k*39,108,19,14);}}
+    if(p.kind==='cafe'){ctx.fillStyle='#f3e3be';ctx.fillRect(181,105,17,17);ctx.fillRect(336,105,17,17);ctx.fillStyle='#72533c';ctx.fillRect(183,107,13,4);}
+    if(p.kind==='station'){ctx.fillStyle='#3d655d';ctx.fillRect(218,25,110,43);ctx.fillStyle='#edd4a4';ctx.font='11px monospace';ctx.textAlign='center';ctx.fillText('PARTIDAS',273,42);ctx.fillText('HANAMI • MARÉS',273,58);ctx.textAlign='left';}
+    var visit=roomClock%26,gy=visit<6?10-visit*5/6:visit<13?5:visit<19?5+(visit-13)*5/6:11;
+    if(visit<19)drawCitizenSprite(10*32,gy*32,'#789db4',visit>=6&&visit<13?0:roomClock,visit<13?'up':'down');
+    var ax=roomMotion?roomMotion.fx+(roomMotion.tx-roomMotion.fx)*Math.min(1,roomMotion.t):r.x,ay=roomMotion?roomMotion.fy+(roomMotion.ty-roomMotion.fy)*Math.min(1,roomMotion.t):r.y;drawPlayer(ax*TS,ay*TS,r.dir,!!roomMotion);
+    ctx.fillStyle='#243f33';ctx.fillRect(240,352,64,32);ctx.fillStyle='#f1d795';ctx.font='bold 11px monospace';ctx.textAlign='center';ctx.fillText('SAÍDA ↓',272,374);ctx.textAlign='left';
+    if(roomPath.length){var target=roomPath[roomPath.length-1];ctx.strokeStyle='#f4df9a';ctx.lineWidth=2;ctx.strokeRect(target[0]*32+3,target[1]*32+3,26,26);}
+    ctx.restore();
+    ctx.fillStyle='#2b4638';ctx.fillRect(7,5,LW-14,36);ctx.fillStyle='#f4e4bd';ctx.font='700 16px "Pixelify Sans",monospace';ctx.fillText(p.name,19,29);ctx.textAlign='right';ctx.fillStyle='#f0cf76';ctx.fillText(S.gold+' ouro',LW-20,29);ctx.textAlign='center';ctx.font='12px "Pixelify Sans",monospace';ctx.fillStyle='#c9d5b5';ctx.fillText('Clique no balcão • caminhe com WASD / setas • E para conversar',LW/2,LH-25);ctx.textAlign='left';
+    $('regionName').textContent=p.name+' · interior';if(fade){ctx.fillStyle='rgba(8,14,11,'+Math.min(1,fade.a)+')';ctx.fillRect(0,0,LW,LH);}
+  }
+  function drawRoomFurniture(f){var x=f.x*32,y=f.y*32,w=f.w*32,h=f.h*32;ctx.fillStyle='#705438';ctx.fillRect(x+3,y+6,w,h-3);ctx.fillStyle='#ba8f5b';ctx.fillRect(x,y,w,h-10);
+    if(f.type==='shelf'||f.type==='tools'){ctx.fillStyle='#745538';ctx.fillRect(x,y+h-11,w,7);for(var i=0;i<w-10;i+=15){ctx.fillStyle=['#bb7474','#83a18b','#dbbd78','#83a3b0'][i%4];ctx.fillRect(x+5+i,y+3,10,19);}}
+    if(f.type==='plant'){ctx.fillStyle='#b08058';ctx.fillRect(x+7,y+19,20,14);ell(x+16,y+11,14,13,'#628b65');ell(x+9,y+6,8,9,'#86a875');}
+    if(f.type==='table'){ctx.fillStyle='#e3c499';ctx.fillRect(x+3,y+3,w-6,h-18);ctx.fillStyle='#efe5c5';ctx.fillRect(x+13,y+13,15,13);ctx.fillRect(x+39,y+21,12,12);}
+    if(f.type==='bed'){ctx.fillStyle='#8fa7a8';ctx.fillRect(x+5,y+5,w-10,h-15);ctx.fillStyle='#f0e0b8';ctx.fillRect(x+10,y+10,w-20,20);}
+    if(f.type==='car'){ctx.fillStyle='#c77b6d';ctx.fillRect(x+15,y+8,w-30,h-20);ctx.fillStyle='#a9ccd0';ctx.fillRect(x+21,y+25,w-42,22);ctx.fillStyle='#354b44';ctx.fillRect(x+8,y+23,8,24);ctx.fillRect(x+w-16,y+23,8,24);}
+  }
+  var TAXI_ROUTES=[
+    {name:'Circular Centro',stops:[{x:77,y:29,name:'Mercado'},{x:98,y:29,name:'Café'},{x:98,y:53,name:'Pousada'},{x:77,y:53,name:'Garagem'}]},
+    {name:'Circular Jardins',stops:[{x:79,y:31,name:'Praça'},{x:79,y:52,name:'Garagem'},{x:97,y:52,name:'Pousada'},{x:97,y:31,name:'Café'}]}
+  ];
+  var CITIZEN_PLANS=[
+    {name:'Lia',color:'#d598a8',itinerary:['homes1','market','cafe','inn']},
+    {name:'Bento',color:'#8aa9bc',itinerary:['inn','garage','cafe','homes1']},
+    {name:'Sora',color:'#bc9ac4',itinerary:['station','homes3','market','station']},
+    {name:'Davi',color:'#c5a36c',itinerary:['homes2','guild','cafe','homes2']},
+    {name:'Nina',color:'#9fbc81',itinerary:['inn','market','homes3','inn']},
+    {name:'Caio',color:'#d58b67',itinerary:['garage','station','guild','garage']},
+    {name:'Emi',color:'#89b9a9',itinerary:['homes1','cafe','market','homes1']},
+    {name:'Ivo',color:'#aaa2ca',itinerary:['station','inn','homes2','station']},
+    {name:'Luna',color:'#cb9c79',itinerary:['homes3','cafe','guild','homes3']},
+    {name:'Noa',color:'#7ea9c2',itinerary:['guild','market','station','guild']}
+  ];
+  var livingRuntime=null,livingStateRef=null;
+  function makeLivingRuntime(){return {time:0,taxis:[0,1,2,3].map(function(i){var route=i%2,stop=Math.floor(i/2)*2,p=TAXI_ROUTES[route].stops[stop];return {route:route,stop:stop,x:p.x,y:p.y,wait:2+i,dir:'right',completed:0,passengers:i%3};}),people:CITIZEN_PLANS.map(function(p,i){var door=roomEntrance(placeById(p.itinerary[0]));return {name:p.name,color:p.color,itinerary:p.itinerary,x:door[0],y:door[1],leg:0,path:[],wait:i*.8,inside:false,dir:'down',completed:0};})};}
+  function getLiving(){if(livingStateRef!==S){livingRuntime=makeLivingRuntime();livingStateRef=S;}return livingRuntime;}
+  function pedestrianPath(sx,sy,tx,ty){
+    // A* prefers pavements. Road crossings are possible; buildings remain solid.
+    var open=[{x:sx,y:sy,g:0,f:0}],best={},prev={},start=idx(sx,sy);best[start]=0;
+    for(var count=0;open.length&&count<8000;count++){open.sort(function(a,b){return b.f-a.f;});var cur=open.pop(),ck=idx(cur.x,cur.y);if(cur.g!==best[ck])continue;if(cur.x===tx&&cur.y===ty){var out=[],k=ck;while(k!==start){out.unshift([k%COLS,Math.floor(k/COLS)]);k=prev[k];}return out;}
+      [[1,0],[-1,0],[0,1],[0,-1]].forEach(function(d){var x=cur.x+d[0],y=cur.y+d[1];if(x<59||x>108||y<3||y>56||!walkable(x,y))return;var t=tile(x,y),ng=cur.g+(t.pave==='asphalt'?3:1),nk=idx(x,y);if(best[nk]===undefined||ng<best[nk]){best[nk]=ng;prev[nk]=ck;open.push({x:x,y:y,g:ng,f:ng+Math.abs(tx-x)+Math.abs(ty-y)});}});
+    }return null;
+  }
+  function updateTraffic(dt){
+    var rt=getLiving();rt.time+=dt;
+    rt.taxis.forEach(function(t,i){
+      if(t.wait>0){t.wait-=dt;return;}var route=TAXI_ROUTES[t.route],next=route.stops[(t.stop+1)%route.stops.length],dx=next.x-t.x,dy=next.y-t.y,dist=Math.abs(dx)+Math.abs(dy);
+      var blocked=rt.taxis.some(function(o,j){return i!==j&&o.route===t.route&&Math.abs(o.x-t.x)+Math.abs(o.y-t.y)<3.4&&Math.abs(o.x-next.x)+Math.abs(o.y-next.y)<dist;});
+      var pedestrian=rt.people.some(function(p){return !p.inside&&Math.abs(p.x-t.x)<1.8&&Math.abs(p.y-t.y)<1.4;});
+      if(blocked||pedestrian)return;
+      var step=Math.min(dist,dt*2.5);t.dir=dirOf(Math.sign(dx),Math.sign(dy));if(Math.abs(dx)>.001)t.x+=Math.sign(dx)*step;else t.y+=Math.sign(dy)*step;
+      if(dist<=step+.001){t.x=next.x;t.y=next.y;t.stop=(t.stop+1)%route.stops.length;t.completed++;t.passengers=(t.passengers+1)%4;t.wait=3+(i%2);}
+    });
+    rt.people.forEach(function(p,i){
+      if(p.wait>0){p.wait-=dt;return;}
+      if(!p.path.length){p.inside=false;var next=placeById(p.itinerary[(p.leg+1)%p.itinerary.length]),e=roomEntrance(next);p.path=pedestrianPath(Math.round(p.x),Math.round(p.y),e[0],e[1])||[];if(!p.path.length){p.wait=5;return;}}
+      var target=p.path[0],dx=target[0]-p.x,dy=target[1]-p.y,d=Math.abs(dx)+Math.abs(dy),step=Math.min(d,dt*(1.25+(i%3)*.12));p.dir=dirOf(Math.sign(dx),Math.sign(dy));if(Math.abs(dx)>.001)p.x+=Math.sign(dx)*step;else p.y+=Math.sign(dy)*step;
+      if(d<=step+.001){p.x=target[0];p.y=target[1];p.path.shift();if(!p.path.length){p.leg=(p.leg+1)%p.itinerary.length;p.completed++;p.inside=true;p.wait=7+(i%4)*3;}}
+    });
+  }
+  function drawCitizenSprite(x,y,color,phase,dir){var stride=Math.sin(phase*8)*2;ell(x+16,y+29,10,3,'#263f3540');ctx.fillStyle='#41534a';ctx.fillRect(x+9,y+22+stride,5,9);ctx.fillRect(x+19,y+22-stride,5,9);ctx.fillStyle=color;ctx.fillRect(x+7,y+10,19,15);ctx.fillStyle='#e6bf96';ctx.fillRect(x+10,y-3,14,14);ctx.fillRect(x+3,y+13-stride,4,9);ctx.fillRect(x+26,y+13+stride,4,9);ctx.fillStyle='#665340';ctx.fillRect(x+8,y-6,18,6);if(dir==='up')ctx.fillRect(x+9,y-2,16,8);else {ctx.fillRect(x+9,y-2,3,8);ctx.fillStyle='#374f41';ctx.fillRect(x+(dir==='left'?12:20),y+1,2,2);}}
+  function drawCitizens(){getLiving().people.forEach(function(p){var x=p.x*32,y=p.y*32;if(p.inside||x<camX-32||x>camX+LW||y<camY-48||y>camY+LH)return;drawCitizenSprite(x,y,p.color,p.wait>0?0:getLiving().time,p.dir);});}
+  function drawTraffic(){getLiving().taxis.forEach(function(t){var x=t.x*32+16,y=t.y*32+16;if(x<camX-80||x>camX+LW+80||y<camY-80||y>camY+LH+80)return;ctx.save();ctx.translate(x,y);ctx.rotate(t.dir==='down'?Math.PI/2:t.dir==='up'?-Math.PI/2:t.dir==='left'?Math.PI:0);ctx.fillStyle='#293b36';ctx.fillRect(-27,-13,56,31);ctx.fillStyle='#e5bc55';ctx.fillRect(-30,-11,60,24);ctx.fillRect(-18,-16,34,8);ctx.fillStyle='#b5d4d0';ctx.fillRect(-11,-10,20,17);ctx.fillStyle='#f5e5aa';ctx.fillRect(25,-7,5,5);ctx.fillRect(25,5,5,5);ctx.fillStyle='#f4e8c2';ctx.fillRect(-6,-20,17,7);ctx.restore();if(t.wait>0){ctx.fillStyle='#f0e1b7';ctx.font='9px monospace';ctx.textAlign='center';ctx.fillText(t.passengers?'EMBARQUE':'DESEMBARQUE',x,y-30);ctx.textAlign='left';}});}
+  function drawScheduledTrains(){var phase=getLiving().time%90,x=phase<12?77:phase<60?77+(phase-12)*2.5:42+(phase-60)*1.17;drawVehicle(x*32,19*32,'train',false);if(regionOpen('coast'))drawVehicle(84*32,68*32,'train',false);if(regionOpen('mountain'))drawVehicle(122*32,22*32,'train',false);}
+  var CITY_EVENTS=[
+    {id:'delivery',title:'Uma entrega urgente',text:'O café precisa de ajuda para levar uma caixa até a estação. Você pode dedicar parte da tarde a isso.',choices:[{label:'Ajudar · +65 ouro, 40 min',gold:65,time:40,rep:1,result:'Você entregou a caixa intacta. A dona do café pagou 65 de ouro.'},{label:'Continuar meu passeio',gold:0,time:0,result:'Outra pessoa assumiu a entrega.'}]},
+    {id:'wallet',title:'Uma carteira na praça',text:'Você encontrou uma carteira. Um morador está procurando algo perto dos bancos.',choices:[{label:'Procurar o dono · +25 ouro, +2 reputação',gold:25,time:20,rep:2,result:'O morador reconheceu a carteira e agradeceu com 25 de ouro.'},{label:'Deixar com a associação · +1 reputação',gold:0,time:10,rep:1,result:'A associação registrou o achado e vai procurar o dono.'}]},
+    {id:'festivalFund',title:'Lanternas para o festival',text:'Os moradores estão reunindo material para iluminar a praça esta noite.',choices:[{label:'Contribuir · −30 ouro, +2 reputação',gold:-30,time:5,rep:2,result:'Sua contribuição virou lanternas na praça. Você gastou 30 de ouro e ganhou confiança.'},{label:'Ajudar montando · +10 ouro, 50 min',gold:10,time:50,rep:1,result:'Você ajudou a pendurar as lanternas e recebeu 10 de ouro pelo trabalho.'},{label:'Ficar para outra vez',gold:0,time:0,result:'Você decidiu ajudar em outra ocasião.'}]},
+    {id:'cargo',title:'Mercadoria frágil',text:'Um viajante oferece pagamento para atravessar a cidade com vasos. Correr economiza tempo, mas pode quebrar parte da carga.',choices:[{label:'Levar com cuidado · +45 ouro, 60 min',gold:45,time:60,rep:1,result:'Todos os vasos chegaram bem. Você recebeu 45 de ouro.'},{label:'Aceitar o risco · +85 ou −20 ouro, 20 min',gold:85,loss:-20,risk:true,time:20,result:'A entrega rápida terminou.'},{label:'Recusar',gold:0,time:0,result:'Você preferiu não assumir a carga.'}]},
+    {id:'rainShelter',title:'Uma pausa na pousada',text:'Uma mesa aquecida, chá e uma toalha seca estão disponíveis. A pousadeira oferece um descanso antes da próxima viagem.',choices:[{label:'Descansar · −20 ouro, +35 energia',gold:-20,time:30,energy:35,result:'Você tomou chá e recuperou 35 de energia. A conta foi de 20 de ouro.'},{label:'Seguir viagem',gold:0,time:0,result:'Você voltou para a estrada.'}]},
+    {id:'marketHelp',title:'A banca movimentada',text:'Chegaram passageiros do trem. Hana precisa de alguém para organizar a fila e embalar as compras.',choices:[{label:'Trabalhar na feira · +55 ouro, 45 min',gold:55,time:45,rep:1,result:'A fila andou e as compras foram entregues. Você recebeu 55 de ouro.'},{label:'Agora não',gold:0,time:0,result:'Hana agradeceu mesmo assim.'}]}
+  ];
+  function offerCityEvent(){var life=S.life,day=tradeDay();if(life.event||life.eventDay===day||S.minutes<540||S.minutes>=1260||regionAt(S.px,S.py).id==='farm')return false;var event=CITY_EVENTS[(day+S.journey.chapter)%CITY_EVENTS.length];life.event={id:event.id,day:day};life.eventDay=day;save();toast('Aconteceu algo na cidade. Abra Acontecimentos.');return true;}
+  function resolveCityEvent(choiceIndex){var pending=S.life.event;if(!pending)return false;var key=pending.day+':'+pending.id;if(S.life.resolved.indexOf(key)>=0)return false;var e=CITY_EVENTS.find(function(e){return e.id===pending.id;}),c=e&&e.choices[choiceIndex];if(!c||S.gold<Math.abs(Math.min(0,c.risk?c.loss:c.gold))||S.minutes+c.time>=1500)return false;
+    var amount=c.risk?(hash(pending.day,S.journey.rep+23)>.48?c.gold:c.loss):c.gold;if(amount>=0)earn(amount);else S.gold+=amount;S.minutes+=c.time;S.energy=Math.min(energyMax(),S.energy+(c.energy||0));S.journey.rep+=c.rep||0;S.life.resolved.push(key);S.life.log.unshift({title:e.title,text:c.risk?(amount>0?'Você chegou sem danos e recebeu 85 de ouro.':'Dois vasos quebraram. O conserto custou 20 de ouro.'):c.result,gold:amount,day:pending.day});S.life.log=S.life.log.slice(0,20);S.life.event=null;save();updateHud();return true;
+  }
+  function openCityLife(){var rt=getLiving(),e=S.life.event&&CITY_EVENTS.find(function(e){return e.id===S.life.event.id;});var event=e?'<section class="journey-quest"><span class="eyebrow">ACONTECENDO AGORA</span><h3>'+e.title+'</h3><p>'+e.text+'</p><div class="living-options">'+e.choices.map(function(c,i){var cost=Math.abs(Math.min(0,c.risk?c.loss:c.gold));return '<button class="btn" data-a="life-event" data-id="'+i+'" '+(S.gold<cost||S.minutes+c.time>=1500?'disabled':'')+'>'+c.label+'</button>';}).join('')+'</div></section>':'<p class="living-empty">A cidade está tranquila. Novos encontros aparecem durante o dia enquanto você explora.</p>';
+    panel('A cidade acontece','O mapa fica guardado no botão Mundo. Aqui você acompanha encontros e histórias da cidade.',event+'<h3>Pelas ruas de Hanami</h3><div class="living-routines">'+rt.people.slice(0,6).map(function(p){var place=placeById(p.itinerary[(p.leg+(p.inside?0:1))%p.itinerary.length]);return '<div><b>'+p.name+'</b><span>'+(p.inside?'Em ':'A caminho de ')+place.name+'</span></div>';}).join('')+'</div><p>Táxis circulam entre mercado, café, pousada e garagem, com paradas de embarque. Moradores fazem compras, visitam o café e pegam o trem.</p><h3>Seu histórico</h3>'+S.life.log.map(function(l){return '<article class="life-log"><b>'+l.title+'</b><p>'+l.text+'</p><small>'+(l.gold>0?'+':'')+l.gold+' ouro · dia '+l.day+'</small></article>';}).join(''),true);
+  }
+  function updateLivingWorld(dt){updateTraffic(dt);if(!S.indoor)offerCityEvent();}
+  function drawLivingStatus(){if(S.life.event&&!titleOn){ctx.fillStyle='#233d31e8';ctx.fillRect(LW-219,49,210,25);ctx.fillStyle='#f1d18d';ctx.font='11px "Pixelify Sans",monospace';ctx.fillText('✦ Novo encontro · Acontecimentos',LW-210,65);}}
+  function contextDialogue(id){var n=npcById(id),name=n?n.name:'morador',q=currentChapter(),greeting=S.minutes<720?'Bom dia':S.minutes<1080?'Boa tarde':'Boa noite';var lines=[greeting+'! '+(S.rain?'Essa chuva muda o ritmo da rua. Entre e se aqueça um pouco.':'Hoje a cidade está cheia de viajantes.'),S.journey.rep>=5?'Já ouvi seu nome por aqui. É bom receber alguém que ajuda os vizinhos.':'Uma conversa boa vale tanto quanto uma venda. Fique à vontade.',q?'Se quiser explorar mais, procure '+npcById(q.npc).name+'. Ainda há uma história esperando por você.':'O festival aproximou o vale inteiro. Que bom ter você por aqui.',S.life.log.length?'Fiquei sabendo: '+S.life.log[0].title.toLowerCase()+'. Essas coisas viram assunto na praça.':(n?n.text:'As portas da cidade estão abertas. Sempre há alguém com uma história para contar.')];return lines[(tradeDay()+(S.life.talks[id]||0))%lines.length];}
+  var DIALOGUE_API='https://dialogos-production.up.railway.app';
+  var activeConversation=null,talkSequence=0;
+  function escapeLiving(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  function talkAllowed(id){var n=npcById(id);return n?nearNpc(n):atCounter(id);}
+  function openConversation(id){if(!talkAllowed(id))return;S.life.talks[id]=(S.life.talks[id]||0)+1;var n=npcById(id),p=roomById(id);activeConversation={id:id,name:n?n.name:p?p.name:'Morador',history:[],waiting:false};showConversation(contextDialogue(id),'Conversa');}
+  function showConversation(text,status){var c=activeConversation;if(!c)return;panel(c.name,status,'<div class="npc-speech" id="npcSpeech">'+escapeLiving(text)+'</div><div class="living-options"><button class="btn" data-a="life-topic" data-id="cidade">Como está a cidade?</button><button class="btn" data-a="life-topic" data-id="historia">Conte uma história sua</button><button class="btn" data-a="life-topic" data-id="conselho">Algum conselho de viagem?</button></div><label class="chat-label" for="npcQuestion">O que você quer dizer?</label><textarea id="npcQuestion" maxlength="220" rows="2" placeholder="Escreva sua fala…"></textarea><button class="btn primary" data-a="life-send" '+(c.waiting?'disabled':'')+'>'+(c.waiting?'Ouvindo…':'Falar')+'</button><small id="npcAiStatus">'+escapeLiving(status)+'</small>');}
+  async function sendConversation(question){var c=activeConversation;if(!c||c.waiting||!talkAllowed(c.id))return;question=String(question||'').trim().slice(0,220);if(!question)return;c.waiting=true;var seq=++talkSequence;c.history.push({role:'user',content:question});showConversation('…','Pensando na resposta');
+    try{if(!DIALOGUE_API)throw Error('offline');var controller=new AbortController(),timer=setTimeout(function(){controller.abort();},18000);var response=await fetch(DIALOGUE_API+'/dialogue',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({npc:c.id,question:question,context:{region:regionAt(S.px,S.py).name,day:S.day,season:SEASONS[S.season%4],hour:Math.floor(S.minutes/60),rain:S.rain,reputation:S.journey.rep,chapter:S.journey.chapter,recent:S.life.log.slice(0,2).map(function(l){return l.title;})},history:c.history.slice(-5)}),signal:controller.signal});clearTimeout(timer);if(!response.ok)throw Error('unavailable');var data=await response.json();if(typeof data.text!=='string'||!data.text.trim())throw Error('empty');if(activeConversation!==c||seq!==talkSequence)return;c.waiting=false;c.history.push({role:'assistant',content:data.text.slice(0,900)});c.history=c.history.slice(-6);if(!modalOpen()||!talkAllowed(c.id)||!modalEl.querySelector('#npcSpeech'))return;showConversation(data.text.slice(0,900),'Diálogo com IA · Groq');}
+    catch(error){clearTimeout(timer);if(activeConversation!==c||seq!==talkSequence)return;c.waiting=false;if(modalOpen()&&talkAllowed(c.id)&&modalEl.querySelector('#npcSpeech'))showConversation(contextDialogue(c.id),'Fala local · IA indisponível no momento');}
+  }
+  function handleLivingAction(b){var a=b.dataset.a,id=b.dataset.id;if(a.indexOf('life-')!==0)return false;if(a==='life-news')openCityLife();if(a==='life-event'){resolveCityEvent(+id);openCityLife();}if(a==='life-talk')openConversation(id);if(a==='life-topic')sendConversation(id==='cidade'?'Como está a cidade hoje?':id==='historia'?'Conte uma história curta da sua vida neste lugar.':'Que conselho você me dá para a viagem?');if(a==='life-send')sendConversation($('npcQuestion').value);if(a==='life-nico')openNpc('nico');return true;}
 
   /* ---------- Estado ---------- */
   function capMax() { return 15 + 10 * S.ups.cap; }
@@ -1020,7 +1216,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       goods: { ovo: 0, la: 0, leite: 0, trufa: 0 }, animals: [], feed: 0, trough: 0,
       ups: { bag: 0, cap: 0, en: 0 }, tiles: tiles, intro: false
     };
-    expandWorld(fresh); buildJourneyWorld(fresh); return fresh;
+    expandWorld(fresh); buildJourneyWorld(fresh); upgradeLiving(fresh); return fresh;
   }
 
   var S;
@@ -1030,7 +1226,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       if (!raw) return null;
       var d = JSON.parse(raw);
       if(d && d.exp && d.tiles && d.tiles.length===58*30){try{localStorage.setItem('vale-expandido-backup-v1',raw);}catch(backupError){}}
-      d = migrateJourney(d);
+      d = migrateJourney(d); if(d && d.journey) upgradeLiving(d);
       if (d && d.tiles && d.tiles.length === 24 * ROWS) {
         /* save antigo (mapa 24 colunas): abre 5 colunas de campo no meio */
         var nt = [], ox, oy;
@@ -1782,15 +1978,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     ctx.fillStyle = '#f4c542'; ctx.font = '700 11px "Pixelify Sans", monospace'; ctx.textAlign = 'center';
     ctx.fillText(tr('LOJA'), x + 64, y + 48); ctx.textAlign = 'left';
     chochin(x + 6, y + 62); chochin(x + w - 6, y + 62);
-    // balcão
-    var cx = 24 * TS, cy = 3 * TS;
-    ctx.fillStyle = '#2f2118'; ctx.fillRect(cx + 3, cy + 4, 26, 18);
-    ctx.fillStyle = C.skin; ctx.beginPath(); ctx.arc(cx + 16, cy + 14, 5, 0, 7); ctx.fill();
-    ctx.fillStyle = '#2a2220'; ctx.fillRect(cx + 10, cy + 6, 12, 4);
-    ctx.fillStyle = '#2f2118'; ctx.fillRect(cx + 14, cy + 13, 1, 2); ctx.fillRect(cx + 18, cy + 13, 1, 2);
-    ctx.fillStyle = C.woodL; ctx.fillRect(cx + 1, cy + 22, 30, 6);
-    ctx.fillStyle = C.woodD; ctx.fillRect(cx + 1, cy + 27, 30, 2);
-    ctx.fillStyle = '#e0405a'; ctx.fillRect(cx + 5, cy + 18, 4, 4); ctx.fillStyle = '#f08a2b'; ctx.fillRect(cx + 22, cy + 18, 4, 4);
+    var cx=24*TS,cy=3*TS;ctx.fillStyle='#302e24';ctx.fillRect(cx+1,cy-4,30,33);ctx.fillStyle='#b38b57';ctx.fillRect(cx+2,cy-3,9,32);ctx.fillRect(cx+21,cy-3,9,32);ctx.fillStyle='#dbc080';ctx.fillRect(cx+9,cy+11,2,4);ctx.fillStyle='#e7cf9c';ctx.fillRect(cx-2,cy+29,36,3);
   }
   function drawTorii() {
     var xl = 336, xr = 400, yb = 124, yt = 46, mid = (xl + xr) / 2, red = '#c8402f', redD = '#8e2b20';
@@ -2430,6 +2618,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   cv.addEventListener('pointerdown', function (e) {
     if (modalOpen() || (e.pointerType === 'mouse' && e.button !== 0)) return;
     var p = toLogical(e), i, q;
+    if(S.indoor){e.preventDefault();interiorClick(p.x,p.y);return;}
     for (i = 0; i < hudSlots.length; i++) {
       q = hudSlots[i];
       if (p.x >= q.x && p.x <= q.x + q.w && p.y >= q.y && p.y <= q.y + q.h) { e.preventDefault(); if (q.bag) openBag(); else if (q.gear) openSettings(); else selectTool(q.i); return; }
@@ -2470,6 +2659,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   }
 
   function render(dt) {
+    if(S.indoor && !titleOn){renderInterior(dt);return;}
     var x, y, tl;
     ctx.setTransform(gScale, 0, 0, gScale, 0, 0);
     ctx.clearRect(0, 0, LW, LH);
@@ -2520,7 +2710,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     }
     trees.forEach(function (t) { if (t[1] <= S.py) drawTree(t[0] * TS, t[1] * TS, t[0], t[1]); });
     S.animals.forEach(function (a) { if (a.y <= ry + 0.2) drawAnimal(a); });
-    drawJourneyPeople(); drawPlayer(rx * TS, ry * TS, S.dir, !!mv);
+    drawCitizens(); drawJourneyPeople(); drawPlayer(rx * TS, ry * TS, S.dir, !!mv);
     S.animals.forEach(function (a) { if (a.y > ry + 0.2) drawAnimal(a); });
     trees.forEach(function (t) { if (t[1] > S.py) drawTree(t[0] * TS, t[1] * TS, t[0], t[1]); });
     drawFishing();
@@ -2548,7 +2738,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       ctx.fillStyle = 'rgba(255,255,255,.75)';
       for (var q = 0; q < 24; q++) { var d2 = drops[q]; ctx.fillRect(Math.round((d2.x + clock * 14) % LW), Math.round((d2.y + clock * 28 * (q % 3 + 1)) % LH), 2, 2); }
     }
-    drawHud(dt || 0); drawWorldMiniMap(); updateJourneyStatus();
+    drawHud(dt || 0); drawLivingStatus(); updateJourneyStatus();
     if (fade) {
       ctx.fillStyle = 'rgba(8,14,11,' + Math.min(1, fade.a) + ')'; ctx.fillRect(0, 0, LW, LH);
       if (fade.a > 0.7) {
@@ -2627,6 +2817,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   }
 
   function hintFor() {
+    if(S.indoor)return interiorHint();
     var f = facing();
     var base = 'Ande com as setas ou WASD. Escolha a ferramenta com 1 a 6.';
     if (fishing) return fishing.phase === 'bite' ? '<b>Agora! Espaço</b> para puxar o peixe' : 'Espere a boia mergulhar. Espaço recolhe a linha.';
@@ -2772,6 +2963,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   }
 
   function act(edge) {
+    if(S.indoor){interiorAct();return;}
     if (fishing) {
       if (!edge) return;
       if (fishing.phase === 'bite') catchFish(); else stopFish('Você puxou cedo demais. O peixe fugiu.');
@@ -2783,9 +2975,9 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     var an = animalAt(x, y);
     if (an) { touchAnimal(an); return; }
     if (tl.t === T.TROUGH) { feedTrough(x, y); return; }
-    if (tl.t === T.DOOR) { openSleep(); return; }
+    if (tl.t === T.DOOR) { enterRoom('home'); return; }
     if (tl.t === T.BOX) { sellAll(); return; }
-    if (tl.t === T.COUNTER) { openShop(); return; }
+    if (tl.t === T.COUNTER) { enterRoom('marta'); return; }
     if (tl.t === T.WATER) {
       if (tool.id === 'rod') { if (edge) startFish(x, y); return; }
       if (S.water >= capMax()) { toast('O regador já está cheio.'); return; }
@@ -2895,6 +3087,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   modalEl.addEventListener('click', function (e) {
     var b = e.target.closest('[data-a]'); if (!b || b.disabled) return;
     var a = b.dataset.a;
+    if (handleLivingAction(b)) return;
     if (handleJourneyAction(b)) return;
     if (handleExpansionAction(b)) return;
     if (a === 'close') closeModal();
@@ -2948,6 +3141,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   /* ---------- Dias e tempo ---------- */
   function resetView() { mv = null; rx = S.px; ry = S.py; parts.length = 0; floats.length = 0; }
   function resetDay(passed) {
+    S.indoor=null;
     S.minutes = 360;
     S.energy = passed ? Math.round(energyMax() * 0.6) : energyMax();
     S.rain = S.day > 1 && Math.random() < RAIN_P[S.season % 4];
@@ -3034,6 +3228,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     clock += dt;
     updatePetals(dt);
     var paused = modalOpen() || !!fade;
+    if(!paused){updateLivingWorld(dt);if(S.indoor)updateInterior(dt);}
 
     if (fade) {
       fade.a += fade.dir * dt * 1.6;
@@ -3041,7 +3236,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       else if (fade.dir === -1 && fade.a <= 0) { fade = null; }
     }
 
-    if (!paused) {
+    if (!paused && !S.indoor) {
       acc += dt;
       updateAnimals(dt);
       if (acc >= 2.8) { acc -= 2.8; S.minutes += 10; onTime(); }
@@ -3095,6 +3290,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
 
   document.querySelectorAll('[data-exp]').forEach(function(b){b.addEventListener('click',function(){
     if (titleOn) {toast('Comece ou continue uma fazenda para explorar.'); return;}
+    if(b.dataset.exp==='life'){openCityLife();return;}
     if(b.dataset.exp==='map') openAtlas(); else if(b.dataset.exp==='journey') openJourney(); else if(b.dataset.exp==='travel') openTransport(); else if(b.dataset.exp==='journal') openJournal(); else if(b.dataset.exp==='build') openProjects(); else openResources();
   });});
   /* ---------- Início ---------- */
