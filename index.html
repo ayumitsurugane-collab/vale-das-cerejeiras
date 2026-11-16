@@ -2,6 +2,9 @@
 <title>Vale das Cerejeiras · EuComoSushi</title>
 <meta name="description" content="Cultive, explore e construa sua fazenda no Vale das Cerejeiras.">
 <style>html,body{min-height:100%;background:#16271f}
+.life-strip{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid #4c634c;padding:8px 3px 0;color:#c4caaa;font-size:11px}.life-strip strong{color:#eed49a;white-space:nowrap}.life-strip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.identity-portrait{display:flex;gap:22px;align-items:center;padding:16px;background:#304b3c;border-radius:12px}.identity-portrait p{font-size:12px;line-height:1.7}.woman-avatar{display:block;flex:none;width:36px;height:48px;background:linear-gradient(#533c36 0 26%,#e4b99a 26% 48%,#c77791 48% 76%,#3b5265 76%);box-shadow:-8px -3px 0 -2px #533c36,8px -3px 0 -2px #533c36;image-rendering:pixelated}.expansion-card label{font-size:12px;color:#d6d8bc}.expansion-card input,.expansion-card select{box-sizing:border-box;min-height:44px;width:100%;background:#182f26;border:1px solid #748467;border-radius:8px;color:#f2e5c8;padding:10px 12px;font:14px sans-serif;flex-shrink:0}.form-error{color:#eab3a7!important;margin:0}.journal-lead{padding:17px;background:#354e3b;border-left:4px solid #d8bd82;border-radius:8px}.journal-lead p{font-size:12px;line-height:1.7;margin-bottom:0}.life-goals{display:grid;grid-template-columns:1fr 1fr;gap:10px}.life-goals article{padding:14px;border:1px solid #50694f;border-radius:9px;background:#294334;display:flex;flex-direction:column;justify-content:space-between}.life-goals p{font-size:12px;line-height:1.6}.life-goals small{display:block;font-size:10px}.life-goals progress{width:100%;height:6px;accent-color:#dbc186;margin:8px 0}.daily-goal{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border-bottom:1px solid #4c644c;font-size:12px}.hotel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.hotel-grid article,.farm-catalog article{padding:16px;display:flex;flex-direction:column;gap:12px;background:#2d4739;border:1px solid #61745a;border-radius:9px}.hotel-grid p,.farm-catalog p{font-size:12px;line-height:1.7;flex:1;margin:0}.hotel-grid strong{font:20px 'Pixelify Sans',monospace;color:#ead09c}.room-illustration{height:58px;display:grid;place-items:center;background:var(--room-color);color:#f8ebc4;font-size:42px;border-radius:7px;border-bottom:7px solid #716550}.farm-catalog{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.app{max-width:min(1500px,calc((100dvh - 158px)*1.9333))!important}.valley-bar{flex-wrap:wrap}.valley-bar nav{flex-wrap:wrap!important}
+@media(max-width:1000px){.valley-bar{flex-direction:column;align-items:stretch}.valley-bar nav{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))}.app{max-width:100%!important}}
+@media(max-width:540px){.valley-bar nav{grid-template-columns:repeat(3,minmax(0,1fr))}.life-strip{font-size:10px;flex-wrap:wrap;gap:5px}.life-strip span{max-width:100%}.life-goals,.hotel-grid{grid-template-columns:1fr}.farm-catalog{grid-template-columns:1fr 1fr}.identity-portrait{gap:16px}.hotel-grid article{gap:8px}.hotel-grid .room-illustration{height:30px;font-size:26px}}
 .living-options{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.npc-speech{background:#304c3b;border:1px solid #6c805d;border-radius:12px;padding:18px;color:#f4e7c7;font-size:15px;line-height:1.8;white-space:pre-wrap}.chat-label{font-size:12px;color:#c5cfae}#npcQuestion{min-height:76px;flex-shrink:0;width:100%;box-sizing:border-box;background:#182f26;border:1px solid #748467;border-radius:8px;color:#f2e5c8;padding:12px;font:14px/1.5 sans-serif;resize:vertical}#npcQuestion:focus{outline:2px solid #d7c58c}#npcAiStatus{display:block;color:#aebf9f;font-size:10px}.living-routines{display:grid;grid-template-columns:1fr 1fr;gap:8px}.living-routines>div,.life-log{padding:12px;background:#294637;border:1px solid #47664d;border-radius:8px}.living-routines b{font-size:13px}.living-routines span{display:block;font-size:11px;color:#b9c8ad;margin-top:4px}.life-log p{font-size:12px;line-height:1.6}.living-empty{padding:18px;border:1px dashed #778869;border-radius:8px}
 body{padding:12px!important;display:grid!important;align-content:center;min-height:100dvh!important}
 .app{width:100%;max-width:min(1500px,calc((100dvh - 112px)*1.9333))!important;gap:10px!important}
@@ -18,6 +21,11 @@ body{padding:12px!important;display:grid!important;align-content:center;min-heig
 .journey-wallet{display:flex;justify-content:space-between;gap:15px;padding:12px 15px;border:1px solid #6a7859;border-radius:8px;color:#f5d896;font-weight:bold;background:#344d3d}.journey-wallet span{font-size:11px;color:#bdc9af;font-weight:normal;align-self:center}.journey-quest{background:#344d3d;border:1px solid #7f8962;border-left:4px solid #ddbb78;border-radius:8px;padding:16px;display:grid;gap:10px}.journey-quest p{font-size:13px;line-height:1.65;margin:0}.journey-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.journey-stats span{display:grid;gap:5px;background:#2b4537;border-radius:8px;padding:12px;font-size:10px;color:#c3ccae}.journey-stats b{font:26px 'Pixelify Sans',monospace;color:#f0d59e}.chapter-list{display:grid;gap:8px}.chapter{display:flex;gap:12px;align-items:center;border-bottom:1px solid #49644c;padding:10px}.chapter>span{color:#d8c08c;border:1px solid #718263;border-radius:50%;width:25px;height:25px;display:grid;place-items:center;flex:none}.chapter.complete>span{background:#adc28e;color:#274236}.chapter small{display:block;margin-top:4px}.chapter b{font-size:13px}.journey-note{font-size:11px!important;color:#acbba4}.trade-row{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #47614b}.trade-row small{display:block;margin-top:5px}.trade-row b{font-size:14px;color:#eddfbe}.travel-card{border:1px solid #506a52;border-radius:8px;padding:15px;background:#294436}.travel-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.travel-options .btn{display:grid;gap:5px;padding:11px 5px}.travel-options small{font-size:10px;white-space:normal}.travel-options button:disabled{opacity:.42}.world-atlas{border:4px solid #829674;border-radius:10px;background:#243e37;position:relative;line-height:0}.world-atlas svg{width:100%;max-height:310px}.world-atlas>span{display:block;text-align:center;line-height:1.4;padding:9px;font-size:11px;color:#e8dcbd}.region-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.region-grid article{background:#2b4536;padding:13px;border:1px solid #536c50;border-radius:8px;display:flex;flex-direction:column;gap:8px}.region-grid h3{font-size:14px}.region-grid p{font-size:11px;line-height:1.6;flex:1;margin:0}.journey-links{display:flex;gap:8px;flex-wrap:wrap}.valley-bar nav{flex-wrap:nowrap}.valley-bar button{padding:9px 10px}.valley-bar{gap:12px}.valley-brand strong{font-size:21px}.expansion-card{max-height:85dvh;overflow:auto}.stage:has(#modal:not([hidden])){z-index:20}#modal{position:fixed!important;inset:0!important;padding:18px;z-index:100!important;background:#0a1d16cf}.expansion-card button:disabled{cursor:not-allowed}.world-atlas svg text{font-family:'Pixelify Sans',monospace}
 @media(max-width:900px){.valley-bar{flex-direction:column;align-items:stretch;gap:9px}.valley-bar nav{display:grid;grid-template-columns:repeat(4,1fr)}.valley-bar button{padding:8px 5px;font-size:10px}.valley-bar kbd{display:none}.valley-brand strong{font-size:20px}.app{max-width:100%!important}}
 @media(max-width:540px){.valley-bar nav{grid-template-columns:repeat(3,1fr)}.region-grid{grid-template-columns:1fr 1fr}.journey-stats{grid-template-columns:1fr 1fr}.journey-quest{padding:12px}.journey-wallet{font-size:13px;flex-wrap:wrap;gap:6px}.trade-row{grid-template-columns:1fr 1fr;gap:7px}.trade-row>div{grid-column:1/-1}.trade-row .btn{font-size:11px}.world-atlas svg{max-height:240px}.world-atlas svg text{font-size:17px}.expansion-card{max-height:92dvh}.travel-options small{font-size:9px}.travel-options .btn{font-size:11px}#modal{padding:8px}}
+
+/* Final layout: keep identity and the clock above the playable scene. */
+.app{max-width:min(1500px,calc((100dvh - 160px)*1.9333))!important}.life-strip{border-top:0;padding:0 3px 2px}.valley-bar{flex-wrap:wrap}.valley-bar nav{flex-wrap:wrap}.life-strip strong{font:15px "Pixelify Sans",monospace}
+@media(max-width:1000px){.app{max-width:100%!important}.valley-bar{align-items:stretch;flex-direction:column}.valley-bar nav{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media(max-width:540px){.valley-bar nav{grid-template-columns:repeat(3,minmax(0,1fr))}.life-strip strong{font-size:13px}}
 </style>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Pixelify+Sans:wght@500;700&display=swap">
@@ -208,7 +216,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
 </style>
 
 <main class="app">
-  <div class="valley-bar"><div class="valley-brand"><span class="brand-mark">✿</span><div><strong>Vale das Cerejeiras</strong><small>EuComoSushi · CIDADE VIVA</small></div></div><nav aria-label="Exploração"><button data-exp="map">Mundo <kbd>M</kbd></button><button data-exp="journey">Jornada</button><button data-exp="travel">Transportes</button><button data-exp="journal">Encomendas</button><button data-exp="build">Construções</button><button data-exp="resources">Recursos</button><button data-exp="life">Acontecimentos</button></nav></div>
+  <div class="valley-bar"><div class="valley-brand"><span class="brand-mark">✿</span><div><strong>Vale das Cerejeiras</strong><small>EuComoSushi · VIDA NO VALE</small></div></div><nav aria-label="Exploração"><button data-exp="map">Mundo <kbd>M</kbd></button><button data-exp="journey">Jornada</button><button data-exp="travel">Transportes</button><button data-exp="journal">Encomendas</button><button data-exp="build">Construções</button><button data-exp="resources">Recursos</button><button data-exp="life">Acontecimentos</button><button data-exp="goals">Objetivos</button><button data-exp="farm">Minha fazenda</button></nav></div>
   <header class="top" hidden>
     <div class="brand"><h1 id="gameName">Vale Pequeno</h1></div>
     <div class="top-actions">
@@ -218,7 +226,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     </div>
   </header>
 
-  <div class="stage">
+  <div class="life-strip"><span id="playerBadge">Sua história no vale</span><strong id="lifeClock">08:00 · Dia · Segunda</strong></div><div class="stage">
     <canvas id="game" aria-label="Mundo explorável do Vale das Cerejeiras"></canvas>
     <div id="toast" role="status" aria-live="polite"></div>
     <div id="title" hidden><canvas id="tCanvas" aria-hidden="true"></canvas><div class="t-box">
@@ -473,6 +481,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   function consume(need) {Object.keys(need).forEach(function(k){take(k,need[k]);});syncHot();}
   function earn(n) {S.gold+=n;S.earned+=n;checkGoal();}
   function expansionAct(x,y) {
+    if(tile(x,y).decor){openFarmObject(x,y);return true;}
     if(journeyAct(x,y)) return true;
     var t=tile(x,y);
     if(t.t===T.FACILITY){openFacility(t.facility);return true;}
@@ -852,13 +861,13 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     if(mode==='taxi'&&!point)return {ok:false,reason:'Vá a uma parada ou estação'};
     if(mode==='car'&&(!S.journey.car||S.journey.fuel<1))return {ok:false,reason:S.journey.car?'Abasteça na garagem':'Compre seu carro na garagem'};
     if(S.gold<price)return {ok:false,reason:'Falta ouro',price:price};
-    if(S.minutes+minutes>=1440)return {ok:false,reason:'Tarde demais. Descanse antes de viajar.'};
+    
     return {ok:true,price:price,minutes:minutes};
   }
   function travel(id,mode) {
     var q=travelQuote(id,mode);if(!q.ok){toast(q.reason);return false;}
     var r=REGIONS.find(function(r){return r.id===id;});
-    S.indoor=null;S.gold-=q.price;if(mode==='car')S.journey.fuel--;S.minutes+=q.minutes;
+    S.indoor=null;S.gold-=q.price;if(mode==='car')S.journey.fuel--;advanceClock(q.minutes);
     S.px=r.spawn[0];S.py=r.spawn[1];S.dir='down';S.journey.visited[id]=true;S.journey.trips++;
     if(fishing)stopFish('Você recolheu a linha.');mouseClear();mouse.down=null;dirStack.length=0;resetView();closeModal();save();updateHud();
     var label=(mode==='train'?'De trem':mode==='taxi'?'De táxi':'De carro')+' · '+r.name;
@@ -897,7 +906,8 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     if(a==='journey-car'){buyCar();openPlace('garage');}
     if(a==='journey-fuel'){buyFuel();openPlace('garage');}
     if(a==='journey-meal'){if(nearPlace(placeById('cafe'))&&S.gold>=35&&S.energy<energyMax()){S.gold-=35;S.energy=Math.min(energyMax(),S.energy+60);save();}openPlace('cafe');}
-    if(a==='journey-inn'){var inn=placeById(id);if(inn&&inn.kind==='inn'&&nearPlace(inn)&&S.gold>=25){S.gold-=25;closeModal();endDay(false);S.px=inn.x+Math.floor(inn.w/2);S.py=inn.y+inn.h;resetView();save();}}
+    if(a==='journey-inn'){openHotel(id);return true;}
+    if(a==='legacy-inn'){var inn=placeById(id);if(inn&&inn.kind==='inn'&&nearPlace(inn)&&S.gold>=25){S.gold-=25;closeModal();endDay(false);S.px=inn.x+Math.floor(inn.w/2);S.py=inn.y+inn.h;resetView();save();}}
     return true;
   }
   function drawJourneyGround(t,x,y) {
@@ -989,7 +999,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     {id:'mine',name:'Mina da Aurora',kind:'mine',x:48,y:3,w:7,h:4,roof:'#787c97',label:'MINA'}
   ];
   var roomMotion=null,roomPath=[],roomPending=null,roomClock=0;
-  function roomById(id){return placeById(id)||EXTRA_ROOMS.find(function(p){return p.id===id;});}
+  function oldRoomById(id){return placeById(id)||EXTRA_ROOMS.find(function(p){return p.id===id;});}
   function roomEntrance(p){return p.id==='marta'?[24,4]:p.id==='home'?[4,4]:[p.x+Math.floor(p.w/2),p.y+p.h];}
   function upgradeLiving(s){
     if(!s.life)s.life={version:3,log:[],resolved:[],event:null,eventDay:-1,talks:{},seen:0};
@@ -1012,7 +1022,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     S.px=entrance[0];S.py=entrance[1];S.indoor={id:id,x:8,y:10,dir:'up'};resetView();roomMotion=null;roomPath=[];roomPending=null;mouseClear();mouse.down=null;dirStack.length=0;actEdge=false;actHeld=false;
     closeModal();save();toast('Entre e caminhe até o balcão para ser atendido.');return true;
   }
-  function exitRoom(){if(!S.indoor)return false;var p=roomById(S.indoor.id),e=roomEntrance(p);S.indoor=null;S.px=e[0];S.py=e[1];S.dir='down';roomMotion=null;roomPath=[];roomPending=null;mouseClear();dirStack.length=0;actEdge=false;actHeld=false;resetView();closeModal();lastJourneyRegion='';save();return true;}
+  function oldExitRoom(){if(!S.indoor)return false;var p=roomById(S.indoor.id),e=roomEntrance(p);S.indoor=null;S.px=e[0];S.py=e[1];S.dir='down';roomMotion=null;roomPath=[];roomPending=null;mouseClear();dirStack.length=0;actEdge=false;actHeld=false;resetView();closeModal();lastJourneyRegion='';save();return true;}
   function openPlace(id){
     var p=placeById(id);if(!p)return;
     if(p.kind==='stop'){if(nearPlace(p))openTransport();return;}
@@ -1022,7 +1032,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   function enterFacilityRoom(id){if(S.indoor)return;var p=roomById(id),e=roomEntrance(p);if(nearPoint(e[0],e[1],1))enterRoom(id);else walkToJourney(e[0],e[1]-1);}
   function findResident(id){var n=npcById(id);if(!n||!regionOpen(n.region)){toast('Libere essa região na Jornada.');return;}var p=roomById(NPC_ROOMS[id]);if(S.indoor){if(p&&p.id===S.indoor.id){closeModal();planRoomPath(8,4);return;}exitRoom();}if(p){var e=roomEntrance(p);walkToJourney(e[0],e[1]-1);}else walkToJourney(n.x,n.y);}
   function walkToJourney(x,y){if(S.indoor){toast('Saia pela porta antes de seguir para outro lugar.');closeModal();return;}oldWalkToJourney(x,y);}
-  function roomFurniture(id){
+  function oldRoomFurniture(id){
     var p=roomById(id),kind=p.kind,items=[{x:1,y:2,w:3,h:1,type:'shelf'},{x:12,y:2,w:3,h:1,type:'shelf'},{x:1,y:8,w:1,h:1,type:'plant'},{x:15,y:8,w:1,h:1,type:'plant'}];
     if(kind==='cafe'||kind==='inn'||kind==='tent'){items.push({x:3,y:7,w:2,h:2,type:'table'},{x:12,y:7,w:2,h:2,type:'table'});}
     else if(kind==='house'||kind==='home'){items.push({x:2,y:6,w:3,h:3,type:'bed'},{x:12,y:7,w:2,h:2,type:'table'});}
@@ -1031,38 +1041,40 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     else{items.push({x:2,y:7,w:2,h:2,type:'crate'},{x:13,y:7,w:2,h:2,type:'crate'});}
     return items;
   }
-  function roomWalkable(x,y,id){if(x===8&&y===11)return true;if(x<1||x>15||y<3||y>10)return false;if(y===4&&x>=5&&x<=11)return false;return !roomFurniture(id).some(function(f){return x>=f.x&&x<f.x+f.w&&y>=f.y&&y<f.y+f.h;});}
+  function roomWalkable(x,y,id){if(x===8&&y===11)return true;if(x<1||x>15||y<3||y>10)return false;if(roomById(id).kind!=='guest'&&y===4&&x>=5&&x<=11)return false;return !roomFurniture(id).some(function(f){return x>=f.x&&x<f.x+f.w&&y>=f.y&&y<f.y+f.h;});}
   function roomFindPath(sx,sy,goals,id){var q=[[sx,sy]],head=0,prev={},key=function(x,y){return y*17+x;};prev[key(sx,sy)]=null;while(head<q.length){var p=q[head++];if(goals.some(function(g){return g[0]===p[0]&&g[1]===p[1];})){var out=[],k=key(p[0],p[1]);while(prev[k]!==null){out.unshift([k%17,Math.floor(k/17)]);k=prev[k];}return out;}[[1,0],[-1,0],[0,1],[0,-1]].forEach(function(d){var nx=p[0]+d[0],ny=p[1]+d[1],nk=key(nx,ny);if(roomWalkable(nx,ny,id)&&!(nk in prev)){prev[nk]=key(p[0],p[1]);q.push([nx,ny]);}});}return null;}
-  function planRoomPath(x,y){var r=S.indoor;if(!r)return;var counter=y<=4&&x>=5&&x<=11,door=x===8&&y>=10;var goals=counter?[[8,5],[7,5],[9,5]]:door?[[8,11]]:[[x,y]];var path=roomFindPath(r.x,r.y,goals,r.id);if(path){roomPath=path;roomPending=counter?'counter':door?'exit':null;}else toast('Esse caminho está ocupado pelos móveis.');}
+  function planRoomPath(x,y){var r=S.indoor;if(!r)return;if(roomById(r.id).kind==='guest'){guestClick(x,y);return;}var counter=y<=4&&x>=5&&x<=11,door=x===8&&y>=10;var goals=counter?[[8,5],[7,5],[9,5]]:door?[[8,11]]:[[x,y]];var path=roomFindPath(r.x,r.y,goals,r.id);if(path){roomPath=path;roomPending=counter?'counter':door?'exit':null;}else toast('Esse caminho está ocupado pelos móveis.');}
   function roomMetrics(){var z=Math.min((LW-36)/(17*TS),(LH-112)/(12*TS));return {z:z,x:(LW-17*TS*z)/2,y:52+(LH-112-12*TS*z)/2};}
   function interiorClick(x,y){var m=roomMetrics(),tx=Math.floor((x-m.x)/m.z/TS),ty=Math.floor((y-m.y)/m.z/TS);if(y<43){openCityLife();return;}if(tx>=0&&tx<17&&ty>=0&&ty<12)planRoomPath(tx,ty);}
   function roomStep(dx,dy){var r=S.indoor;if(!r||!roomWalkable(r.x+dx,r.y+dy,r.id))return false;r.dir=dirOf(dx,dy);roomMotion={fx:r.x,fy:r.y,tx:r.x+dx,ty:r.y+dy,t:0};r.x+=dx;r.y+=dy;return true;}
   function updateInterior(dt){
-    var r=S.indoor;if(!r)return;acc+=dt;roomClock+=dt;if(acc>=2.8){acc-=2.8;S.minutes+=10;onTime();}
+    var r=S.indoor;if(!r)return;acc+=dt;roomClock+=dt;if(acc>=4){acc-=4;S.minutes+=10;onTime();}
     if(roomMotion){roomMotion.t+=dt/.16;if(roomMotion.t>=1)roomMotion=null;}
-    if(!roomMotion){if(r.x===8&&r.y===11){exitRoom();return;}if(dirStack.length){roomPath=[];roomPending=null;var d=DIRS[dirStack[dirStack.length-1]];roomStep(d[0],d[1]);}else if(roomPath.length){var next=roomPath.shift();roomStep(next[0]-r.x,next[1]-r.y);}else if(roomPending){var pending=roomPending;roomPending=null;if(pending==='counter'){r.dir='up';serveCounter();}else exitRoom();}}
+    if(!roomMotion){if(r.x===8&&r.y===11){exitRoom();return;}if(dirStack.length){roomPath=[];roomPending=null;var d=DIRS[dirStack[dirStack.length-1]];roomStep(d[0],d[1]);}else if(roomPath.length){var next=roomPath.shift();roomStep(next[0]-r.x,next[1]-r.y);}else if(roomPending){var pending=roomPending;roomPending=null;if(pending==='counter'){r.dir='up';serveCounter();}else if(pending==='guest-bed')openGuestBed();else exitRoom();}}
     if((actEdge||actHeld)&&clock>=actCool){actEdge=false;actCool=clock+.25;interiorAct();}
   }
-  function interiorAct(){if(!S.indoor)return;if(atCounter(S.indoor.id))serveCounter();else if(S.indoor.x===8&&S.indoor.y>=10)exitRoom();else toast('Caminhe até o balcão ou até a porta de saída.');}
-  function interiorHint(){return atCounter(S.indoor.id)?'<b>E:</b> conversar no balcão':'Clique no balcão para caminhar até ele · saída na porta ao sul';}
+  function interiorAct(){if(!S.indoor)return;if(roomById(S.indoor.id).kind==='guest'){if(guestNearBed())openGuestBed();else if(S.indoor.x===8&&S.indoor.y>=10)exitRoom();else toast('Caminhe até a cama para dormir.');return;}if(atCounter(S.indoor.id))serveCounter();else if(S.indoor.x===8&&S.indoor.y>=10)exitRoom();else toast('Caminhe até o balcão ou até a porta de saída.');}
+  function interiorHint(){if(roomById(S.indoor.id).kind==='guest')return 'Clique na cama para descansar · porta ao sul: recepção';return atCounter(S.indoor.id)?'<b>E:</b> conversar no balcão':'Clique no balcão para caminhar até ele · saída na porta ao sul';}
   function serveCounter(){
     if(!S.indoor||!atCounter(S.indoor.id))return;
     serveCounterService();
     var id=S.indoor&&S.indoor.id;if(!id||modalEl.hidden)return;
     var npc=Object.keys(NPC_ROOMS).find(function(n){return NPC_ROOMS[n]===id;})||id;
     var card=modalEl.querySelector('.card');
-    if(card)card.insertAdjacentHTML('beforeend','<div class="living-options">'+(!modalEl.querySelector('[data-a="life-talk"]')?'<button class="btn" data-a="life-talk" data-id="'+npc+'">Conversar</button>':'')+(id==='garage'?'<button class="btn" data-a="life-nico">Mercadorias do Nico</button>':'')+(id==='lodge'?'<button class="btn" data-a="journey-inn" data-id="lodge">Dormir · 25 ouro</button>':'')+'</div>');
+    if(card)card.insertAdjacentHTML('beforeend','<div class="living-options">'+(!modalEl.querySelector('[data-a="life-talk"]')?'<button class="btn" data-a="life-talk" data-id="'+npc+'">Conversar</button>':'')+(id==='garage'?'<button class="btn" data-a="life-nico">Mercadorias do Nico</button>':'')+'</div>');
   }
   function serveCounterService(){
     if(!S.indoor||!atCounter(S.indoor.id))return;var id=S.indoor.id,p=roomById(id);
+    if(p.kind==='inn'){openHotel(id);return;}
     if(id==='marta'){openShop();return;}if(id==='home'){openSleep();return;}
     if(id==='workshop'||id==='mine'){openFacility(id);return;}
+    if(id==='homes2'){openFarmStore();return;}
     if(p.kind==='home'||p.kind==='tower'){openLocalCounter(id);return;}
     openPlaceService(id);
   }
   function openLocalCounter(id){var p=roomById(id);panel(p.name,'“'+contextDialogue(id)+'”','<p>Converse com quem mora aqui e fique por dentro do que acontece na cidade.</p><div class="living-options"><button class="btn primary" data-a="life-talk" data-id="'+id+'">Conversar</button><button class="btn" data-a="life-news">Acontecimentos</button></div>');}
   function renderInterior(dt){
-    var r=S.indoor,p=roomById(r.id),m=roomMetrics();ctx.setTransform(gScale,0,0,gScale,0,0);ctx.fillStyle='#14271f';ctx.fillRect(0,0,LW,LH);hudBlocks.length=0;hudSlots.length=0;
+    var r=S.indoor,p=roomById(r.id),m=roomMetrics();if(p.kind==='guest'){renderGuestRoom();return;}ctx.setTransform(gScale,0,0,gScale,0,0);ctx.fillStyle='#14271f';ctx.fillRect(0,0,LW,LH);hudBlocks.length=0;hudSlots.length=0;
     ctx.save();ctx.translate(m.x,m.y);ctx.scale(m.z,m.z);
     ctx.fillStyle='#0c1b16';ctx.fillRect(-8,-8,560,400);
     for(var y=0;y<12;y++)for(var x=0;x<17;x++){ctx.fillStyle=(x+y)%2?'#c19a70':'#bb936a';ctx.fillRect(x*32,y*32,32,32);ctx.fillStyle='#a47c55';ctx.fillRect(x*32,y*32+29,32,2);}
@@ -1084,7 +1096,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     if(roomPath.length){var target=roomPath[roomPath.length-1];ctx.strokeStyle='#f4df9a';ctx.lineWidth=2;ctx.strokeRect(target[0]*32+3,target[1]*32+3,26,26);}
     ctx.restore();
     ctx.fillStyle='#2b4638';ctx.fillRect(7,5,LW-14,36);ctx.fillStyle='#f4e4bd';ctx.font='700 16px "Pixelify Sans",monospace';ctx.fillText(p.name,19,29);ctx.textAlign='right';ctx.fillStyle='#f0cf76';ctx.fillText(S.gold+' ouro',LW-20,29);ctx.textAlign='center';ctx.font='12px "Pixelify Sans",monospace';ctx.fillStyle='#c9d5b5';ctx.fillText('Clique no balcão • caminhe com WASD / setas • E para conversar',LW/2,LH-25);ctx.textAlign='left';
-    $('regionName').textContent=p.name+' · interior';if(fade){ctx.fillStyle='rgba(8,14,11,'+Math.min(1,fade.a)+')';ctx.fillRect(0,0,LW,LH);}
+    drawLifeClock();$('regionName').textContent=p.name+' · interior';if(fade){ctx.fillStyle='rgba(8,14,11,'+Math.min(1,fade.a)+')';ctx.fillRect(0,0,LW,LH);}
   }
   function drawRoomFurniture(f){var x=f.x*32,y=f.y*32,w=f.w*32,h=f.h*32;ctx.fillStyle='#705438';ctx.fillRect(x+3,y+6,w,h-3);ctx.fillStyle='#ba8f5b';ctx.fillRect(x,y,w,h-10);
     if(f.type==='shelf'||f.type==='tools'){ctx.fillStyle='#745538';ctx.fillRect(x,y+h-11,w,7);for(var i=0;i<w-10;i+=15){ctx.fillStyle=['#bb7474','#83a18b','#dbbd78','#83a3b0'][i%4];ctx.fillRect(x+5+i,y+3,10,19);}}
@@ -1149,15 +1161,16 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     {id:'marketHelp',title:'A banca movimentada',text:'Chegaram passageiros do trem. Hana precisa de alguém para organizar a fila e embalar as compras.',choices:[{label:'Trabalhar na feira · +55 ouro, 45 min',gold:55,time:45,rep:1,result:'A fila andou e as compras foram entregues. Você recebeu 55 de ouro.'},{label:'Agora não',gold:0,time:0,result:'Hana agradeceu mesmo assim.'}]}
   ];
   function offerCityEvent(){var life=S.life,day=tradeDay();if(life.event||life.eventDay===day||S.minutes<540||S.minutes>=1260||regionAt(S.px,S.py).id==='farm')return false;var event=CITY_EVENTS[(day+S.journey.chapter)%CITY_EVENTS.length];life.event={id:event.id,day:day};life.eventDay=day;save();toast('Aconteceu algo na cidade. Abra Acontecimentos.');return true;}
-  function resolveCityEvent(choiceIndex){var pending=S.life.event;if(!pending)return false;var key=pending.day+':'+pending.id;if(S.life.resolved.indexOf(key)>=0)return false;var e=CITY_EVENTS.find(function(e){return e.id===pending.id;}),c=e&&e.choices[choiceIndex];if(!c||S.gold<Math.abs(Math.min(0,c.risk?c.loss:c.gold))||S.minutes+c.time>=1500)return false;
-    var amount=c.risk?(hash(pending.day,S.journey.rep+23)>.48?c.gold:c.loss):c.gold;if(amount>=0)earn(amount);else S.gold+=amount;S.minutes+=c.time;S.energy=Math.min(energyMax(),S.energy+(c.energy||0));S.journey.rep+=c.rep||0;S.life.resolved.push(key);S.life.log.unshift({title:e.title,text:c.risk?(amount>0?'Você chegou sem danos e recebeu 85 de ouro.':'Dois vasos quebraram. O conserto custou 20 de ouro.'):c.result,gold:amount,day:pending.day});S.life.log=S.life.log.slice(0,20);S.life.event=null;save();updateHud();return true;
+  function resolveCityEvent(choiceIndex){var pending=S.life.event;if(!pending)return false;var key=pending.day+':'+pending.id;if(S.life.resolved.indexOf(key)>=0)return false;var e=CITY_EVENTS.find(function(e){return e.id===pending.id;}),c=e&&e.choices[choiceIndex];if(!c||S.gold<Math.abs(Math.min(0,c.risk?c.loss:c.gold)))return false;
+    var amount=c.risk?(hash(pending.day,S.journey.rep+23)>.48?c.gold:c.loss):c.gold;if(amount>=0)earn(amount);else S.gold+=amount;S.minutes+=c.time;S.energy=Math.min(energyMax(),S.energy+(c.energy||0));S.journey.rep+=c.rep||0;S.life.resolved.push(key);S.life.log.unshift({title:e.title,text:c.risk?(amount>0?'Você chegou sem danos e recebeu 85 de ouro.':'Dois vasos quebraram. O conserto custou 20 de ouro.'):c.result,gold:amount,day:pending.day});S.life.log=S.life.log.slice(0,20);S.life.event=null;onTime();save();updateHud();return true;
   }
-  function openCityLife(){var rt=getLiving(),e=S.life.event&&CITY_EVENTS.find(function(e){return e.id===S.life.event.id;});var event=e?'<section class="journey-quest"><span class="eyebrow">ACONTECENDO AGORA</span><h3>'+e.title+'</h3><p>'+e.text+'</p><div class="living-options">'+e.choices.map(function(c,i){var cost=Math.abs(Math.min(0,c.risk?c.loss:c.gold));return '<button class="btn" data-a="life-event" data-id="'+i+'" '+(S.gold<cost||S.minutes+c.time>=1500?'disabled':'')+'>'+c.label+'</button>';}).join('')+'</div></section>':'<p class="living-empty">A cidade está tranquila. Novos encontros aparecem durante o dia enquanto você explora.</p>';
+  function openCityLife(){var rt=getLiving(),e=S.life.event&&CITY_EVENTS.find(function(e){return e.id===S.life.event.id;});var event=e?'<section class="journey-quest"><span class="eyebrow">ACONTECENDO AGORA</span><h3>'+e.title+'</h3><p>'+e.text+'</p><div class="living-options">'+e.choices.map(function(c,i){var cost=Math.abs(Math.min(0,c.risk?c.loss:c.gold));return '<button class="btn" data-a="life-event" data-id="'+i+'" '+(S.gold<cost?'disabled':'')+'>'+c.label+'</button>';}).join('')+'</div></section>':'<p class="living-empty">A cidade está tranquila. Novos encontros aparecem durante o dia enquanto você explora.</p>';
     panel('A cidade acontece','O mapa fica guardado no botão Mundo. Aqui você acompanha encontros e histórias da cidade.',event+'<h3>Pelas ruas de Hanami</h3><div class="living-routines">'+rt.people.slice(0,6).map(function(p){var place=placeById(p.itinerary[(p.leg+(p.inside?0:1))%p.itinerary.length]);return '<div><b>'+p.name+'</b><span>'+(p.inside?'Em ':'A caminho de ')+place.name+'</span></div>';}).join('')+'</div><p>Táxis circulam entre mercado, café, pousada e garagem, com paradas de embarque. Moradores fazem compras, visitam o café e pegam o trem.</p><h3>Seu histórico</h3>'+S.life.log.map(function(l){return '<article class="life-log"><b>'+l.title+'</b><p>'+l.text+'</p><small>'+(l.gold>0?'+':'')+l.gold+' ouro · dia '+l.day+'</small></article>';}).join(''),true);
   }
   function updateLivingWorld(dt){updateTraffic(dt);if(!S.indoor)offerCityEvent();}
   function drawLivingStatus(){if(S.life.event&&!titleOn){ctx.fillStyle='#233d31e8';ctx.fillRect(LW-219,49,210,25);ctx.fillStyle='#f1d18d';ctx.font='11px "Pixelify Sans",monospace';ctx.fillText('✦ Novo encontro · Acontecimentos',LW-210,65);}}
-  function contextDialogue(id){var n=npcById(id),name=n?n.name:'morador',q=currentChapter(),greeting=S.minutes<720?'Bom dia':S.minutes<1080?'Boa tarde':'Boa noite';var lines=[greeting+'! '+(S.rain?'Essa chuva muda o ritmo da rua. Entre e se aqueça um pouco.':'Hoje a cidade está cheia de viajantes.'),S.journey.rep>=5?'Já ouvi seu nome por aqui. É bom receber alguém que ajuda os vizinhos.':'Uma conversa boa vale tanto quanto uma venda. Fique à vontade.',q?(q.npc===id?'Podemos começar sua próxima entrega aqui no balcão. Vou ajudar você a conhecer o vale.':'Se quiser explorar mais, procure '+npcById(q.npc).name+'. Ainda há uma história esperando por você.'):'O festival aproximou o vale inteiro. Que bom ter você por aqui.',S.life.log.length?'Fiquei sabendo: '+S.life.log[0].title.toLowerCase()+'. Essas coisas viram assunto na praça.':(n?n.text:'As portas da cidade estão abertas. Sempre há alguém com uma história para contar.')];return lines[(tradeDay()+(S.life.talks[id]||0))%lines.length];}
+  function oldContextDialogue(id){var n=npcById(id),name=n?n.name:'morador',q=currentChapter(),greeting=S.minutes<720?'Bom dia':S.minutes<1080?'Boa tarde':'Boa noite';var lines=[greeting+'! '+(S.rain?'Essa chuva muda o ritmo da rua. Entre e se aqueça um pouco.':'Hoje a cidade está cheia de viajantes.'),S.journey.rep>=5?'Já ouvi seu nome por aqui. É bom receber alguém que ajuda os vizinhos.':'Uma conversa boa vale tanto quanto uma venda. Fique à vontade.',q?(q.npc===id?'Podemos começar sua próxima entrega aqui no balcão. Vou ajudar você a conhecer o vale.':'Se quiser explorar mais, procure '+npcById(q.npc).name+'. Ainda há uma história esperando por você.'):'O festival aproximou o vale inteiro. Que bom ter você por aqui.',S.life.log.length?'Fiquei sabendo: '+S.life.log[0].title.toLowerCase()+'. Essas coisas viram assunto na praça.':(n?n.text:'As portas da cidade estão abertas. Sempre há alguém com uma história para contar.')];return lines[(tradeDay()+(S.life.talks[id]||0))%lines.length];}
+  function contextDialogue(id){return contextualGreeting(id);}
   var DIALOGUE_API='https://dialogos-production.up.railway.app';
   var activeConversation=null,talkSequence=0;
   function escapeLiving(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
@@ -1165,10 +1178,119 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   function openConversation(id){if(!talkAllowed(id))return;S.life.talks[id]=(S.life.talks[id]||0)+1;var n=npcById(id),p=roomById(id);activeConversation={id:id,name:n?n.name:p?p.name:'Morador',history:[],waiting:false};showConversation(contextDialogue(id),'Conversa');}
   function showConversation(text,status){var c=activeConversation;if(!c)return;panel(c.name,status,'<div class="npc-speech" id="npcSpeech">'+escapeLiving(text)+'</div><div class="living-options"><button class="btn" data-a="life-topic" data-id="cidade">Como está a cidade?</button><button class="btn" data-a="life-topic" data-id="historia">Conte uma história sua</button><button class="btn" data-a="life-topic" data-id="conselho">Algum conselho de viagem?</button></div><label class="chat-label" for="npcQuestion">O que você quer dizer?</label><textarea id="npcQuestion" maxlength="220" rows="2" placeholder="Escreva sua fala…"></textarea><button class="btn primary" data-a="life-send" '+(c.waiting?'disabled':'')+'>'+(c.waiting?'Ouvindo…':'Falar')+'</button><small id="npcAiStatus">'+escapeLiving(status)+'</small>');}
   async function sendConversation(question){var c=activeConversation;if(!c||c.waiting||!talkAllowed(c.id))return;question=String(question||'').trim().slice(0,220);if(!question)return;c.waiting=true;var seq=++talkSequence;c.history.push({role:'user',content:question});showConversation('…','Pensando na resposta');
-    try{if(!DIALOGUE_API)throw Error('offline');var controller=new AbortController(),timer=setTimeout(function(){controller.abort();},18000);var response=await fetch(DIALOGUE_API+'/dialogue',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({npc:c.id,question:question,context:{region:regionAt(S.px,S.py).name,day:S.day,season:SEASONS[S.season%4],hour:Math.floor(S.minutes/60),rain:S.rain,reputation:S.journey.rep,chapter:S.journey.chapter,recent:S.life.log.slice(0,2).map(function(l){return l.title;})},history:c.history.slice(-5)}),signal:controller.signal});clearTimeout(timer);if(!response.ok)throw Error('unavailable');var data=await response.json();if(typeof data.text!=='string'||!data.text.trim())throw Error('empty');if(activeConversation!==c||seq!==talkSequence)return;c.waiting=false;c.history.push({role:'assistant',content:data.text.slice(0,900)});c.history=c.history.slice(-6);if(!modalOpen()||!talkAllowed(c.id)||!modalEl.querySelector('#npcSpeech'))return;showConversation(data.text.slice(0,900),'Diálogo com IA · Groq');}
+    try{if(!DIALOGUE_API)throw Error('offline');var controller=new AbortController(),timer=setTimeout(function(){controller.abort();},18000);var response=await fetch(DIALOGUE_API+'/dialogue',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({npc:c.id,question:question,context:{playerName:S.profile.name,weekday:weekday(),phase:phaseOf(S.minutes),farmName:S.profile.farm,objectives:S.imm.claimed.length,reservation:S.imm.reservation?HOTEL_ROOMS.find(function(r){return r.id===S.imm.reservation.type;}).name:null,region:regionAt(S.px,S.py).name,day:S.day,season:SEASONS[S.season%4],hour:Math.floor(S.minutes/60),rain:S.rain,reputation:S.journey.rep,chapter:S.journey.chapter,recent:S.life.log.slice(0,2).map(function(l){return l.title;})},history:c.history.slice(-5)}),signal:controller.signal});clearTimeout(timer);if(!response.ok)throw Error('unavailable');var data=await response.json();if(typeof data.text!=='string'||!data.text.trim())throw Error('empty');if(activeConversation!==c||seq!==talkSequence)return;c.waiting=false;c.history.push({role:'assistant',content:data.text.slice(0,900)});c.history=c.history.slice(-6);if(!modalOpen()||!talkAllowed(c.id)||!modalEl.querySelector('#npcSpeech'))return;showConversation(data.text.slice(0,900),'Diálogo com IA · Groq');}
     catch(error){clearTimeout(timer);if(activeConversation!==c||seq!==talkSequence)return;c.waiting=false;if(modalOpen()&&talkAllowed(c.id)&&modalEl.querySelector('#npcSpeech'))showConversation(contextDialogue(c.id),'Fala local · IA indisponível no momento');}
   }
   function handleLivingAction(b){var a=b.dataset.a,id=b.dataset.id;if(a.indexOf('life-')!==0)return false;if(a==='life-news')openCityLife();if(a==='life-event'){resolveCityEvent(+id);openCityLife();}if(a==='life-talk')openConversation(id);if(a==='life-topic')sendConversation(id==='cidade'?'Como está a cidade hoje?':id==='historia'?'Conte uma história curta da sua vida neste lugar.':'Que conselho você me dá para a viagem?');if(a==='life-send')sendConversation($('npcQuestion').value);if(a==='life-nico')openNpc('nico');return true;}
+
+  /* Vida no Vale: identidade, calendário contínuo, hospedagem e fazenda pessoal. */
+  var WEEKDAYS=['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'];
+  var OUTFITS={rose:'#c77791',sage:'#79a58a',blue:'#779cbf'};
+  var HOTEL_ROOMS=[
+    {id:'simple',name:'Quarto do Viajante',price:35,color:'#8ca5a0',desc:'Uma cama, escrivaninha e uma janela para a rua.'},
+    {id:'garden',name:'Quarto Jardim',price:75,color:'#b6a36d',desc:'Quarto com plantas, poltrona e vista para as cerejeiras.'},
+    {id:'suite',name:'Suíte das Lanternas',price:140,color:'#c78b9d',desc:'Cama maior e um canto de estar entre lanternas.'}
+  ];
+  var FARM_ITEMS=[
+    {id:'flowers',name:'Canteiro de flores',price:25,solid:false,desc:'Flores coloridas para os caminhos.'},
+    {id:'bench',name:'Banco de madeira',price:60,solid:true,desc:'Um lugar para sentar e recuperar 10 de energia, uma vez ao dia.'},
+    {id:'lantern',name:'Lanterna de jardim',price:80,solid:true,desc:'Ilumina a fazenda à noite.'},
+    {id:'scarecrow',name:'Espantalho',price:95,solid:true,desc:'Companhia para a sua horta.'},
+    {id:'well',name:'Poço de pedra',price:120,solid:true,desc:'Encha o regador sem ir até a lagoa.'},
+    {id:'cherry',name:'Cerejeira ornamental',price:160,solid:true,desc:'Uma árvore florida para decorar seu recanto.'}
+  ];
+  var placingItem=null;
+  function dayNumber(s){s=s||S;return s.season*28+s.day-1;}
+  function worldStamp(){return dayNumber()*1440+S.minutes;}
+  function weekday(){return WEEKDAYS[dayNumber()%7];}
+  function phaseOf(minutes){var m=((minutes%1440)+1440)%1440;return m<360?'Madrugada':m<720?'Dia':m<1080?'Tarde':'Noite';}
+  function timeText(){var h=Math.floor(S.minutes/60)%24,m=S.minutes%60;return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');}
+  function farmItem(id){return FARM_ITEMS.find(function(x){return x.id===id;});}
+  function upgradeImmersion(s,fresh){
+    if(!s.profile)s.profile={name:'',farm:'',outfit:'rose',created:false};
+    if(!s.imm)s.imm={version:4,stats:{seeds:0,planted:0,harvested:0,sold:0,nights:0,bookings:0},claimed:[],daily:{day:-1,base:{},claimed:[]},inventory:{},reservation:null,decorCount:0,restDay:-1};
+    if(fresh){s.gold=300;s.seeds=zeroMap(ORDER);s.animals=[];s.feed=0;s.trough=0;s.tiles.forEach(function(t){t.crop=null;});s.minutes=480;}
+    if(s.imm.daily.day<0)s.imm.daily={day:dayNumber(s),base:{seeds:s.imm.stats.seeds,planted:s.imm.stats.planted,harvested:s.imm.stats.harvested,sold:s.imm.stats.sold,trades:s.journey.trades,orders:s.exp.totalOrders},claimed:[]};
+    s.imm.decorCount=s.tiles.filter(function(t){return !!t.decor;}).length;
+    return s;
+  }
+  function cleanPlayerName(v){return String(v||'').replace(/[<>\u0000-\u001f]/g,'').trim().replace(/\s+/g,' ').slice(0,24);}
+  function finishIdentity(name,farm,outfit){name=cleanPlayerName(name);if(name.length<2)return false;S.profile={name:name,farm:cleanPlayerName(farm)||'Recanto de '+name,outfit:OUTFITS[outfit]?outfit:'rose',created:true};S.intro=true;save();closeModal();openLifeGoals();return true;}
+  function openIdentity(){
+    panel('Seu lugar no vale','Uma nova história começa com você.','<div class="identity-portrait"><span class="woman-avatar"></span><div><b>Sua fazendeira</b><p>Você vai cultivar, conhecer pessoas e transformar este lugar no seu lar.</p></div></div><label for="playerName">Como você se chama?</label><input id="playerName" maxlength="24" autocomplete="off" placeholder="Seu nome" value="'+escapeLiving(S.profile.name)+'"><label for="farmName">Nome da sua fazenda</label><input id="farmName" maxlength="24" placeholder="Ex.: Recanto das Flores" value="'+escapeLiving(S.profile.farm)+'"><label for="playerOutfit">Cor da roupa</label><select id="playerOutfit"><option value="rose">Rosa cerejeira</option><option value="sage">Verde sálvia</option><option value="blue">Azul do céu</option></select><p id="identityError" class="form-error"></p><button class="btn primary" data-a="imm-identity">Entrar no vale</button><p class="journey-note">Sua fazenda fica salva neste navegador. Seu nome de personagem também será usado nas conversas com os moradores.</p>');
+  }
+  function bumpLife(k,n){if(S.imm)S.imm.stats[k]=(S.imm.stats[k]||0)+(n||1);}
+  function drawPlayer(px,py,dir,walking){
+    var step=walking?Math.round(Math.sin(clock*20)*2):0,bob=walking?Math.sin(clock*20)*.6:0;px=Math.round(px);py=Math.round(py+bob);var shirt=OUTFITS[S.profile&&S.profile.outfit]||OUTFITS.rose;
+    ell(px+16,py+29,9,3,'#14291b55');ctx.fillStyle='#503a35';ctx.fillRect(px+8,py+3,16,17);ctx.fillRect(px+(dir==='left'?21:5),py+9,5,13);
+    ctx.fillStyle='#374b59';ctx.fillRect(px+10,py+22+step,5,7-step);ctx.fillRect(px+17,py+22-step,5,7+step);ctx.fillStyle='#6a443c';ctx.fillRect(px+9,py+28+step,6,3);ctx.fillRect(px+17,py+28-step,6,3);
+    ctx.fillStyle=shirt;ctx.fillRect(px+9,py+13,14,11);ctx.fillRect(px+7,py+15,18,5);ctx.fillStyle='#e7b99a';ctx.fillRect(px+6,py+19-step,4,6);ctx.fillRect(px+22,py+19+step,4,6);ctx.fillRect(px+11,py+4,11,10);
+    ctx.fillStyle='#503a35';ctx.fillRect(px+8,py+1,16,6);ctx.fillRect(px+8,py+5,4,8);ctx.fillRect(px+21,py+5,3,11);if(dir==='up'){ctx.fillRect(px+10,py+6,13,11);}else{ctx.fillStyle='#34382f';ctx.fillRect(px+(dir==='right'?18:12),py+8,2,2);if(dir==='down')ctx.fillRect(px+18,py+8,2,2);ctx.fillStyle='#c47d79';ctx.fillRect(px+15,py+12,3,1);}
+    ctx.fillStyle='#e9c88f';ctx.fillRect(px+7,py+7,4,3);ctx.fillStyle='#344f62';ctx.fillRect(px+11,py+18,10,6);ctx.fillRect(px+12,py+14,2,6);ctx.fillRect(px+19,py+14,2,6);
+  }
+  function advanceDate(){
+    expansionNight();animalNight();S.tiles.forEach(function(t){if(t.crop&&t.wet&&t.crop.age<CROPS[t.crop.k].dias)t.crop.age++;t.wet=!!t.greenhouse;if(t.t===T.SOIL){t.idle=t.crop?0:(t.idle||0)+1;if(t.idle>=3&&!t.decor){t.t=T.GRASS;t.idle=0;}}});
+    S.day++;if(S.day>28){S.day=1;S.season++;S.seasonStart=S.earned;S.goalHit=false;var keep=SEASON_CROPS[S.season%4];S.tiles.forEach(function(t){if(t.crop&&!t.greenhouse&&keep.indexOf(t.crop.k)<0)t.crop=null;});if(!S.exp.built.greenhouse)ORDER.forEach(function(k){if(keep.indexOf(k)<0){S.gold+=S.seeds[k]*CROPS[k].semente;S.seeds[k]=0;}});applySeasonPalette();syncHot();}
+    S.rain=Math.random()<RAIN_P[S.season%4];if(S.rain)S.tiles.forEach(function(t){if(t.t===T.SOIL)t.wet=true;});S.life.event=null;S.imm.daily={day:dayNumber(),base:lifeCounters(),claimed:[]};
+    toast(weekday()+', dia '+S.day+' · '+SEASONS[S.season%4]+'. Novos pedidos estão disponíveis.');
+  }
+  function checkHotelExpiry(){var r=S.imm.reservation;if(r&&worldStamp()>=r.checkout){S.imm.reservation=null;if(S.indoor&&S.indoor.id.indexOf('guest:')===0)returnToReception(r.hotel);toast('Sua diária terminou ao meio-dia. Passe na recepção se quiser reservar novamente.');save();}}
+  function onTime(){while(S.minutes>=1440){S.minutes-=1440;advanceDate();}checkHotelExpiry();updateHud();}
+  function advanceClock(n){S.minutes+=n;onTime();save();}
+  function endDay(passed){var toMorning=S.minutes<360?360-S.minutes:1800-S.minutes;advanceClock(toMorning);S.energy=passed?Math.round(energyMax()*.6):energyMax();S.px=4;S.py=4;S.indoor=null;S.dir='down';resetView();bumpLife('nights');save();updateHud();}
+  function dayTint(){var m=S.minutes,c='16,25,59',a=m<300?.48:m<420?.48*(420-m)/120:m<960?0:m<1080?(m-960)/120*.14:m<1200?.14+(m-1080)/120*.28:.42;if(m>=960&&m<1140)c='123,65,82';if(a){ctx.fillStyle='rgba('+c+','+a+')';ctx.fillRect(0,0,LW,LH);}if(S.rain){ctx.fillStyle='rgba(42,63,85,.16)';ctx.fillRect(0,0,LW,LH);}}
+  function lifeCounters(){return {seeds:S.imm.stats.seeds,planted:S.imm.stats.planted,harvested:S.imm.stats.harvested,sold:S.imm.stats.sold,trades:S.journey.trades,orders:S.exp.totalOrders};}
+  var LIFE_GOALS=[
+    {id:'seeds',title:'Sua primeira ida à loja',text:'Entre na loja da Marta e compre 5 sementes no balcão.',key:'seeds',target:5,reward:50,go:'marta'},
+    {id:'plant',title:'Uma horta feita por você',text:'Plante 5 sementes na sua fazenda e regue diariamente.',key:'planted',target:5,reward:60,go:'farm'},
+    {id:'harvest',title:'O sabor da primeira colheita',text:'Colha 5 produtos da sua horta.',key:'harvested',target:5,reward:90,go:'farm'},
+    {id:'sell',title:'Da fazenda para a mesa',text:'Venda 5 produtos na caixa ao lado da sua casa.',key:'sold',target:5,reward:80,go:'farm'},
+    {id:'city',title:'Conhecer Hanami',text:'Visite a cidade e entre em seus estabelecimentos.',key:'city',target:1,reward:50,go:'city'},
+    {id:'trade',title:'Criando laços',text:'Faça 3 negociações com os viajantes.',key:'trades',target:3,reward:70,go:'yuri'},
+    {id:'decorate',title:'Um lar com a sua cara',text:'Compre uma peça de jardim e coloque na fazenda.',key:'decor',target:1,reward:75,go:'shop'},
+    {id:'hotel',title:'Uma noite fora de casa',text:'Reserve um quarto e durma na cama do hotel.',key:'nightsAway',target:1,reward:90,go:'inn'},
+    {id:'build',title:'A fazenda cresce',text:'Construa o apiário, a estufa ou o celeiro.',key:'build',target:1,reward:150,go:'build'},
+    {id:'port',title:'Horizontes abertos',text:'Conclua os dois primeiros capítulos da Jornada e libere o porto.',key:'chapter',target:2,reward:180,go:'journey'}
+  ];
+  function goalProgress(g){if(g.key==='city')return S.journey.visited.city?1:0;if(g.key==='decor')return S.imm.decorCount;if(g.key==='build')return Object.keys(S.exp.built).filter(function(k){return S.exp.built[k];}).length;if(g.key==='chapter')return S.journey.chapter;if(g.key==='trades')return S.journey.trades;return S.imm.stats[g.key]||0;}
+  function claimLifeGoal(id){var g=LIFE_GOALS.find(function(g){return g.id===id;});if(!g||S.imm.claimed.indexOf(id)>=0||goalProgress(g)<g.target)return false;S.imm.claimed.push(id);earn(g.reward);save();return true;}
+  function dailyGoals(){var d=S.imm.daily;if(d.day!==dayNumber()){d=S.imm.daily={day:dayNumber(),base:lifeCounters(),claimed:[]};}var pool=[{id:'harvested',title:'Colher 3 produtos',target:3,reward:40},{id:'trades',title:'Negociar 2 vezes',target:2,reward:35},{id:'planted',title:'Plantar 4 sementes',target:4,reward:35},{id:'sold',title:'Vender 3 produtos na caixa',target:3,reward:40},{id:'orders',title:'Entregar 1 encomenda da vila',target:1,reward:45}];return [0,1,2].map(function(i){return pool[(dayNumber()+i)%pool.length];});}
+  function claimDaily(id){var g=dailyGoals().find(function(g){return g.id===id;}),d=S.imm.daily;if(!g||d.claimed.indexOf(id)>=0||(lifeCounters()[id]||0)-(d.base[id]||0)<g.target)return false;d.claimed.push(id);earn(g.reward);save();return true;}
+  function openLifeGoals(){var daily=dailyGoals(),counts=lifeCounters();panel('Seu diário do vale',escapeLiving(S.profile.name||'Fazendeira')+' · '+weekday()+' · dia '+S.day+' · '+phaseOf(S.minutes),' <div class="journal-lead"><b>'+escapeLiving(S.profile.farm||'Sua fazenda')+'</b><p>Comece pela loja da Marta. Compre sementes, plante e cuide da horta. O vale abre novos caminhos conforme você conhece seus moradores.</p></div><h3>Objetivos da sua história</h3><div class="life-goals">'+LIFE_GOALS.map(function(g){var done=S.imm.claimed.indexOf(g.id)>=0,n=Math.min(g.target,goalProgress(g));return '<article><div><b>'+g.title+'</b><p>'+g.text+'</p><progress value="'+n+'" max="'+g.target+'"></progress><small>'+n+'/'+g.target+' · recompensa '+g.reward+' ouro</small></div><div class="living-options"><button class="btn" data-a="imm-go" data-id="'+g.go+'">Ver caminho</button><button class="btn primary" data-a="imm-claim" data-id="'+g.id+'" '+(done||n<g.target?'disabled':'')+'>'+(done?'Concluído':'Receber')+'</button></div></article>';}).join('')+'</div><h3>Pedidos de '+weekday()+'</h3><p class="journey-note">Renovam à meia-noite. Receba suas recompensas antes do fim do dia.</p>'+daily.map(function(g){var n=Math.max(0,(counts[g.id]||0)-(S.imm.daily.base[g.id]||0)),done=S.imm.daily.claimed.indexOf(g.id)>=0;return '<div class="daily-goal"><span>'+g.title+' · '+Math.min(g.target,n)+'/'+g.target+'</span><button class="btn" data-a="imm-daily" data-id="'+g.id+'" '+(done||n<g.target?'disabled':'')+'>'+(done?'Recebido':'+'+g.reward+' ouro')+'</button></div>';}).join(''),true);}
+  function guideLife(id){if(id==='build'){openProjects();return;}if(id==='journey'){openJourney();return;}if(id==='yuri'){findResident('yuri');return;}if(id==='shop')id='marta';if(S.indoor&&S.indoor.id.indexOf('guest:')===0)exitRoom();if(S.indoor)exitRoom();if(id==='farm'){walkToJourney(10,9);return;}if(id==='city'){walkToJourney(78,28);return;}var p=roomById(id);if(p){var e=roomEntrance(p);walkToJourney(e[0],e[1]-1);}}
+  function roomById(id){if(id&&id.indexOf('guest:')===0){var bits=id.split(':'),hotel=placeById(bits[1]),type=HOTEL_ROOMS.find(function(r){return r.id===bits[2];});if(hotel&&hotel.kind==='inn'&&type)return {id:id,kind:'guest',name:type.name+' · '+hotel.name,x:hotel.x,y:hotel.y,w:hotel.w,h:hotel.h,roof:type.color,hotel:hotel.id,room:type.id};}return oldRoomById(id);}
+  function hotelPrice(hotel,type){return type.price+(hotel==='lodge'?15:0);}
+  function reserveRoom(hotelId,typeId){checkHotelExpiry();var h=placeById(hotelId),t=HOTEL_ROOMS.find(function(r){return r.id===typeId;});if(!h||h.kind!=='inn'||!atCounter(hotelId)||!t||S.imm.reservation)return false;var price=hotelPrice(hotelId,t);if(S.gold<price)return false;S.gold-=price;S.imm.reservation={hotel:hotelId,type:typeId,paid:price,checkin:worldStamp(),checkout:(dayNumber()+(S.minutes<360?0:1))*1440+720};bumpLife('bookings');save();return true;}
+  function openHotel(hotelId){if(!atCounter(hotelId))return;checkHotelExpiry();var h=placeById(hotelId),r=S.imm.reservation;var body=r?'<section class="journey-quest"><h3>Sua reserva</h3><p>'+placeById(r.hotel).name+' · '+HOTEL_ROOMS.find(function(t){return t.id===r.type;}).name+'</p><p>Pago: '+r.paid+' ouro · saída às 12:00, dia '+(Math.floor(r.checkout/1440)%28+1)+'.</p>'+(r.hotel===hotelId?'<button class="btn primary" data-a="imm-room">Ir para meu quarto</button>':'<p>Sua chave é de outro hotel.</p>')+'<button class="btn" data-a="imm-checkout">Encerrar reserva sem reembolso</button></section>':'<div class="hotel-grid">'+HOTEL_ROOMS.map(function(t){var cost=hotelPrice(hotelId,t);return '<article style="--room-color:'+t.color+'"><span class="room-illustration">☾</span><h3>'+t.name+'</h3><p>'+t.desc+'</p><strong>'+cost+' ouro / diária</strong><button class="btn primary" data-a="imm-book" data-id="'+t.id+'" data-hotel="'+hotelId+'" '+(S.gold<cost?'disabled':'')+'>Reservar quarto</button></article>';}).join('')+'</div>';panel(h.name,'Recepção 24 horas · reserve, retire sua chave e caminhe até a cama.',body+'<p class="journey-note">Pagamento na reserva. Saída às 12:00 do dia seguinte; reservas de madrugada terminam ao meio-dia do mesmo dia. Dormir recupera a energia. Não há cobrança automática.</p><button class="btn" data-a="life-talk" data-id="'+(hotelId==='lodge'?'tomo':'inn')+'">Conversar com a recepção</button>'+(hotelId==='lodge'?'<button class="btn" data-a="imm-tomo">Mercadorias de Tomo</button>':''),true);}
+  function enterGuestRoom(){checkHotelExpiry();var r=S.imm.reservation;if(!r||!atCounter(r.hotel))return false;S.indoor={id:'guest:'+r.hotel+':'+r.type,x:8,y:10,dir:'up'};roomMotion=null;roomPath=[];roomPending=null;closeModal();save();return true;}
+  function returnToReception(hotel){S.indoor={id:hotel,x:8,y:8,dir:'down'};roomMotion=null;roomPath=[];roomPending=null;mouseClear();closeModal();save();}
+  function exitRoom(){if(S.indoor&&S.indoor.id.indexOf('guest:')===0){returnToReception(S.indoor.id.split(':')[1]);return true;}return oldExitRoom();}
+  function guestNearBed(){return S.indoor&&S.indoor.id.indexOf('guest:')===0&&S.indoor.x===6&&S.indoor.y>=5&&S.indoor.y<=8;}
+  function openGuestBed(){if(!guestNearBed())return;panel('Descansar no seu quarto','Sua chave garante esta cama até o horário de saída.','<p>Ao dormir, você acorda às 06:00 com a energia recuperada.</p><button class="btn primary" data-a="imm-sleep">Dormir até as 06:00</button>');}
+  function sleepGuest(){checkHotelExpiry();var r=S.imm.reservation;if(!r||!guestNearBed())return false;var duration=S.minutes<360?360-S.minutes:1800-S.minutes;if(worldStamp()+duration>=r.checkout){toast('Sua diária termina antes da próxima manhã. Reserve outra diária na recepção.');return false;}var pos=Object.assign({},S.indoor);closeModal();advanceClock(duration);if(!S.imm.reservation)return false;S.indoor=pos;S.energy=energyMax();bumpLife('nightsAway');save();toast('Bom dia, '+S.profile.name+'! Sua saída é ao meio-dia.');return true;}
+  function roomFurniture(id){var p=roomById(id);if(p&&p.kind==='guest')return [{x:2,y:5,w:p.room==='simple'?3:4,h:4,type:'bed'},{x:12,y:5,w:3,h:2,type:'table'},{x:1,y:3,w:2,h:1,type:'shelf'},{x:14,y:9,w:1,h:1,type:'plant'}].concat(p.room==='simple'?[]:[{x:11,y:8,w:p.room==='suite'?3:2,h:p.room==='suite'?2:1,type:'bench'},{x:3,y:9,w:1,h:1,type:'plant'}]);return oldRoomFurniture(id);}
+  function guestClick(tx,ty){var r=S.indoor,bed=tx>=2&&tx<=5&&ty>=5&&ty<=8,door=tx===8&&ty>=10;var path=roomFindPath(r.x,r.y,bed?[[6,6]]:door?[[8,11]]:[[tx,ty]],r.id);if(path){roomPath=path;roomPending=bed?'guest-bed':door?'exit':null;}}
+  function renderGuestRoom(){var r=S.indoor,p=roomById(r.id),m=roomMetrics();ctx.setTransform(gScale,0,0,gScale,0,0);ctx.fillStyle='#182b28';ctx.fillRect(0,0,LW,LH);hudBlocks.length=0;hudSlots.length=0;ctx.save();ctx.translate(m.x,m.y);ctx.scale(m.z,m.z);for(var y=0;y<12;y++)for(var x=0;x<17;x++){ctx.fillStyle=(x+y)%2?'#c6a57f':'#bc9772';ctx.fillRect(x*32,y*32,32,32);ctx.fillStyle='#a88766';ctx.fillRect(x*32,y*32+30,32,2);}ctx.fillStyle=p.roof;ctx.fillRect(0,0,544,90);ctx.fillStyle='#dfd4b3';ctx.fillRect(0,78,544,12);ctx.fillStyle=phaseOf(S.minutes)==='Noite'||phaseOf(S.minutes)==='Madrugada'?'#31436a':'#9ec8c6';ctx.fillRect(200,22,144,48);ctx.fillStyle='#f1dfba';ctx.fillRect(268,22,5,48);ctx.fillRect(200,45,144,4);ctx.fillStyle='#ae6e82';ctx.fillRect(190,18,15,57);ctx.fillRect(339,18,15,57);ctx.fillStyle='#486560';ctx.fillRect(224,166,100,155);ctx.fillStyle='#e5c58f';ctx.strokeStyle='#e5c58f';ctx.strokeRect(231,173,86,141);roomFurniture(r.id).forEach(drawRoomFurniture);ctx.fillStyle='#f7e0a4';ctx.font='11px monospace';ctx.fillText('CAMA · descansar',67,152);var ax=roomMotion?roomMotion.fx+(roomMotion.tx-roomMotion.fx)*Math.min(1,roomMotion.t):r.x,ay=roomMotion?roomMotion.fy+(roomMotion.ty-roomMotion.fy)*Math.min(1,roomMotion.t):r.y;drawPlayer(ax*32,ay*32,r.dir,!!roomMotion);ctx.fillStyle='#284238';ctx.fillRect(240,352,64,32);ctx.fillStyle='#f4d99f';ctx.textAlign='center';ctx.fillText('RECEPÇÃO',272,374);ctx.restore();ctx.textAlign='left';ctx.fillStyle='#f1dfbd';ctx.font='bold 16px "Pixelify Sans",monospace';ctx.fillText(p.name,18,29);ctx.font='12px "Pixelify Sans",monospace';ctx.textAlign='center';ctx.fillText('Clique na cama para caminhar e descansar · saída ao sul',LW/2,LH-24);ctx.textAlign='left';$('regionName').textContent=p.name;drawLifeClock();}
+  function openFarmStore(){if(!atCounter('marta')&&!atCounter('homes2')){toast('Visite o balcão da Marta ou o ateliê em Hanami.');return;}panel('Jardim & fazenda','Peças compradas ficam guardadas até você escolher onde colocá-las.','<div class="farm-catalog">'+FARM_ITEMS.map(function(d){return '<article><h3>'+d.name+'</h3><p>'+d.desc+'</p><small>Guardados: '+(S.imm.inventory[d.id]||0)+'</small><button class="btn" data-a="imm-buy-decor" data-id="'+d.id+'" '+(S.gold<d.price?'disabled':'')+'>Comprar · '+d.price+' ouro</button></article>';}).join('')+'</div>',true);}
+  function buyFarmItem(id){var d=farmItem(id);if(!d||(!atCounter('marta')&&!atCounter('homes2'))||S.gold<d.price)return false;S.gold-=d.price;S.imm.inventory[id]=(S.imm.inventory[id]||0)+1;save();return true;}
+  function openMyFarm(){panel(escapeLiving(S.profile.farm||'Minha fazenda'),'Seu lar cresce com suas escolhas.','<div class="journey-stats"><span><b>'+S.imm.decorCount+'</b>peças no jardim</span><span><b>'+Object.keys(S.exp.built).filter(function(k){return S.exp.built[k];}).length+'</b>construções</span><span><b>'+S.animals.length+'</b>animais</span><span><b>'+S.tiles.filter(function(t){return !!t.crop;}).length+'</b>plantações</span></div><div class="living-options"><button class="btn" data-a="imm-go" data-id="marta">Ir comprar na Marta</button><button class="btn" data-a="imm-go" data-id="build">Ampliar a fazenda</button><button class="btn" data-a="imm-go" data-id="farm">Voltar à fazenda</button></div><h3>Seus itens de jardim</h3><div class="farm-catalog">'+FARM_ITEMS.map(function(d){var n=S.imm.inventory[d.id]||0;return '<article><h3>'+d.name+'</h3><p>'+d.desc+'</p><button class="btn" data-a="imm-place" data-id="'+d.id+'" '+(!n?'disabled':'')+'>Colocar · '+n+' guardado(s)</button></article>';}).join('')+'</div><p class="journey-note">Compre no balcão da loja ou do ateliê. Escolha Colocar e clique em terreno livre na fazenda. Para mudar uma peça de lugar, caminhe até ela e escolha Guardar.</p>',true);}
+  function beginPlacement(id){if(!farmItem(id)||!(S.imm.inventory[id]>0))return false;if(S.indoor||regionAt(S.px,S.py).id!=='farm'){toast('Volte à área externa da sua fazenda para colocar a peça.');return false;}placingItem=id;mouseClear();resetView();closeModal();toast('Escolha um terreno vazio. Esc cancela.');return true;}
+  function placeFarmItem(x,y){var id=placingItem,d=farmItem(id),t=inb(x,y)&&tile(x,y);if(!d||!t||!(S.imm.inventory[id]>0))return false;if(x<9||x>28||y<5||y>28||[T.GRASS,T.SOIL].indexOf(t.t)<0||t.crop||t.decor||animalAt(x,y)||Math.abs(S.px-x)+Math.abs(S.py-y)<1){toast('Use um terreno vazio da fazenda, à direita do curral.');return false;}t.decor=id;var reachable=[[4,4],[24,4],[20,9],[10,9],[20,26]].every(function(p){return !!findPath(S.px,S.py,[p]);});if(!reachable){delete t.decor;toast('Deixe passagem livre para a casa, a loja e os canteiros.');return false;}S.imm.inventory[id]--;S.imm.decorCount++;placingItem=null;save();toast(d.name+' colocado na sua fazenda.');return true;}
+  function openFarmObject(x,y){var t=tile(x,y),d=farmItem(t.decor);if(!d||!nearPoint(x,y,1))return;panel(d.name,'Um detalhe do seu lar.','<p>'+d.desc+'</p>'+(d.id==='well'?'<button class="btn primary" data-a="imm-well">Encher regador</button>':'')+(d.id==='bench'?'<button class="btn" data-a="imm-bench">Descansar · +10 energia, 20 min</button>':'')+'<button class="btn" data-a="imm-remove" data-x="'+x+'" data-y="'+y+'">Guardar para mudar de lugar</button>');}
+  function removeFarmItem(x,y){var t=inb(x,y)&&tile(x,y),d=t&&farmItem(t.decor);if(!d||!nearPoint(x,y,1))return false;S.imm.inventory[d.id]=(S.imm.inventory[d.id]||0)+1;delete t.decor;S.imm.decorCount--;save();return true;}
+  function drawFarmDecor(){S.tiles.forEach(function(t,i){if(!t.decor)return;var x=i%COLS*32,y=Math.floor(i/COLS)*32;if(x<camX-40||x>camX+LW+40||y<camY-60||y>camY+LH+40)return;ctx.fillStyle='#32493255';ctx.fillRect(x+3,y+24,29,8);if(t.decor==='flowers'){ctx.fillStyle='#6a7850';ctx.fillRect(x+2,y+16,28,12);for(var k=0;k<4;k++){ctx.fillStyle=['#eab1bf','#e9cd83','#b8b0d9','#f2e4bc'][k];ctx.fillRect(x+4+k*6,y+9+(k%2)*5,5,7);}}else if(t.decor==='bench'){ctx.fillStyle='#76573e';ctx.fillRect(x+4,y+13,3,18);ctx.fillRect(x+25,y+13,3,18);ctx.fillStyle='#bc9865';ctx.fillRect(x+1,y+8,30,8);ctx.fillRect(x+1,y+22,30,5);}else if(t.decor==='lantern'){ctx.fillStyle='#64564a';ctx.fillRect(x+14,y+6,4,25);ctx.fillStyle='#dfbd78';ctx.fillRect(x+9,y-1,14,13);if(S.minutes>=1080||S.minutes<360)ell(x+16,y+7,26,22,'#ffe3a52b');}else if(t.decor==='well'){ell(x+16,y+20,16,11,'#a6aaa0');ell(x+16,y+16,12,7,'#526d7b');ctx.fillStyle='#9d805a';ctx.fillRect(x+2,y,4,23);ctx.fillRect(x+26,y,4,23);ctx.fillRect(x,y,32,4);}else if(t.decor==='scarecrow'){ctx.fillStyle='#99754c';ctx.fillRect(x+15,y+4,3,29);ctx.fillRect(x+1,y+12,30,4);ctx.fillStyle='#ae7b78';ctx.fillRect(x+9,y+11,16,13);ctx.fillStyle='#e1bf8d';ctx.fillRect(x+11,y,12,10);ctx.fillStyle='#a88b55';ctx.fillRect(x+6,y-3,23,5);}else{ctx.fillStyle='#87684e';ctx.fillRect(x+13,y+4,6,28);ell(x+16,y-7,23,22,'#d99db5');ell(x+8,y-14,15,15,'#efbdd0');ell(x+25,y-3,14,13,'#e7b0c5');}});}
+  function drawLifeClock(){var phase=phaseOf(S.minutes),label=timeText()+' · '+phase+' · '+weekday();var node=$('lifeClock');if(node)node.textContent=label;var name=$('playerBadge');if(name)name.textContent=S.profile.created?S.profile.name+' · '+S.profile.farm:'Sua história no vale';if(placingItem){ctx.fillStyle='#243b31ed';ctx.fillRect(8,LH-115,LW-16,29);ctx.fillStyle='#f3daa3';ctx.font='12px monospace';ctx.textAlign='center';ctx.fillText('Colocar '+farmItem(placingItem).name+' · clique em terreno livre · Esc cancela',LW/2,LH-96);ctx.textAlign='left';}}
+  function contextualGreeting(id){var n=npcById(id),name=S.profile.name||'viajante',phase=phaseOf(S.minutes),greeting=phase==='Dia'?'Bom dia':phase==='Tarde'?'Boa tarde':phase==='Noite'?'Boa noite':'Ainda acordada';var lines=[greeting+', '+name+'! Hoje é '+weekday().toLowerCase()+'. '+(S.rain?'A chuva deixou as ruas mais calmas.':'As cerejeiras estão lindas lá fora.'),weekday()==='Sábado'||weekday()==='Domingo'?'Fim de semana traz viajantes. Sempre aparece alguém com novidades.':'Hoje tenho trabalho e histórias para dividir. Como vai sua fazenda?',phase==='Madrugada'?'Está bem silencioso. A recepção dos hotéis atende a noite inteira, se precisar descansar.':phase==='Noite'?'As lanternas já acenderam. Gosto de ver a cidade ficando tranquila.':(n?n.text:'Entre, fique à vontade e me conte como vai seu dia.')];return lines[(dayNumber()+(S.life.talks[id]||0))%lines.length];}
+  function handleImmersionAction(b){var a=b.dataset.a,id=b.dataset.id;if(!S.profile.created&&a==='close'){modalEl.hidden=true;showTitle();return true;}if(a==='journey-inn'){openHotel(id);return true;}if(a.indexOf('imm-')!==0)return false;
+    if(a==='imm-identity'){if(!finishIdentity($('playerName').value,$('farmName').value,$('playerOutfit').value))$('identityError').textContent='Digite um nome com pelo menos 2 letras.';}
+    if(a==='imm-go')guideLife(id);if(a==='imm-claim'){claimLifeGoal(id);openLifeGoals();}if(a==='imm-daily'){claimDaily(id);openLifeGoals();}
+    if(a==='imm-book'){reserveRoom(b.dataset.hotel,id);openHotel(b.dataset.hotel);}if(a==='imm-room')enterGuestRoom();if(a==='imm-sleep')sleepGuest();if(a==='imm-tomo')openNpc('tomo');
+    if(a==='imm-checkout'){var hotel=S.indoor.id;S.imm.reservation=null;save();openHotel(hotel);}
+    if(a==='imm-store')openFarmStore();if(a==='imm-buy-decor'){buyFarmItem(id);openFarmStore();}if(a==='imm-place')beginPlacement(id);if(a==='imm-remove'){removeFarmItem(+b.dataset.x,+b.dataset.y);closeModal();}
+    if(a==='imm-well'){var f=facing();if(farmItem(tile(f[0],f[1]).decor)&&tile(f[0],f[1]).decor==='well'){S.water=capMax();save();}closeModal();}
+    if(a==='imm-bench'){var p=facing();if(tile(p[0],p[1]).decor==='bench'&&S.imm.restDay!==dayNumber()){S.imm.restDay=dayNumber();S.energy=Math.min(energyMax(),S.energy+10);advanceClock(20);}else toast('Você já descansou no jardim hoje.');closeModal();}
+    return true;
+  }
 
   /* ---------- Estado ---------- */
   function capMax() { return 15 + 10 * S.ups.cap; }
@@ -1216,7 +1338,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       goods: { ovo: 0, la: 0, leite: 0, trufa: 0 }, animals: [], feed: 0, trough: 0,
       ups: { bag: 0, cap: 0, en: 0 }, tiles: tiles, intro: false
     };
-    expandWorld(fresh); buildJourneyWorld(fresh); upgradeLiving(fresh); return fresh;
+    expandWorld(fresh); buildJourneyWorld(fresh); upgradeLiving(fresh); upgradeImmersion(fresh,true); return fresh;
   }
 
   var S;
@@ -1226,7 +1348,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       if (!raw) return null;
       var d = JSON.parse(raw);
       if(d && d.exp && d.tiles && d.tiles.length===58*30){try{localStorage.setItem('vale-expandido-backup-v1',raw);}catch(backupError){}}
-      d = migrateJourney(d); if(d && d.journey) upgradeLiving(d);
+      d = migrateJourney(d); if(d && d.journey){upgradeLiving(d);upgradeImmersion(d,false);}
       if (d && d.tiles && d.tiles.length === 24 * ROWS) {
         /* save antigo (mapa 24 colunas): abre 5 colunas de campo no meio */
         var nt = [], ox, oy;
@@ -1327,11 +1449,11 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     ['Meta da estação alcançada! Continue crescendo.', 'Season goal reached! Keep growing.'],
     ['Bem-vindo ao Vale Pequeno', 'Welcome to Little Valley'],
     ['Sua fazenda agora faz parte de um mundo com seis regiões. Abra Jornada para encontrar Yuri e começar sua primeira entrega. Visite Hanami, negocie com viajantes e desbloqueie o porto, a serra e o santuário. O trem, o táxi e seu próprio carro encurtam as viagens. Cada estação dura 28 dias.', 'Your farm sits in a valley of cherry trees, with a curved-roof house, a koi pond and a patch of land waiting for you. Each season lasts 28 days and brings different crops. You start in spring.'],
-    ['<li>Clique no mapa para andar. Use E ou Espaço para interagir.</li><li>Abra o Mapa (M) e escolha um destino para caminhar até ele.</li><li>Galhos, pedras, ervas e cristais fornecem recursos para construir.</li><li>Plante e regue todo dia. Você já tem uma galinha e ração no cocho.</li>', '<li>Plant carrots in tilled soil and water them every day.</li>'],
+    ['<li>Clique no mapa para andar. Use E ou Espaço para interagir.</li><li>Abra o Mapa (M) e escolha um destino para caminhar até ele.</li><li>Galhos, pedras, ervas e cristais fornecem recursos para construir.</li><li>Plante e regue todo dia. Compre sementes, animais e ração na loja da Marta.</li>', '<li>Plant carrots in tilled soil and water them every day.</li>'],
     ['<li>Colha, venda na caixa ao lado da casa e use o ouro na loja.</li>', '<li>Harvest, sell at the crate next to the house and spend the gold at the shop.</li>'],
     ['<li>Alcance ', '<li>Reach '], [' de ouro antes do fim da estação.', ' gold before the season ends.'], ['Começar', 'Start'],
     ['Dormir agora?', 'Sleep now?'],
-    ['O dia termina. Plantas regadas hoje crescem e sua energia volta ao máximo.', 'The day ends. Plants watered today grow and your energy is fully restored.'],
+    ['Você acorda às 06:00 com a energia recuperada. As plantas crescem quando o calendário vira à meia-noite.', 'The day ends. Plants watered today grow and your energy is fully restored.'],
     [' Ainda é cedo, você pode aproveitar mais um pouco.', " It's still early, you could make the most of the day."],
     ['Ainda não', 'Not yet'], ['Dormir', 'Sleep'],
     ['Recomeçar do zero?', 'Start over?'], ['Recomeçar do zero', 'Start over'],
@@ -1705,7 +1827,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   /* ---------- Controle por mouse e toque ---------- */
   var mouse = { down: null, followed: false, x: 0, y: 0, path: null, act: null, hover: null, dest: null };
   function toLogical(e) { var r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) * LW / r.width, y: (e.clientY - r.top) * LH / r.height }; }
-  function walkable(x, y) { return inb(x, y) && regionOpen(regionAt(x,y).id) && !SOLID[tile(x, y).t]; }
+  function walkable(x, y) { return inb(x, y) && regionOpen(regionAt(x,y).id) && !SOLID[tile(x,y).t] && !(tile(x,y).decor&&farmItem(tile(x,y).decor)&&farmItem(tile(x,y).decor).solid); }
   function dirOf(dx, dy) { return dy < 0 ? 'up' : dy > 0 ? 'down' : dx < 0 ? 'left' : 'right'; }
   function findPath(sx, sy, goals) {
     var start = idx(sx, sy), prev = {}, q = [[sx, sy]], head = 0, gs = {}, i, ns = [[1, 0], [-1, 0], [0, 1], [0, -1]];
@@ -1731,12 +1853,13 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     return null;
   }
   function interactiveTile(tx, ty) {
-    if(tile(tx,ty).npc || tile(tx,ty).place) return true;
+    if(tile(tx,ty).decor || tile(tx,ty).npc || tile(tx,ty).place) return true;
     var t = tile(tx, ty);
     return t.t === T.FACILITY || t.t === T.NODE || t.t === T.WATER || t.t === T.BOX || t.t === T.COUNTER || t.t === T.DOOR || t.t === T.TROUGH || !!t.crop || !!animalAt(tx, ty);
   }
   function mouseClear() { mouse.path = null; mouse.act = null; mouse.dest = null; }
   function onMapClick(lx, ly) {
+    if(placingItem){placeFarmItem(Math.floor(lx/TS),Math.floor(ly/TS));return;}
     var tx = Math.floor(lx / TS), ty = Math.floor(ly / TS);
     if (!inb(tx, ty)) return;
     var dx = tx - S.px, dy = ty - S.py;
@@ -2246,7 +2369,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     }
   }
 
-  function drawPlayer(px, py, dir, walking) {
+  function oldDrawPlayer(px, py, dir, walking) {
     var bob = walking ? Math.sin(clock * 22) * 1.2 : 0;
     var leg = walking ? Math.round(Math.sin(clock * 22) * 2) : 0;
     px = Math.round(px); py = Math.round(py + bob);
@@ -2647,7 +2770,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   cv.addEventListener('pointerup', endPress);
   cv.addEventListener('pointercancel', endPress);
 
-  function dayTint() {
+  function oldDayTint() {
     var h = S.minutes / 60, col = null, a = 0;
     if (h >= 17 && h < 20) { col = '255,140,60'; a = (h - 17) / 3 * 0.22; }
     else if (h >= 20) { col = '20,30,80'; a = Math.min(0.5, 0.22 + (h - 20) / 6 * 0.28); }
@@ -2710,7 +2833,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     }
     trees.forEach(function (t) { if (t[1] <= S.py) drawTree(t[0] * TS, t[1] * TS, t[0], t[1]); });
     S.animals.forEach(function (a) { if (a.y <= ry + 0.2) drawAnimal(a); });
-    drawCitizens(); drawJourneyPeople(); drawPlayer(rx * TS, ry * TS, S.dir, !!mv);
+    drawFarmDecor(); drawCitizens(); drawJourneyPeople(); drawPlayer(rx * TS, ry * TS, S.dir, !!mv);
     S.animals.forEach(function (a) { if (a.y > ry + 0.2) drawAnimal(a); });
     trees.forEach(function (t) { if (t[1] > S.py) drawTree(t[0] * TS, t[1] * TS, t[0], t[1]); });
     drawFishing();
@@ -2738,7 +2861,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       ctx.fillStyle = 'rgba(255,255,255,.75)';
       for (var q = 0; q < 24; q++) { var d2 = drops[q]; ctx.fillRect(Math.round((d2.x + clock * 14) % LW), Math.round((d2.y + clock * 28 * (q % 3 + 1)) % LH), 2, 2); }
     }
-    drawHud(dt || 0); drawLivingStatus(); updateJourneyStatus();
+    drawHud(dt || 0); drawLivingStatus(); updateJourneyStatus();drawLifeClock();
     if (fade) {
       ctx.fillStyle = 'rgba(8,14,11,' + Math.min(1, fade.a) + ')'; ctx.fillRect(0, 0, LW, LH);
       if (fade.a > 0.7) {
@@ -2998,14 +3121,14 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       if (tl.t !== T.SOIL || tl.crop) return;
       if(SEASON_CROPS[S.season % 4].indexOf(tool.id) < 0 && !tl.greenhouse) {toast('Fora de época. Plante essa semente na estufa.'); return;}
       if (S.seeds[tool.id] <= 0) { toast('Sem sementes de ' + CROPS[tool.id].nome.toLowerCase() + '. Compre na loja.'); sfx('err'); return; }
-      S.seeds[tool.id]--; syncHot(); tl.crop = { k: tool.id, age: 0 }; sfx('plant'); burst(cx, cy, '#63b95b', 5, 30); updateHud();
+      bumpLife('planted');S.seeds[tool.id]--; syncHot(); tl.crop = { k: tool.id, age: 0 }; sfx('plant'); burst(cx, cy, '#63b95b', 5, 30); updateHud();
     }
   }
 
   function harvest(x, y) {
     var tl = tile(x, y), k = tl.crop.k, c = CROPS[k], cx = x * TS + 16, cy = y * TS + 10;
     if (bagFull('c:' + k)) return;
-    S.crops[k]++; syncHot();
+    bumpLife('harvested');S.crops[k]++; syncHot();
     if (c.rebrota) { tl.crop.age = c.dias - c.rebrota; } else { tl.crop = null; }
     sfx('harvest'); burst(cx, cy + 6, '#ffe066', 10, 55); floatText(cx, cy, '+1 ' + c.nome, c.cor === '#e0405a' ? '#ff9fb0' : '#ffd98a');
     updateHud();
@@ -3014,7 +3137,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   function sellAll() {
     var b = bagTotal();
     if (b.all === 0) { toast('Você não tem nada para vender.'); return; }
-    S.gold += b.v; S.earned += b.v;
+    bumpLife('sold',b.all);S.gold += b.v; S.earned += b.v;
     ORDER.forEach(function (k) { S.crops[k] = 0; });
     FISH_ORDER.forEach(function (k) { S.fish[k] = 0; });
     GOODS_ORDER.forEach(function (k) { S.goods[k] = 0; });
@@ -3035,7 +3158,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
 
   function openIntro() {
     showModal('<div class="card"><h2>Bem-vindo ao Vale das Cerejeiras</h2><p>Sua fazenda agora faz parte de um mundo com seis regiões. Abra Jornada para encontrar Yuri e começar sua primeira entrega. Visite Hanami, negocie com viajantes e desbloqueie o porto, a serra e o santuário. O trem, o táxi e seu próprio carro encurtam as viagens. Cada estação dura 28 dias.</p><ul>' +
-      '<li>Clique no mapa para andar. Use E ou Espaço para interagir.</li><li>Abra o Mapa (M) e escolha um destino para caminhar até ele.</li><li>Galhos, pedras, ervas e cristais fornecem recursos para construir.</li><li>Plante e regue todo dia. Você já tem uma galinha e ração no cocho.</li><li>Colha, venda na caixa ao lado da casa e use o ouro na loja.</li><li>Alcance ' + fmt(GOAL) + ' de ouro antes do fim da estação.</li></ul>' +
+      '<li>Clique no mapa para andar. Use E ou Espaço para interagir.</li><li>Abra o Mapa (M) e escolha um destino para caminhar até ele.</li><li>Galhos, pedras, ervas e cristais fornecem recursos para construir.</li><li>Plante e regue todo dia. Compre sementes, animais e ração na loja da Marta.</li><li>Colha, venda na caixa ao lado da casa e use o ouro na loja.</li><li>Alcance ' + fmt(GOAL) + ' de ouro antes do fim da estação.</li></ul>' +
       '<div class="card-foot"><button class="btn primary" type="button" data-a="begin">Começar</button></div></div>');
   }
   function openSleep() {
@@ -3049,6 +3172,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   }
   function openShop() { renderShop(); }
   function renderShop() {
+    if(!atCounter('marta'))return;
     var h = '<div class="card"><div class="card-head"><h2>Loja da Marta</h2><span class="coin" style="font-family:var(--font-display);font-size:20px">' + fmt(S.gold) + ' ouro</span></div><div class="rows"><div class="sec">Sementes de ' + SEASONS[S.season % 4].toLowerCase() + '</div>';
     seasonList().forEach(function (k) {
       var c = CROPS[k];
@@ -3072,7 +3196,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       h += '<div class="row"><img class="sw" alt="" src="' + iconURL('up_' + u) + '"><div class="info"><strong>' + up.nome + ' (nível ' + lv + '/' + up.custo.length + ')</strong><small>' + up.desc + '</small></div><span class="own"></span>' +
         '<div class="btns"><button class="btn small" type="button" data-a="up" data-u="' + u + '"' + (maxed || S.gold < cost ? ' disabled' : '') + '>' + (maxed ? 'Máximo' : cost) + '</button></div></div>';
     });
-    h += '</div><div class="card-foot"><button class="btn primary" type="button" data-a="close">Fechar</button></div></div>';
+    h += '</div><div class="card-foot"><button class="btn" data-a="imm-store">Jardim e decoração</button><button class="btn primary" type="button" data-a="close">Fechar</button></div></div>';
     showModal(h);
   }
   function showEnd() {
@@ -3087,6 +3211,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   modalEl.addEventListener('click', function (e) {
     var b = e.target.closest('[data-a]'); if (!b || b.disabled) return;
     var a = b.dataset.a;
+    if (handleImmersionAction(b)) return;
     if (handleLivingAction(b)) return;
     if (handleJourneyAction(b)) return;
     if (handleExpansionAction(b)) return;
@@ -3099,14 +3224,16 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     else if (a === 'begin') { S.intro = true; closeModal(); save(); }
     else if (a === 'sleep') { closeModal(); startSleep(false); }
     else if (a === 'buy') {
+      if(!atCounter('marta'))return;
       var k = b.dataset.k, n = +b.dataset.n, cost = CROPS[k].semente * n;
       if (S.gold >= cost) {
         if (!fits(k)) { toast('Sem espaço: a barra e a mochila estão cheias.'); sfx('err'); return; }
-        S.gold -= cost; S.seeds[k] += n; syncHot(); sfx('coin'); renderShop(); updateHud(); save();
+        bumpLife('seeds',n);S.gold -= cost; S.seeds[k] += n; syncHot(); sfx('coin'); renderShop(); updateHud(); save();
         var hs = S.hot.indexOf(k);
         toast('Sementes de ' + CROPS[k].nome.toLowerCase() + ' x' + n + (hs >= 0 ? ': na barra, slot ' + (hs + 1) + '.' : ': guardadas na mochila.'));
       }
     } else if (a === 'up') {
+      if(!atCounter('marta'))return;
       var u = b.dataset.u, lv = S.ups[u], cst = UPS[u].custo[lv];
       if (cst != null && S.gold >= cst) {
         S.gold -= cst; S.ups[u]++; sfx('coin');
@@ -3114,15 +3241,17 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
         renderShop(); updateHud(); save();
       }
     } else if (a === 'buyA') {
+      if(!atCounter('marta'))return;
       var aInfo = ANIMALS[b.dataset.k];
       if (aInfo && S.gold >= aInfo.custo && S.animals.length < MAX_ANIMALS) {
         S.gold -= aInfo.custo; S.animals.push(newAnimal(b.dataset.k)); sfx('coin'); renderShop(); updateHud(); save();
         toast(aInfo.nome + ' foi para o curral, no canto inferior esquerdo.');
       }
     } else if (a === 'buyF') {
+      if(!atCounter('marta'))return;
       var fn = +b.dataset.n, fc = FEED_PRICE * fn;
       if (S.gold >= fc) { S.gold -= fc; S.feed += fn; sfx('coin'); renderShop(); updateHud(); save(); }
-    } else if (a === 'restart') { S = newGame(); S.intro = true; syncHot(); applySeasonPalette(); buildHotbar(); resetView(); closeModal(); save(); updateHud(); toast('Nova fazenda. Boa sorte!'); }
+    } else if (a === 'restart') { S = newGame(); S.intro = true; syncHot(); applySeasonPalette(); buildHotbar(); resetView(); closeModal(); save(); updateHud(); openIdentity(); }
     else if (a === 'newseason') {
       S.season++; S.day = 1; S.seasonStart = S.earned; S.goalHit = false;
       var lost = 0, refund = 0, keep = SEASON_CROPS[S.season % 4];
@@ -3148,7 +3277,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     if (S.rain) S.tiles.forEach(function (t) { if (t.t === T.SOIL) t.wet = true; });
     S.px = 4; S.py = 4; S.dir = 'down'; resetView();
   }
-  function endDay(passed) {
+  function oldEndDay(passed) {
     expansionNight();
     var grew = 0, aMsg = animalNight();
     S.tiles.forEach(function (t) {
@@ -3176,7 +3305,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     sfx('sleep');
     fade = { a: 0, dir: 1, label: passed ? 'Você desmaiou...' : 'Dormindo...', cb: function () { endDay(passed); } };
   }
-  function onTime() {
+  function oldOnTime() {
     if (S.minutes === 1440) toast('Já passou da meia-noite. É melhor ir dormir.');
     if (S.minutes >= 1560) { startSleep(true); return; }
     updateHud();
@@ -3191,9 +3320,12 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   window.addEventListener('keydown', function (e) {
     if (e.ctrlKey || e.metaKey || e.altKey) return;
     if (modalOpen()) {
+      if(!S.profile.created&&!titleOn)return;
       if (e.key === 'Escape' || ((e.key === 'b' || e.key === 'B') && modalEl.querySelector('[data-bag]'))) closeModal();
       return;
     }
+    if(placingItem&&e.key==='Escape'){placingItem=null;toast('Colocação cancelada.');return;}
+    if(e.key.toLowerCase()==='o'){openLifeGoals();return;}
     if (e.key.toLowerCase() === 'm') { e.preventDefault(); openAtlas(); return; }
     if (e.key.toLowerCase() === 'j') { e.preventDefault(); openJournal(); return; }
     if (e.key === 'Escape') { e.preventDefault(); openSettings(); return; }
@@ -3239,7 +3371,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     if (!paused && !S.indoor) {
       acc += dt;
       updateAnimals(dt);
-      if (acc >= 2.8) { acc -= 2.8; S.minutes += 10; onTime(); }
+      if (acc >= 4) { acc -= 4; S.minutes += 10; onTime(); }
       if (mv) {
         mv.t += dt / 0.13;
         if (mv.t >= 1) { rx = mv.tx; ry = mv.ty; mv = null; }
@@ -3290,6 +3422,9 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
 
   document.querySelectorAll('[data-exp]').forEach(function(b){b.addEventListener('click',function(){
     if (titleOn) {toast('Comece ou continue uma fazenda para explorar.'); return;}
+    if(!S.profile.created){openIdentity();return;}
+    if(b.dataset.exp==='goals'){openLifeGoals();return;}
+    if(b.dataset.exp==='farm'){openMyFarm();return;}
     if(b.dataset.exp==='life'){openCityLife();return;}
     if(b.dataset.exp==='map') openAtlas(); else if(b.dataset.exp==='journey') openJourney(); else if(b.dataset.exp==='travel') openTransport(); else if(b.dataset.exp==='journal') openJournal(); else if(b.dataset.exp==='build') openProjects(); else openResources();
   });});
@@ -3300,10 +3435,10 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   updateHud();
   setInterval(function () { if (!modalOpen() && !fade) save(); }, 10000);
   hadSave = !!savedGame;
-  $('tCont').addEventListener('click', function () { if (!hadSave) return; hideTitle(); if (!S.intro) openIntro(); });
+  $('tCont').addEventListener('click', function () { if (!hadSave) return; hideTitle(); if(!S.profile.created)openIdentity(); else if (!S.intro) openLifeGoals(); });
   $('tNew').addEventListener('click', function () {
     if (hadSave && !confirmNew) { confirmNew = true; refreshTitle(); return; }
-    S = newGame(); syncHot(); applySeasonPalette(); resetView(); hadSave = true; confirmNew = false; hideTitle(); save(); updateHud(); applyLang(); openIntro();
+    S = newGame(); syncHot(); applySeasonPalette(); resetView(); hadSave = true; confirmNew = false; hideTitle(); save(); updateHud(); applyLang(); openIdentity();
   });
   $('tSet').addEventListener('click', openSettings);
   modalEl.addEventListener('input', function (e) { if (e.target.id === 'volRange') { CFG.vol = e.target.value / 100; saveCfg(); } if (e.target.id === 'musRange') { CFG.mvol = e.target.value / 100; saveCfg(); musicWatch(); } });
