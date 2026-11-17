@@ -1,5 +1,8 @@
 import http from 'node:http';
 import { pathToFileURL } from 'node:url';
+import { createHash } from 'node:crypto';
+import { join } from 'node:path';
+import { DatabaseSync } from 'node:sqlite';
 
 const PEOPLE = {
   yuri:'Yuri, viajante acolhedor do vale. Conhece caravanas, pomares e estradas; gosta de contar pequenos encontros.',
@@ -33,19 +36,76 @@ Animais disponíveis: galinha, ovelha, vaca, porco, pato, coelho; precisam de ra
 Capítulos: 0 entregar 4 maçãs a Yuri; 1 entregar 6 madeiras e 3 ervas a Hana, libera porto e passe de trem; 2 entregar 4 cenouras e 3 amoras a Rui, libera serra; 3 entregar 3 especiarias e 4 minérios a Tomo, libera santuário; 4 entregar 3 tecidos, 2 méis e 4 maçãs a Mei, conclui festival. Após capítulo 5 a jornada está concluída. Entre no estabelecimento e vá ao balcão. O mapa abre por Mundo ou tecla M.
 Táxi é contratado em parada ou estação. Trem precisa de passe e balcão de estação. Carro na garagem de Nico custa 1200 ouro e começa com 3 combustíveis; abastecimento custa 18; cada viagem usa 1. Refeição no café custa 35 e recupera até 60 energia. Pousada das Lanternas tem Quarto do Viajante por 35, Quarto Jardim por 75 e Suíte das Lanternas por 140 ouro. No Refúgio da Aurora os mesmos quartos custam 50, 90 e 155 ouro. Reserve na recepção, entre no quarto e caminhe até a cama. Checkout às 12h do dia seguinte, ou às 12h do próprio dia para reservas antes das 06h. Dormir recupera energia e avança até as 06h; não há cobrança automática. A recepção funciona 24 horas. Os botões mostram valores e disponibilidade atuais. O calendário muda à meia-noite e tem segunda a domingo; Dia das 06h às 12h, Tarde das 12h às 18h, Noite das 18h às 00h e Madrugada das 00h às 06h. A personagem é uma fazendeira e escolhe nome e nome da fazenda antes de começar. A nova partida tem ferramentas e 300 ouro, sem sementes ou animais; precisa comprá-los na loja da Marta. Objetivos abre dez metas e três pedidos diários, renovados à meia-noite. Minha fazenda mostra os itens guardados; para decorar compre na Marta ou no ateliê, escolha Colocar e clique em terreno vazio na fazenda. Itens: flores 25, banco 60, lanterna 80, espantalho 95, poço 120 e cerejeira ornamental 160 ouro. Banco recupera 10 energia uma vez por dia; poço enche regador. Demais detalhes desconhecidos: indique o menu adequado, nunca invente mecânicas, itens, preços, prazos ou benefícios.`;
 
+function openPlayerRegistry(path) {
+  const db = new DatabaseSync(path);
+  db.exec(`CREATE TABLE IF NOT EXISTS players (
+    id TEXT PRIMARY KEY, nickname TEXT NOT NULL, registered_at INTEGER NOT NULL
+  ) STRICT`);
+  const count = db.prepare('SELECT COUNT(*) AS total FROM players');
+  const register = db.prepare(`INSERT INTO players (id, nickname, registered_at) VALUES (?, ?, ?)
+    ON CONFLICT(id) DO UPDATE SET nickname = excluded.nickname WHERE nickname != excluded.nickname`);
+  return { db, count, register };
+}
+
+async function readJson(req, maxBytes) {
+  let bytes = 0;
+  const chunks = [];
+  // Keep the response socket open if the request exceeds the limit.
+  for await (const chunk of req.iterator({ destroyOnReturn: false })) {
+    bytes += chunk.length;
+    if (bytes > maxBytes) { req.resume(); return { error: 'too_large' }; }
+    chunks.push(chunk);
+  }
+  return { input: JSON.parse(Buffer.concat(chunks).toString('utf8')) };
+}
+
 export function createApp({env=process.env,fetchImpl=fetch,now=Date.now}={}) {
   const origins=new Set((env.ALLOWED_ORIGINS||'https://ayumitsurugane-collab.github.io,http://127.0.0.1:4175,http://localhost:4175').split(','));
   const clients=new Map(),cache=new Map();let dailyDate='',dailyCount=0,inFlight=0;
+  const signupClients = new Map();
+  const registryPath = env.PLAYER_DB_PATH || (env.RAILWAY_VOLUME_MOUNT_PATH && join(env.RAILWAY_VOLUME_MOUNT_PATH, 'players.sqlite'));
+  const registry = registryPath ? openPlayerRegistry(registryPath) : null;
   const dailyLimit=integer(env.DAILY_DIALOGUE_LIMIT||1500,1,100000);
-  return http.createServer(async(req,res)=>{
+  const server = http.createServer(async(req,res)=>{
     const origin=req.headers.origin;
     res.setHeader('Cache-Control','no-store');res.setHeader('X-Content-Type-Options','nosniff');
     const reply=(status,data)=>{if(!res.writableEnded){res.writeHead(status,{'Content-Type':'application/json; charset=utf-8'});res.end(JSON.stringify(data));}};
     if(req.url==='/health'&&req.method==='GET')return reply(200,{ok:true,model:env.GROQ_MODEL||'openai/gpt-oss-120b',configured:!!env.GROQ_API_KEY});
+    if (req.url === '/players/count' && req.method === 'GET') {
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      try { return registry ? reply(200, registry.count.get()) : reply(503, { error: 'unavailable' }); }
+      catch { return reply(503, { error: 'unavailable' }); }
+    }
     if(!origin||!origins.has(origin))return reply(403,{error:'origin'});
     res.setHeader('Access-Control-Allow-Origin',origin);res.setHeader('Vary','Origin');
     res.setHeader('Access-Control-Allow-Methods','POST, OPTIONS');res.setHeader('Access-Control-Allow-Headers','Content-Type');
     if(req.method==='OPTIONS'){res.writeHead(204);return res.end();}
+    if (req.url === '/players/register' && req.method === 'POST') {
+      if (!registry) return reply(503, { error: 'unavailable' });
+      const timestamp = now();
+      const ip = String(req.headers['x-forwarded-for'] || req.socket.remoteAddress).split(',').at(-1).trim();
+      for (const [key, value] of signupClients) if (timestamp - value.start >= 60000) signupClients.delete(key);
+      const bucket = signupClients.get(ip) || { start: timestamp, count: 0 };
+      signupClients.set(ip, bucket);
+      if (++bucket.count > 12) {
+        res.setHeader('Retry-After', '60');
+        return reply(429, { error: 'busy' });
+      }
+      let result;
+      try { result = await readJson(req, 1024); }
+      catch { return reply(400, { error: 'invalid_json' }); }
+      if (result.error) return reply(413, { error: result.error });
+      const { id, nickname } = result.input || {};
+      const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+      const name = typeof nickname === 'string' ? nickname.replace(/[<>\p{Cc}\p{Cf}]/gu, '').trim().replace(/\s+/g, ' ') : '';
+      if (typeof id !== 'string' || !uuid.test(id) || name.length < 2 || name.length > 24) {
+        return reply(400, { error: 'invalid_player' });
+      }
+      try {
+        registry.register.run(createHash('sha256').update(id.toLowerCase()).digest('hex'), name, timestamp);
+        return reply(200, registry.count.get());
+      } catch { return reply(503, { error: 'unavailable' }); }
+    }
     if(req.url!=='/dialogue'||req.method!=='POST')return reply(404,{error:'not_found'});
     if(!env.GROQ_API_KEY)return reply(503,{error:'unavailable'});
     const timestamp=now(),date=new Date(timestamp).toISOString().slice(0,10);
@@ -83,6 +143,8 @@ export function createApp({env=process.env,fetchImpl=fetch,now=Date.now}={}) {
       reply(200,{text});
     }catch{return reply(503,{error:'unavailable'});}finally{inFlight--;}
   });
+  if (registry) server.once('close', () => registry.db.close());
+  return server;
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){
   createApp().listen(Number(process.env.PORT)||3000,'0.0.0.0',()=>console.log('Dialogue service ready'));
