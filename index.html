@@ -26,6 +26,12 @@ body{padding:12px!important;display:grid!important;align-content:center;min-heig
 .app{max-width:min(1500px,calc((100dvh - 160px)*1.9333))!important}.life-strip{border-top:0;padding:0 3px 2px}.valley-bar{flex-wrap:wrap}.valley-bar nav{flex-wrap:wrap}.life-strip strong{font:15px "Pixelify Sans",monospace}
 @media(max-width:1000px){.app{max-width:100%!important}.valley-bar{align-items:stretch;flex-direction:column}.valley-bar nav{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))}}
 @media(max-width:540px){.valley-bar nav{grid-template-columns:repeat(3,minmax(0,1fr))}.life-strip strong{font-size:13px}}
+.player-community { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 3px 10px; color: #dfc796; text-align: center; }
+.player-community[hidden], #playerRegistration[hidden] { display: none; }
+#playerRegistration { font: inherit; color: #f1dca8; background: #2d4739; border: 1px solid #667b59; border-radius: 6px; padding: 4px 8px; cursor: pointer; }
+@media (max-width: 540px) {
+  .player-community { order: 1; flex-basis: 100%; justify-content: flex-start; }
+}
 </style>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Pixelify+Sans:wght@500;700&display=swap">
@@ -226,7 +232,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     </div>
   </header>
 
-  <div class="life-strip"><span id="playerBadge">Sua história no vale</span><strong id="lifeClock">08:00 · Dia · Segunda</strong></div><div class="stage">
+  <div class="life-strip"><span id="playerBadge">Sua história no vale</span><div class="player-community" id="playerCommunity" hidden><span id="playerCount" role="status">Consultando cadastros…</span><button type="button" id="playerRegistration" hidden>Fazer meu registro</button></div><strong id="lifeClock">08:00 · Dia · Segunda</strong></div><div class="stage">
     <canvas id="game" aria-label="Mundo explorável do Vale das Cerejeiras"></canvas>
     <div id="toast" role="status" aria-live="polite"></div>
     <div id="title" hidden><canvas id="tCanvas" aria-hidden="true"></canvas><div class="t-box">
@@ -1214,10 +1220,20 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     s.imm.decorCount=s.tiles.filter(function(t){return !!t.decor;}).length;
     return s;
   }
-  function cleanPlayerName(v){return String(v||'').replace(/[<>\u0000-\u001f]/g,'').trim().replace(/\s+/g,' ').slice(0,24);}
-  function finishIdentity(name,farm,outfit){name=cleanPlayerName(name);if(name.length<2)return false;S.profile={name:name,farm:cleanPlayerName(farm)||'Recanto de '+name,outfit:OUTFITS[outfit]?outfit:'rose',created:true};S.intro=true;save();closeModal();openLifeGoals();return true;}
+  function cleanPlayerName(v){return String(v||'').replace(/[<>\p{Cc}\p{Cf}]/gu,'').trim().replace(/\s+/g,' ').slice(0,24);}
+  function finishIdentity(name, farm, outfit) {
+    name = cleanPlayerName(name);
+    if (name.length < 2) return false;
+    S.profile = { name, farm: cleanPlayerName(farm) || 'Recanto de ' + name, outfit: OUTFITS[outfit] ? outfit : 'rose', created: true };
+    S.intro = true;
+    save();
+    closeModal();
+    openLifeGoals();
+    if (registrationEndpoint()) submitPlayerRegistration();
+    return true;
+  }
   function openIdentity(){
-    panel('Seu lugar no vale','Uma nova história começa com você.','<div class="identity-portrait"><span class="woman-avatar"></span><div><b>Sua fazendeira</b><p>Você vai cultivar, conhecer pessoas e transformar este lugar no seu lar.</p></div></div><label for="playerName">Como você se chama?</label><input id="playerName" maxlength="24" autocomplete="off" placeholder="Seu nome" value="'+escapeLiving(S.profile.name)+'"><label for="farmName">Nome da sua fazenda</label><input id="farmName" maxlength="24" placeholder="Ex.: Recanto das Flores" value="'+escapeLiving(S.profile.farm)+'"><label for="playerOutfit">Cor da roupa</label><select id="playerOutfit"><option value="rose">Rosa cerejeira</option><option value="sage">Verde sálvia</option><option value="blue">Azul do céu</option></select><p id="identityError" class="form-error"></p><button class="btn primary" data-a="imm-identity">Entrar no vale</button><p class="journey-note">Sua fazenda fica salva neste navegador. Seu nome de personagem também será usado nas conversas com os moradores.</p>');
+    panel('Seu lugar no vale','Uma nova história começa com você.','<div class="identity-portrait"><span class="woman-avatar"></span><div><b>Sua fazendeira</b><p>Você vai cultivar, conhecer pessoas e transformar este lugar no seu lar.</p></div></div><label for="playerName">Como você se chama?</label><input id="playerName" maxlength="24" autocomplete="off" placeholder="Seu nome" value="'+escapeLiving(S.profile.name)+'"><label for="farmName">Nome da sua fazenda</label><input id="farmName" maxlength="24" placeholder="Ex.: Recanto das Flores" value="'+escapeLiving(S.profile.farm)+'"><label for="playerOutfit">Cor da roupa</label><select id="playerOutfit"><option value="rose">Rosa cerejeira</option><option value="sage">Verde sálvia</option><option value="blue">Azul do céu</option></select><p id="identityError" class="form-error"></p><button class="btn primary" data-a="imm-identity">'+(registrationEndpoint()?'Registrar e entrar':'Entrar no vale')+'</button><p class="journey-note">Sua fazenda fica salva neste navegador. Seu nome de personagem também será usado nas conversas com os moradores.'+(registrationEndpoint()?' O registro guarda seu apelido e o código deste navegador. Só o total de pessoas registradas é público.':'')+'</p>');
   }
   function bumpLife(k,n){if(S.imm)S.imm.stats[k]=(S.imm.stats[k]||0)+(n||1);}
   function drawPlayer(px,py,dir,walking){
@@ -1282,6 +1298,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   function drawLifeClock(){var phase=phaseOf(S.minutes),label=timeText()+' · '+phase+' · '+weekday();var node=$('lifeClock');if(node)node.textContent=label;var name=$('playerBadge');if(name)name.textContent=S.profile.created?S.profile.name+' · '+S.profile.farm:'Sua história no vale';if(placingItem){ctx.fillStyle='#243b31ed';ctx.fillRect(8,LH-115,LW-16,29);ctx.fillStyle='#f3daa3';ctx.font='12px monospace';ctx.textAlign='center';ctx.fillText('Colocar '+farmItem(placingItem).name+' · clique em terreno livre · Esc cancela',LW/2,LH-96);ctx.textAlign='left';}}
   function contextualGreeting(id){var n=npcById(id),name=S.profile.name||'viajante',phase=phaseOf(S.minutes),greeting=phase==='Dia'?'Bom dia':phase==='Tarde'?'Boa tarde':phase==='Noite'?'Boa noite':'Ainda acordada';var lines=[greeting+', '+name+'! Hoje é '+weekday().toLowerCase()+'. '+(S.rain?'A chuva deixou as ruas mais calmas.':'As cerejeiras estão lindas lá fora.'),weekday()==='Sábado'||weekday()==='Domingo'?'Fim de semana traz viajantes. Sempre aparece alguém com novidades.':'Hoje tenho trabalho e histórias para dividir. Como vai sua fazenda?',phase==='Madrugada'?'Está bem silencioso. A recepção dos hotéis atende a noite inteira, se precisar descansar.':phase==='Noite'?'As lanternas já acenderam. Gosto de ver a cidade ficando tranquila.':(n?n.text:'Entre, fique à vontade e me conte como vai seu dia.')];return lines[(dayNumber()+(S.life.talks[id]||0))%lines.length];}
   function handleImmersionAction(b){var a=b.dataset.a,id=b.dataset.id;if(!S.profile.created&&a==='close'){modalEl.hidden=true;showTitle();return true;}if(a==='journey-inn'){openHotel(id);return true;}if(a.indexOf('imm-')!==0)return false;
+    if (a === 'imm-register-player') { closeModal(); submitPlayerRegistration(); return true; }
     if(a==='imm-identity'){if(!finishIdentity($('playerName').value,$('farmName').value,$('playerOutfit').value))$('identityError').textContent='Digite um nome com pelo menos 2 letras.';}
     if(a==='imm-go')guideLife(id);if(a==='imm-claim'){claimLifeGoal(id);openLifeGoals();}if(a==='imm-daily'){claimDaily(id);openLifeGoals();}
     if(a==='imm-book'){reserveRoom(b.dataset.hotel,id);openHotel(b.dataset.hotel);}if(a==='imm-room')enterGuestRoom();if(a==='imm-sleep')sleepGuest();if(a==='imm-tomo')openNpc('tomo');
@@ -1290,6 +1307,100 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     if(a==='imm-well'){var f=facing();if(farmItem(tile(f[0],f[1]).decor)&&tile(f[0],f[1]).decor==='well'){S.water=capMax();save();}closeModal();}
     if(a==='imm-bench'){var p=facing();if(tile(p[0],p[1]).decor==='bench'&&S.imm.restDay!==dayNumber()){S.imm.restDay=dayNumber();S.energy=Math.min(energyMax(),S.energy+10);advanceClock(20);}else toast('Você já descansou no jardim hoje.');closeModal();}
     return true;
+  }
+
+  const playerRegistrationKey = 'vale-cerejeiras-registration-id';
+  let registeredPlayerTotal = null;
+  let registrationInProgress = false;
+
+  function registrationEndpoint() {
+    return window.location?.hostname === 'ayumitsurugane-collab.github.io' ? DIALOGUE_API : '';
+  }
+
+  function renderPlayerRegistration() {
+    if (!registrationEndpoint()) return;
+    const counter = $('playerCount');
+    const button = $('playerRegistration');
+    const status = S.profile.registration;
+    counter.textContent = registeredPlayerTotal === null ? 'Cadastros: indisponível' :
+      registeredPlayerTotal.toLocaleString('pt-BR') + (registeredPlayerTotal === 1 ? ' pessoa registrada' : ' pessoas registradas');
+    button.hidden = titleOn || !S.profile.created || status === 'confirmed';
+    button.disabled = registrationInProgress;
+    button.textContent = registrationInProgress ? 'Registrando…' : status === 'pending' ? 'Tentar registro de novo' : 'Fazer meu registro';
+  }
+
+  async function refreshPlayerCount() {
+    if (!registrationEndpoint()) return;
+    try {
+      const response = await fetch(registrationEndpoint() + '/players/count', { signal: AbortSignal.timeout(15000) });
+      if (!response.ok) throw new Error('Contador indisponível');
+      const { total } = await response.json();
+      if (!Number.isSafeInteger(total) || total < 0) throw new Error('Total inválido');
+      // A GET started before a registration may finish after it.
+      registeredPlayerTotal = Math.max(registeredPlayerTotal ?? 0, total);
+    } catch {
+      // Keep the last confirmed total if the server is temporarily unavailable.
+    }
+    renderPlayerRegistration();
+  }
+
+  function openPlayerRegistration() {
+    if (S.profile.registration === 'pending') { submitPlayerRegistration(); return; }
+    panel('Registro no Vale', 'Junte-se ao total de pessoas registradas.',
+      '<p>O Vale guarda seu apelido e o código de registro deste navegador. Os visitantes veem apenas o total.</p>' +
+      '<button class="btn primary" data-a="imm-register-player">Registrar como ' + escapeLiving(S.profile.name) + '</button>');
+  }
+
+  async function submitPlayerRegistration() {
+    if (!registrationEndpoint() || !S.profile.created) return;
+    const profile = S.profile;
+    profile.registration = 'pending';
+    save();
+    if (registrationInProgress) return;
+    registrationInProgress = true;
+    renderPlayerRegistration();
+    try {
+      let id = localStorage.getItem(playerRegistrationKey);
+      if (!id) {
+        id = crypto.randomUUID();
+        localStorage.setItem(playerRegistrationKey, id);
+      }
+      const response = await fetch(registrationEndpoint() + '/players/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, nickname: profile.name }),
+        signal: AbortSignal.timeout(15000)
+      });
+      if (!response.ok) throw new Error('Cadastro indisponível');
+      const { total } = await response.json();
+      if (!Number.isSafeInteger(total) || total < 1) throw new Error('Total inválido');
+      registeredPlayerTotal = Math.max(registeredPlayerTotal ?? 0, total);
+      if (S.profile === profile) {
+        profile.registration = 'confirmed';
+        save();
+        toast('Seu registro no Vale está confirmado.');
+      }
+    } catch {
+      if (S.profile === profile) toast('Seu jogo está salvo. Você pode tentar o registro de novo pelo contador.');
+    } finally {
+      registrationInProgress = false;
+      renderPlayerRegistration();
+      if (S.profile !== profile && S.profile.registration === 'pending') submitPlayerRegistration();
+    }
+  }
+
+  function initPlayerRegistration() {
+    if (!registrationEndpoint()) return;
+    $('playerCommunity').hidden = false;
+    $('playerRegistration').addEventListener('click', openPlayerRegistration);
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible') refreshPlayerCount();
+    });
+    window.addEventListener('online', function () {
+      refreshPlayerCount();
+      if (S.profile.registration === 'pending') submitPlayerRegistration();
+    });
+    refreshPlayerCount();
   }
 
   /* ---------- Estado ---------- */
@@ -1743,8 +1854,8 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     $('tSet').querySelector('.lb').textContent = tr('Configurações');
     $('tInfo').textContent = confirmNew ? tr('Apagar o jogo salvo? Toque de novo para confirmar.') : '';
   }
-  function showTitle() { titleOn = true; confirmNew = false; titleEl.hidden = false; refreshTitle(); if (!tRun) { tRun = true; requestAnimationFrame(drawTitleBg); } }
-  function hideTitle() { titleOn = false; titleEl.hidden = true; }
+  function showTitle() { titleOn = true; confirmNew = false; titleEl.hidden = false; refreshTitle(); renderPlayerRegistration(); if (!tRun) { tRun = true; requestAnimationFrame(drawTitleBg); } }
+  function hideTitle() { titleOn = false; titleEl.hidden = true; renderPlayerRegistration(); }
   /* >>> Edite aqui seu nome e suas redes sociais <<< */
   var CREDITS = {
     nome: 'L3OZ1N',
@@ -3435,7 +3546,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   updateHud();
   setInterval(function () { if (!modalOpen() && !fade) save(); }, 10000);
   hadSave = !!savedGame;
-  $('tCont').addEventListener('click', function () { if (!hadSave) return; hideTitle(); if(!S.profile.created)openIdentity(); else if (!S.intro) openLifeGoals(); });
+  $('tCont').addEventListener('click', function () { if (!hadSave) return; hideTitle(); if(!S.profile.created)openIdentity(); else { if (!S.intro) openLifeGoals(); if (S.profile.registration === "pending") submitPlayerRegistration(); } });
   $('tNew').addEventListener('click', function () {
     if (hadSave && !confirmNew) { confirmNew = true; refreshTitle(); return; }
     S = newGame(); syncHot(); applySeasonPalette(); resetView(); hadSave = true; confirmNew = false; hideTitle(); save(); updateHud(); applyLang(); openIdentity();
@@ -3445,6 +3556,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   modalEl.addEventListener('change', function (e) { if (e.target.id === 'volRange') { sfx('coin'); } });
   applyLang();
   showTitle();
+  initPlayerRegistration();
   requestAnimationFrame(frame);
 })();
 </script>
