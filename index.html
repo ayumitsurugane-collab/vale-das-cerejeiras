@@ -80,7 +80,6 @@ body{padding:12px!important;display:grid!important;align-content:center;min-heig
 .valley-sidebar kbd { color: #cdd1b9; font-size: 10px; padding: 0 4px; border: 1px solid #60705b; border-radius: 4px; }
 .valley-mobile-bar, #valleyMenuExpand, #valleyMenuBackdrop, .valley-close-mark { display: none; }
 #valleyMenuClose { flex: none; min-width: 30px; min-height: 32px; padding: 0 6px; font-size: 22px; line-height: 1; }
-.valley-life-start { display: flex; align-items: center; gap: 8px; min-width: 0; }
 #valleyMenuExpand { flex: none; min-height: 30px; padding: 3px 9px; font-size: 12px; white-space: nowrap; }
 .stage #modal[data-sidebar-view] {
   position: absolute !important;
@@ -105,14 +104,11 @@ body{padding:12px!important;display:grid!important;align-content:center;min-heig
   .app[data-sidebar-collapsed="true"] .valley-sidebar { display: none; }
   .app[data-sidebar-collapsed="true"] #valleyMenuExpand { display: block; }
   .app[data-sidebar-collapsed="true"] #game { max-height: calc(var(--game-fit-height) - 8px); }
-  /* In the xatspace, the host's logo sits over the frame's upper-left corner. */
-  .app[data-embedded="true"][data-sidebar-collapsed="true"] .life-strip { padding-inline-start: 102px; }
 }
 @media (max-width: 820px) {
   .app { display: block !important; max-width: min(100%, calc((100dvh - 102px) * 1.9333)) !important; }
   .valley-play { gap: 6px; }
   .valley-mobile-bar { display: flex; align-items: center; gap: 10px; }
-  .app[data-embedded="true"] .valley-mobile-bar { padding-inline-start: 102px; }
   .valley-mobile-bar strong { font-family: var(--font-display); font-size: clamp(14px, 4vw, 21px); }
   #valleyMenuToggle, #valleyMenuClose { display: block; min-height: 40px; padding: 6px 10px; white-space: nowrap; }
   #valleyMenuClose { font-size: 19px; }
@@ -359,7 +355,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     </div>
   </header>
 
-  <div class="life-strip"><div class="valley-life-start"><button type="button" id="valleyMenuExpand" aria-label="Abrir barra lateral" aria-controls="valleySidebar" aria-expanded="true">☰ Menu</button><span id="playerBadge">Sua história no vale</span></div><div class="player-community" id="playerCommunity" hidden><span id="playerCount" role="status">Consultando cadastros…</span><button type="button" id="playerRegistration" hidden>Fazer meu registro</button></div><strong id="lifeClock">08:00 · Dia · Segunda</strong></div><div class="stage">
+  <div class="life-strip"><span id="playerBadge">Sua história no vale</span><div class="player-community" id="playerCommunity" hidden><span id="playerCount" role="status">Consultando cadastros…</span><button type="button" id="playerRegistration" hidden>Fazer meu registro</button></div><strong id="lifeClock">08:00 · Dia · Segunda</strong></div><div class="stage">
     <canvas id="game" aria-label="Mundo explorável do Vale das Cerejeiras"></canvas>
     <div id="toast" role="status" aria-live="polite"></div>
     <div id="title" hidden><canvas id="tCanvas" aria-hidden="true"></canvas><div class="t-box">
@@ -371,7 +367,10 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       </div><p id="tInfo"></p></div></div></div>
     <div id="modal" hidden></div>
   </div>
-  <div class="valley-footer"><span id="regionName">Fazenda das Cerejeiras</span><span id="hint"></span><span class="save-note">Progresso salvo neste navegador</span></div>
+  <div class="valley-footer">
+    <button type="button" id="valleyMenuExpand" aria-label="Abrir barra lateral" aria-controls="valleySidebar" aria-expanded="true">☰ Menu</button>
+    <span id="regionName">Fazenda das Cerejeiras</span><span id="hint"></span><span class="save-note">Progresso salvo neste navegador</span>
+  </div>
 
 
   <section class="pad" aria-label="Controles de toque">
@@ -3803,7 +3802,6 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     if (!modalEl.hidden) syncSidebarPanel();
   });
   labelSidebarClose();
-  if (window.parent && window.parent !== window) $('valleyShell').dataset.embedded = 'true';
   let storedSidebarCollapse = false;
   try { storedSidebarCollapse = localStorage.getItem(sidebarPreferenceKey) === 'true'; } catch {}
   renderDesktopSidebar(storedSidebarCollapse);
