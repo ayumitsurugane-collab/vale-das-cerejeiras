@@ -165,6 +165,103 @@ body{padding:12px!important;display:grid!important;align-content:center;min-heig
     border-radius: 8px 0 0 8px;
   }
 }
+
+.valley-notice-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex: none;
+  min-height: 44px;
+  margin-inline-start: auto;
+  padding: 6px 12px;
+  border: 1px solid #89754d;
+  border-radius: 8px;
+  background: #393221;
+  color: #ffdf9d;
+  box-shadow: inset 0 1px #ffe3a222;
+  font: 700 13px var(--font-body);
+  cursor: pointer;
+}
+.valley-notice-button:hover { background: #50412a; border-color: #bf9d60; }
+.valley-notice-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 24px;
+  height: 21px;
+  clip-path: polygon(46% 0, 54% 0, 100% 91%, 96% 100%, 4% 100%, 0 91%);
+  background: linear-gradient(#ffe092, #f7b356);
+  color: #3c271b;
+}
+.valley-notice-mark::after {
+  content: "!";
+  padding-top: 4px;
+  font: 700 18px/1 var(--font-display);
+}
+#valleyMigrationNotice {
+  width: min(540px, calc(100% - 24px));
+  max-height: calc(100dvh - 24px);
+  padding: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid #86734e;
+  border-radius: 14px;
+  background: #20342b;
+  color: var(--ink);
+  box-shadow: 0 16px 48px #08110db3;
+}
+#valleyMigrationNotice::backdrop { background: #091510be; }
+body:has(#valleyMigrationNotice[open]) { overflow: hidden; }
+.valley-notice-content {
+  display: grid;
+  gap: 18px;
+  padding: clamp(16px, 4vw, 26px);
+  background: radial-gradient(ellipse at 95% 0%, #9f78482e, transparent 62%);
+}
+.valley-notice-head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 6px 12px;
+}
+.valley-notice-head .valley-notice-mark { width: 32px; height: 28px; }
+.valley-notice-head .valley-notice-mark::after { font-size: 24px; }
+.valley-notice-head p {
+  margin: 0;
+  color: #efcc89;
+  font-weight: 700;
+  font-size: 13px;
+}
+.valley-notice-head h2 {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #fff2ce;
+  font: 700 clamp(25px, 6vw, 34px)/1.03 var(--font-display);
+}
+#valleyMigrationSummary { margin: 0; color: #e3e8d9; }
+#valleyMigrationSummary strong { color: #ffdb91; }
+.valley-notice-details {
+  display: grid;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.valley-notice-details li {
+  display: grid;
+  gap: 2px;
+  padding: 10px 12px;
+  border: 1px solid #516955;
+  border-left: 3px solid #a9bb86;
+  border-radius: 7px;
+  background: #2a4235;
+  color: #d6e1d2;
+  font-size: 13px;
+}
+.valley-notice-details li + li { border-left-color: #d5ac64; }
+.valley-notice-details strong { color: #f4e9cc; font-size: 14px; }
+.valley-notice-done { justify-self: end; min-width: 110px; min-height: 44px; }
 </style>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Pixelify+Sans:wght@500;700&display=swap">
@@ -397,7 +494,12 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       </div><p id="tInfo"></p></div></div></div>
     <div id="modal" hidden></div>
   </div>
-  <div class="valley-footer"><span id="regionName">Fazenda das Cerejeiras</span><span id="hint"></span></div>
+  <div class="valley-footer">
+    <span id="regionName">Fazenda das Cerejeiras</span><span id="hint"></span>
+    <button id="valleyMigrationButton" class="valley-notice-button" type="button" aria-haspopup="dialog" aria-controls="valleyMigrationNotice" aria-label="Aviso sobre a mudança do Vale">
+      <span class="valley-notice-mark" aria-hidden="true"></span><span>Aviso</span>
+    </button>
+  </div>
 
 
   <section class="pad" aria-label="Controles de toque">
@@ -429,6 +531,22 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   </details>
   </div>
 </main>
+
+<dialog id="valleyMigrationNotice" aria-labelledby="valleyMigrationTitle" aria-describedby="valleyMigrationSummary">
+  <form method="dialog" class="valley-notice-content">
+    <header class="valley-notice-head">
+      <span class="valley-notice-mark" aria-hidden="true"></span>
+      <p>Mudança em <time datetime="2026-11-23">23/11/2026</time></p>
+      <h2 id="valleyMigrationTitle">O Vale vai mudar de endereço</h2>
+    </header>
+    <p id="valleyMigrationSummary">A partir dessa data, o Vale das Cerejeiras deixará de estar disponível pelo xatspace. Você poderá jogar pelo <strong>site oficial do NewOption</strong>.</p>
+    <ul class="valley-notice-details">
+      <li><strong>Seu progresso será preservado</strong><span>Nada será perdido na migração. Você poderá continuar de onde parou.</span></li>
+      <li><strong>Uma nova versão em 3D</strong><span>O Vale será reformulado em 3D, com cenários mais detalhados e uma experiência de jogo mais elaborada.</span></li>
+    </ul>
+    <button class="btn primary valley-notice-done" type="submit" autofocus>Entendi</button>
+  </form>
+</dialog>
 
 <script>
 (function () {
@@ -3571,8 +3689,18 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   }
 
   /* ---------- Modais ---------- */
+  const migrationNotice = $('valleyMigrationNotice');
+  const migrationNoticeButton = $('valleyMigrationButton');
+  migrationNoticeButton.addEventListener('click', function () {
+    migrationNotice.showModal();
+    dirStack.length = 0;
+    actHeld = actEdge = false;
+    mouseClear();
+    mouse.down = null;
+    mouse.followed = false;
+  });
   var modalEl = $('modal');
-  function modalOpen() { return !modalEl.hidden || titleOn || sidebarMenuOpen; }
+  function modalOpen() { return migrationNotice.open || !modalEl.hidden || titleOn || sidebarMenuOpen; }
   function showModal(html) { fishing = null; actEdge = false; mouseClear(); mouse.down = null; mouse.followed = false; modalEl.innerHTML = tr(html); modalEl.hidden = false; modalEl.setAttribute('role','dialog'); modalEl.setAttribute('aria-modal','true'); syncSidebarPanel(); modalEl.tabIndex = -1; modalEl.focus(); dirStack.length = 0; actHeld = false; }
   function closeModal() { modalEl.hidden = true; modalEl.innerHTML = ''; clearSidebarView(); }
 
@@ -3742,6 +3870,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
 
   window.addEventListener('keydown', function (e) {
     if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (migrationNotice.open || (e.target === migrationNoticeButton && e.key === 'Enter')) return;
     if (sidebarMenuOpen) {
       if (e.key === 'Escape') { e.preventDefault(); setSidebarMenu(false, true); }
       return;
