@@ -344,6 +344,8 @@ body:has(#valleyMigrationNotice[open]) { overflow: hidden; }
   white-space: nowrap;
 }
 .valley-speech-choices kbd { font-size: 10px; }
+.flyer-objective ul { padding: 0; list-style: none; }
+.flyer-objective li { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 36px; }
 .valley-migration-speech::after {
   content: "";
   position: absolute;
@@ -1677,8 +1679,8 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   function claimLifeGoal(id){var g=LIFE_GOALS.find(function(g){return g.id===id;});if(!g||S.imm.claimed.indexOf(id)>=0||goalProgress(g)<g.target)return false;S.imm.claimed.push(id);earn(g.reward);save();return true;}
   function dailyGoals(){var d=S.imm.daily;if(d.day!==dayNumber()){d=S.imm.daily={day:dayNumber(),base:lifeCounters(),claimed:[]};}var pool=[{id:'harvested',title:'Colher 3 produtos',target:3,reward:40},{id:'trades',title:'Negociar 2 vezes',target:2,reward:35},{id:'planted',title:'Plantar 4 sementes',target:4,reward:35},{id:'sold',title:'Vender 3 produtos na caixa',target:3,reward:40},{id:'orders',title:'Entregar 1 encomenda da vila',target:1,reward:45}];return [0,1,2].map(function(i){return pool[(dayNumber()+i)%pool.length];});}
   function claimDaily(id){var g=dailyGoals().find(function(g){return g.id===id;}),d=S.imm.daily;if(!g||d.claimed.indexOf(id)>=0||(lifeCounters()[id]||0)-(d.base[id]||0)<g.target)return false;d.claimed.push(id);earn(g.reward);save();return true;}
-  function openLifeGoals(){var daily=dailyGoals(),counts=lifeCounters();panel('Seu diário do vale',escapeLiving(S.profile.name||'Fazendeira')+' · dia de cultivo '+S.day,' <div class="journal-lead"><b>'+escapeLiving(S.profile.farm||'Sua fazenda')+'</b>'+starterGuide()+'</div><h3>Objetivos da sua história</h3><div class="life-goals">'+LIFE_GOALS.map(function(g){var done=S.imm.claimed.indexOf(g.id)>=0,n=Math.min(g.target,goalProgress(g));return '<article><div><b>'+g.title+'</b><p>'+g.text+'</p><progress value="'+n+'" max="'+g.target+'"></progress><small>'+n+'/'+g.target+' · recompensa '+g.reward+' ouro</small></div><div class="living-options"><button class="btn" data-a="imm-go" data-id="'+g.go+'">Ver caminho</button><button class="btn primary" data-a="imm-claim" data-id="'+g.id+'" '+(done||n<g.target?'disabled':'')+'>'+(done?'Concluído':'Receber')+'</button></div></article>';}).join('')+'</div><h3>Pedidos de '+weekday()+'</h3><p class="journey-note">Renovam à meia-noite. Receba suas recompensas antes do fim do dia.</p>'+daily.map(function(g){var n=Math.max(0,(counts[g.id]||0)-(S.imm.daily.base[g.id]||0)),done=S.imm.daily.claimed.indexOf(g.id)>=0;return '<div class="daily-goal"><span>'+g.title+' · '+Math.min(g.target,n)+'/'+g.target+'</span><button class="btn" data-a="imm-daily" data-id="'+g.id+'" '+(done||n<g.target?'disabled':'')+'>'+(done?'Recebido':'+'+g.reward+' ouro')+'</button></div>';}).join(''),true);}
-  function guideLife(id){if(id==='build'){openProjects();return;}if(id==='journey'){openJourney();return;}if(id==='yuri'){findResident('yuri');return;}if(id==='shop')id='marta';if(S.indoor&&S.indoor.id.indexOf('guest:')===0)exitRoom();if(S.indoor)exitRoom();if(id==='orchard'){walkToJourney(10,23);return;}if(id==='farm'){walkToJourney(10,9);return;}if(id==='city'){walkToJourney(78,28);return;}var p=roomById(id);if(p){var e=roomEntrance(p);walkToJourney(e[0],e[1]-1);}}
+  function openLifeGoals(){var daily=dailyGoals(),counts=lifeCounters();panel('Seu diário do vale',escapeLiving(S.profile.name||'Fazendeira')+' · dia de cultivo '+S.day,' <div class="journal-lead"><b>'+escapeLiving(S.profile.farm||'Sua fazenda')+'</b>'+starterGuide()+'</div>'+flyerObjective()+'<h3>Objetivos da sua história</h3><div class="life-goals">'+LIFE_GOALS.map(function(g){var done=S.imm.claimed.indexOf(g.id)>=0,n=Math.min(g.target,goalProgress(g));return '<article><div><b>'+g.title+'</b><p>'+g.text+'</p><progress value="'+n+'" max="'+g.target+'"></progress><small>'+n+'/'+g.target+' · recompensa '+g.reward+' ouro</small></div><div class="living-options"><button class="btn" data-a="imm-go" data-id="'+g.go+'">Ver caminho</button><button class="btn primary" data-a="imm-claim" data-id="'+g.id+'" '+(done||n<g.target?'disabled':'')+'>'+(done?'Concluído':'Receber')+'</button></div></article>';}).join('')+'</div><h3>Pedidos de '+weekday()+'</h3><p class="journey-note">Renovam à meia-noite. Receba suas recompensas antes do fim do dia.</p>'+daily.map(function(g){var n=Math.max(0,(counts[g.id]||0)-(S.imm.daily.base[g.id]||0)),done=S.imm.daily.claimed.indexOf(g.id)>=0;return '<div class="daily-goal"><span>'+g.title+' · '+Math.min(g.target,n)+'/'+g.target+'</span><button class="btn" data-a="imm-daily" data-id="'+g.id+'" '+(done||n<g.target?'disabled':'')+'>'+(done?'Recebido':'+'+g.reward+' ouro')+'</button></div>';}).join(''),true);}
+  function guideLife(id){if(id==='build'){openProjects();return;}if(id==='journey'){openJourney();return;}if(id==='yuri'){findResident('yuri');return;}if(id==='shop')id='marta';if(S.indoor&&S.indoor.id.indexOf('guest:')===0)exitRoom();if(S.indoor)exitRoom();if(guideFlyerResident(id))return;if(id==='orchard'){walkToJourney(10,23);return;}if(id==='farm'){walkToJourney(10,9);return;}if(id==='city'){walkToJourney(78,28);return;}var p=roomById(id);if(p){var e=roomEntrance(p);walkToJourney(e[0],e[1]-1);}}
   function roomById(id){if(id&&id.indexOf('guest:')===0){var bits=id.split(':'),hotel=placeById(bits[1]),type=HOTEL_ROOMS.find(function(r){return r.id===bits[2];});if(hotel&&hotel.kind==='inn'&&type)return {id:id,kind:'guest',name:type.name+' · '+hotel.name,x:hotel.x,y:hotel.y,w:hotel.w,h:hotel.h,roof:type.color,hotel:hotel.id,room:type.id};}return oldRoomById(id);}
   function hotelPrice(hotel,type){return type.price+(hotel==='lodge'?15:0);}
   function reserveRoom(hotelId,typeId){checkHotelExpiry();var h=placeById(hotelId),t=HOTEL_ROOMS.find(function(r){return r.id===typeId;});if(!h||h.kind!=='inn'||!atCounter(hotelId)||!t||S.imm.reservation)return false;var price=hotelPrice(hotelId,t);if(S.gold<price)return false;S.gold-=price;S.imm.reservation={hotel:hotelId,type:typeId,paid:price,checkin:worldStamp(),checkout:(dayNumber()+(S.minutes<360?0:1))*1440+720};bumpLife('bookings');save();return true;}
@@ -2509,6 +2511,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     return null;
   }
   function interactiveTile(tx, ty) {
+    if (flyerResidentAt(tx, ty)) return true;
     if(tile(tx,ty).decor || tile(tx,ty).npc || tile(tx,ty).place) return true;
     var t = tile(tx, ty);
     return t.t === T.FACILITY || t.t === T.NODE || t.t === T.WATER || t.t === T.BOX || t.t === T.COUNTER || t.t === T.DOOR || t.t === T.TROUGH || !!t.crop || !!animalAt(tx, ty);
@@ -3494,7 +3497,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     }
     trees.forEach(function (t) { if (t[1] <= S.py) drawTree(t[0] * TS, t[1] * TS, t[0], t[1]); });
     S.animals.forEach(function (a) { if (a.y <= ry + 0.2) drawAnimal(a); });
-    drawFarmDecor(); drawCitizens(); drawJourneyPeople(); drawPlayer(rx * TS, ry * TS, S.dir, !!mv);
+    drawFarmDecor(); drawCitizens(); drawJourneyPeople(); drawFlyerResidents(); drawPlayer(rx * TS, ry * TS, S.dir, !!mv);
     S.animals.forEach(function (a) { if (a.y > ry + 0.2) drawAnimal(a); });
     trees.forEach(function (t) { if (t[1] > S.py) drawTree(t[0] * TS, t[1] * TS, t[0], t[1]); });
     drawFishing();
@@ -3594,6 +3597,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       ? '<p class="bnote warn">Mochila cheia. Venda na caixa ao lado da casa' + (nextCost != null ? ' ou compre uma maior na loja (' + fmt(nextCost) + ' de ouro).' : '.') + '</p>'
       : (nextCost != null ? '<p class="bnote">Na loja você pode comprar mais 12 espaços por ' + fmt(nextCost) + ' de ouro.</p>' : '<p class="bnote">Sua mochila já está no tamanho máximo.</p>');
     showModal('<div class="card" data-bag><div class="card-head"><h2>Mochila</h2><span class="coin" style="font-family:var(--font-display);font-size:20px">' + bt.n + ' / ' + cap + '</span></div>' +
+      (flyerInProgress() ? '<div class="stat"><span>Folheto da Marta</span><b>Missão</b></div>' : '') +
       '<div class="bgrid">' + cells + '</div>' +
       (rows ? '<div class="rows">' + rows + '</div><div class="stat"><span>Vale na caixa de vendas</span><b class="coin">' + fmt(bt.v) + '</b></div>' : '<p>Mochila vazia. O que você colher, pescar ou coletar vai primeiro para a barra (até ' + STACK + ' de cada item) e o excedente vem para cá.</p>') +
       note + '<p class="bnote">Itens na barra (até ' + STACK + ' de cada) não ocupam a mochila, mas entram na venda.</p><p class="bnote">Ração (' + S.feed + ') não ocupa espaço. Sementes vão para um slot livre da barra; sem slot livre, ficam aqui (1 espaço por tipo).</p>' +
@@ -3607,6 +3611,8 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     if (fishing) return fishing.phase === 'bite' ? '<b>Agora! Espaço</b> para puxar o peixe' : 'Espere a boia mergulhar. Espaço recolhe a linha.';
     if (!inb(f[0], f[1])) return base;
     var tl = tile(f[0], f[1]), tool = curTool();
+    const recipient = flyerResidentAt(f[0], f[1]);
+    if (recipient) return '<b>E:</b> avisar ' + recipient.name;
     if(tl.npc) return '<b>E:</b> conversar com ' + npcById(tl.npc).name;
     if(tl.place) return '<b>E:</b> visitar ' + placeById(tl.place).name;
     if(tl.t === T.NODE) return '<b>E:</b> coletar ' + RESOURCE_NAMES[tl.node];
@@ -3755,6 +3761,8 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     }
     var f = facing(); if (!inb(f[0], f[1])) return;
     var x = f[0], y = f[1], tl = tile(x, y), tool = curTool(), cx = x * TS + 16, cy = y * TS + 16;
+    const recipient = flyerResidentAt(x, y);
+    if (recipient && startFlyerConversation(recipient)) return;
     if (expansionAct(x, y)) return;
     var an = animalAt(x, y);
     if (an) { touchAnimal(an); return; }
@@ -3813,6 +3821,122 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     if (!S.goalHit && S.earned - S.seasonStart >= GOAL) { S.goalHit = true; setTimeout(function () { toast('Meta da estação alcançada! Continue crescendo.'); }, 1400); }
   }
 
+  const FLYER_REWARD = 150;
+  const FLYER_RESIDENTS = [
+    {
+      id:'rina', name:'Rina', x:8, y:26, color:'#8eb69c',
+      greeting:'Estou separando as maçãs para levar à praça. Você veio da loja da Marta?',
+      options:[
+        ['Marta me pediu para mostrar este folheto.', 'Pode deixar comigo. Vou mostrar o endereço a quem comprar maçãs na praça.'],
+        ['Você leva uma cópia para a feira junto das maçãs?', 'Levo, sim! Vou guardar o folheto dentro da cesta até chegar à feira.']
+      ]
+    },
+    {
+      id:'kenji', name:'Kenji', x:13, y:25, color:'#a99dc1',
+      greeting:'Estou podando esta parte do pomar. O que você trouxe no bolso?',
+      options:[
+        ['Um folheto da Marta com o novo endereço do Vale.', 'Vou guardar uma cópia no galpão. Os outros chegam depois para buscar as ferramentas.'],
+        ['Pode mostrar o folheto ao pessoal que trabalha aqui?', 'Claro. Quando pararmos para o almoço, eu leio o aviso para todo mundo.']
+      ]
+    },
+    {
+      id:'akiko', name:'Akiko', x:17, y:28, color:'#d99a8e',
+      greeting:'Só falta amarrar esta última cesta. A Marta mandou algum recado?',
+      options:[
+        ['Mandou. Vim avisar por onde o Vale vai continuar.', 'Vou anotar NewOption antes de esquecer. Obrigada por vir até aqui.'],
+        ['Quer levar um folheto para o pessoal que pega o trem?', 'Quero! Depois de guardar a cesta, passo na estação e mostro a quem estiver esperando.']
+      ]
+    }
+  ];
+
+  function flyerQuest() { return S.life.flyerQuest; }
+  function flyerInProgress() { return !!flyerQuest() && !flyerQuest().paid; }
+  function flyerReady() { return flyerInProgress() && FLYER_RESIDENTS.every(person => flyerQuest().heard.includes(person.id)); }
+
+  function acceptFlyerQuest() {
+    if (!atCounter('marta') || flyerQuest() || !migrationStoryActive()) return false;
+    S.life.flyerQuest = {heard:[], paid:false};
+    save();
+    toast('Folheto na mochila. Veja Folhetos no pomar em Objetivos.');
+    return true;
+  }
+
+  function flyerResidentNear(person) {
+    return !S.indoor && Math.abs(S.px - person.x) + Math.abs(S.py - person.y) <= 2;
+  }
+
+  function flyerResidentAt(x, y) {
+    return flyerInProgress() && FLYER_RESIDENTS.find(person => person.x === x && person.y === y && !flyerQuest().heard.includes(person.id));
+  }
+
+  function notifyFlyerResident(person) {
+    if (!flyerInProgress() || !flyerResidentNear(person) || flyerQuest().heard.includes(person.id)) return false;
+    flyerQuest().heard.push(person.id);
+    save();
+    toast(flyerReady() ? 'Todos foram avisados. Volte à Marta para receber a recompensa.' :
+      person.name + ' recebeu a notícia · ' + flyerQuest().heard.length + '/' + FLYER_RESIDENTS.length);
+    return true;
+  }
+
+  function claimFlyerReward() {
+    if (!atCounter('marta') || !flyerReady()) return false;
+    flyerQuest().paid = true;
+    earn(FLYER_REWARD);
+    save();
+    updateHud();
+    sfx('coin');
+    toast('Folhetos no pomar concluída · +' + FLYER_REWARD + ' ouro');
+    return true;
+  }
+
+  function flyerObjective() {
+    const quest = flyerQuest();
+    if (!quest) return '';
+    const status = quest.paid ? 'Recompensa recebida · ' + FLYER_REWARD + ' ouro' :
+      flyerReady() ? 'Volte ao balcão da Marta para receber ' + FLYER_REWARD + ' ouro.' :
+      'Leve o folheto da Marta aos moradores do pomar público, ao sul da fazenda.';
+    const people = FLYER_RESIDENTS.map(person => {
+      const heard = quest.heard.includes(person.id);
+      return '<li><span>' + person.name + ' · ' + (heard ? 'Recebeu o aviso' : 'Aguardando') + '</span>' +
+        (heard ? '' : '<button class="btn small" data-a="imm-go" data-id="flyer-' + person.id + '">Encontrar</button>') + '</li>';
+    }).join('');
+    return '<section class="journey-quest flyer-objective"><h3>Folhetos no pomar</h3><p>' + status + '</p>' +
+      '<p>Moradores avisados: ' + quest.heard.length + '/' + FLYER_RESIDENTS.length + '</p><ul>' + people + '</ul>' +
+      (flyerReady() ? '<button class="btn primary" data-a="imm-go" data-id="marta">Voltar à Marta</button>' : '') +
+      (flyerInProgress() && !flyerReady() ? '<p>Recompensa: ' + FLYER_REWARD + ' ouro</p>' : '') + '</section>';
+  }
+
+  function guideFlyerResident(id) {
+    const person = FLYER_RESIDENTS.find(resident => id === 'flyer-' + resident.id);
+    if (!person) return false;
+    const approach = [[person.x,person.y + 1],[person.x,person.y - 1],[person.x + 1,person.y],[person.x - 1,person.y]].find(([x,y]) => walkable(x,y));
+    if (approach) walkToJourney(approach[0],approach[1]);
+    return true;
+  }
+
+  function drawFlyerResidents() {
+    if (!flyerInProgress()) return;
+    ctx.save();
+    ctx.textAlign = 'center';
+    ctx.font = '700 11px "Pixelify Sans", monospace';
+    for (const person of FLYER_RESIDENTS) {
+      const x = person.x * TS, y = person.y * TS;
+      if (x < camX - TS || x > camX + LW || y < camY - TS || y > camY + LH) continue;
+      drawCitizenSprite(x, y, person.color, 0, 'down');
+      ctx.fillStyle = '#233e33';
+      ctx.fillRect(x - 8, y + 32, 48, 15);
+      ctx.fillStyle = '#fff0cb';
+      ctx.fillText(person.name, x + 16, y + 43);
+      if (!flyerQuest().heard.includes(person.id) && migrationScene?.actor !== person) {
+        ctx.fillStyle = '#ffe3a0';
+        ctx.fillRect(x + 6, y - 24, 20, 15);
+        ctx.fillStyle = '#523a21';
+        ctx.fillText('!', x + 16, y - 13);
+      }
+    }
+    ctx.restore();
+  }
+
   const migrationSpeech = $('valleyMigrationSpeech');
   const migrationSpeechName = $('valleySpeechName');
   const migrationSpeechText = $('valleySpeechText');
@@ -3861,6 +3985,19 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     Luna: 'Se vir a Yuna na livraria, peça para deixar um folheto à vista dos leitores.',
     Noa: 'Passe pelo ateliê. Deixei uma cópia junto das peças, à vista de quem chega.'
   };
+  const streetPrompts = {
+    Yuri: ['O folheto da Sora diz onde o Vale vai continuar?', 'Posso passar na Marta e avisar quem estiver na loja?'],
+    Lia: ['Qual é o novo endereço que o Yuri contou no café?', 'Quer que eu deixe um recado para o pessoal do café?'],
+    Bento: ['Que endereço o Nico vai dizer a quem pega o táxi?', 'Posso contar para quem estiver esperando uma corrida?'],
+    Sora: ['Para onde o Ren disse que o Vale vai na data do aviso?', 'Quer que eu avise os viajantes da pousada?'],
+    Davi: ['Qual endereço a Noa copiou para o folheto da praça?', 'Posso avisar quem costuma passar pela praça?'],
+    Nina: ['Que endereço você contou à Hana no mercado?', 'Posso levar a notícia a quem estiver fazendo compras?'],
+    Caio: ['Que novo endereço eu devo contar ao pessoal do cais?', 'Quer que eu avise quem estiver a caminho do cais?'],
+    Emi: ['O que a Lia escreveu como novo endereço na comanda?', 'Posso avisar quem passar pelo Café das Flores?'],
+    Ivo: ['Que endereço o Ren colocou no folheto da estação?', 'Posso levar o recado para quem embarca no cais?'],
+    Luna: ['Qual é o endereço que você levou à livraria da Yuna?', 'Posso pedir à Yuna que deixe uma cópia na livraria?'],
+    Noa: ['Que endereço ficou na cópia do seu ateliê?', 'Quer que eu conte a novidade a quem visitar o ateliê?']
+  };
   const counterStories = {
     marta: ['Marta', 'O Yuri me trouxe o folheto da mudança do Vale. Deixei aqui, ao lado das sementes, para mostrar a quem passar.', 'Vou anotar o endereço. Agora, posso dar uma olhada nas sementes?'],
     market: ['Hana', 'A Nina trouxe a notícia de manhã. Ela veio correndo da pousada só para me mostrar o folheto!'],
@@ -3882,6 +4019,47 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     workshop: ['Otávio', 'O Yuri me deixou um folheto. Eu o prendi no mural para ler assim que terminei o serviço.'],
     mine: ['Bento', 'A Sora me contou na pousada. Levei o recado comigo para avisar o pessoal da mina.']
   };
+  const counterPrompts = {
+    marta: ['Qual endereço ficou no folheto perto das sementes?', 'Posso levar o folheto ao pessoal do pomar?'],
+    market: ['Que endereço a Nina trouxe no folheto da pousada?', 'Posso avisar o pessoal enquanto eles fazem as compras?'],
+    cafe: ['O que o Yuri disse para você escrever na comanda da Emi?', 'Posso avisar quem vier aqui tomar café?'],
+    inn: ['Qual é o endereço no aviso que você guardou na recepção?', 'Posso contar a novidade para quem estiver esperando um quarto?'],
+    station: ['Qual endereço você pôs no quadro de partidas, Ren?', 'Posso avisar quem está esperando o trem?'],
+    garage: ['Para onde o Vale vai, segundo o recado que o Bento trouxe?', 'Posso levar a notícia para a fila do táxi?'],
+    guild: ['Que endereço vocês colocaram no mural das caravanas?', 'Posso contar a mudança à próxima caravana?'],
+    homes1: ['Que endereço ficou anotado na comanda da Lia?', 'Posso avisar quem passar pela vizinhança?'],
+    homes2: ['Qual foi o endereço que você deixou perto da argila?', 'Posso mostrar a cópia para quem vier buscar uma peça?'],
+    homes3: ['Onde o Vale vai ficar, segundo a notícia da Luna?', 'Posso contar a novidade a quem vier procurar um livro?'],
+    camp: ['Para onde vai o Vale, segundo o papel na barraca?', 'Posso levar o recado a quem está saindo do acampamento?'],
+    portStation: ['Qual endereço veio no aviso que o Ren mandou de Hanami?', 'Posso contar aos passageiros antes do embarque no porto?'],
+    fishMarket: ['Que endereço ficou no recado ao lado da tabela de peixes?', 'Posso avisar os pescadores que acabaram de chegar?'],
+    lighthouse: ['Que endereço ficou na cópia que você trouxe para o farol?', 'Posso contar a novidade a quem estiver chegando pelo cais?'],
+    mountainStation: ['Que endereço a Sora passou para você trazer à serra?', 'Posso explicar a mudança a quem espera o trem da serra?'],
+    lodge: ['O aviso que a Luna trouxe diz o novo endereço?', 'Posso contar a novidade a quem estiver descansando no refúgio?'],
+    temple: ['Que endereço eu devo dizer a quem vier para o festival?', 'Posso ajudar a avisar quem já veio para o festival?'],
+    workshop: ['Qual endereço você leu no folheto que ficou no mural?', 'Posso explicar a mudança a quem vier buscar uma encomenda?'],
+    mine: ['Que endereço a Sora contou antes de você ir para a mina?', 'Posso avisar o pessoal quando eles saírem do turno?']
+  };
+  const counterInvitations = {
+    market: 'Claro. Vou pôr um folheto junto das compras. Se alguém perguntar na fila, mostre o recado.',
+    cafe: 'Pode, sim. A Emi até me pediu outra cópia para deixar numa mesa.',
+    inn: 'Pode contar. Tem uma cópia na recepção para quem chegar de viagem.',
+    station: 'Vale a pena. Tem gente que corre direto para o trem e nem olha o quadro de partidas.',
+    garage: 'Pode avisar na fila. Vou pedir aos motoristas que comentem a novidade no caminho.',
+    guild: 'Por favor. Peça que os viajantes olhem o mural antes de partir com a caravana.',
+    homes1: 'Pode deixar a notícia com os vizinhos. Se alguém esquecer o nome, tenho a comanda aqui.',
+    homes2: 'Pode mostrar, sim. Deixei a cópia seca num canto, longe da argila molhada.',
+    homes3: 'Conte quando escolherem o próximo livro. Os folhetos estão na prateleira de viagens.',
+    camp: 'Leve o recado a quem estiver partindo. O papel da barraca fica aqui para a próxima caravana.',
+    portStation: 'Boa ideia. Posso mostrar a cópia de Hanami antes de anunciar o embarque.',
+    fishMarket: 'Conte quando eles pararem para pesar o peixe. O recado está junto da tabela.',
+    lighthouse: 'Pode avisar no cais. Quem vier ao farol também pode consultar minha cópia.',
+    mountainStation: 'Pode explicar enquanto esperam. Trouxe mais de uma cópia para o pessoal da serra.',
+    lodge: 'Pode comentar junto da lareira. A Luna deixou um folheto para a gente passar adiante.',
+    temple: 'Ajuda muito. Quem vier preparar o festival pode ler o aviso que Aya trouxe.',
+    workshop: 'Conte a quem buscar uma encomenda. Depois eu mostro o folheto no mural.',
+    mine: 'Boa ideia. O pessoal costuma se reunir junto à saída depois do turno.'
+  };
   let migrationRemarks = [];
   let migrationSpeechRequested = false;
   let migrationSpeechElapsed = 0;
@@ -3898,22 +4076,19 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     return Date.now() < migrationSpeechUntil;
   }
 
-  function startMigrationStory(kind, actor, name, firstLine, response, invitation) {
-    const player = S.profile.name || 'Fazendeira';
-    const choices = [
-      {
-        text:'Onde vou poder jogar depois da mudança?',
-        reply:migrationDestination,
-        closing:response
-      },
-      {
-        text:'Posso ajudar a avisar quem ainda não sabe?',
-        reply:invitation,
-        closing:kind === 'counter'
-          ? 'Pode deixar, vou contar a quem eu encontrar. Agora podemos seguir com o atendimento?'
-          : 'Combinado! Vou passar a notícia adiante.'
-      }
+  function migrationAddress() {
+    return migrationStoryActive() ? migrationDestination : 'Desde 23/11, o Vale passou deste xatspace para o site oficial do NewOption.';
+  }
+
+  function migrationChoices(prompts, response, invitation, closing, completion) {
+    return [
+      {text:prompts[0], reply:migrationAddress(), closing:response},
+      {text:prompts[1], reply:invitation, closing, completion}
     ];
+  }
+
+  function startMigrationStory(kind, actor, name, firstLine, choices) {
+    const player = S.profile.name || 'Fazendeira';
     migrationScene = {kind, actor, name, player, beat:0, beats:[
       {name, text:firstLine},
       {name:player, text:'O que você quer responder?', player:true, choices}
@@ -3923,14 +4098,38 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   function greetMigrationCounter() {
     const room = S.indoor;
     const story = room && counterStories[room.id];
-    if (!story || !migrationStoryActive() || room === completedMigrationRoom || roomMotion || !atCounter(room.id)) return false;
+    if (!story || (!migrationStoryActive() && !(room.id === 'marta' && flyerInProgress())) || room === completedMigrationRoom || roomMotion || !atCounter(room.id)) return false;
     if (migrationScene?.kind === 'counter' && migrationScene.actor === room) return false;
     actHeld = actEdge = false;
-    const invitation = room.id === 'marta'
-      ? 'Claro! Se encontrar alguém no pomar, diga que deixei o folheto aqui, perto das sementes.'
-      : 'Ajuda bastante. Se alguém perguntar, diga que deixei um recado aqui no balcão para quem quiser conferir.';
+    if (room.id === 'marta' && flyerReady()) {
+      migrationScene = {kind:'counter', actor:room, beat:0, completion:'claimFlyer', beats:[
+        {name:'Marta',text:'O Kenji me contou que você passou no pomar. Todo mundo já sabe da mudança?'},
+        {name:S.profile.name || 'Fazendeira',text:'Sim! Entreguei o recado à Rina, ao Kenji e à Akiko.',player:true},
+        {name:'Marta',text:'Obrigada por fazer a viagem. Aqui estão os ' + FLYER_REWARD + ' de ouro que combinei com você.'}
+      ]};
+      return true;
+    }
+    let prompts = counterPrompts[room.id];
+    let invitation = counterInvitations[room.id];
+    let closing = 'Pode deixar, vou avisar quem encontrar. Podemos seguir com o atendimento?';
+    let completion;
+    if (room.id === 'marta') {
+      if (!flyerQuest()) {
+        invitation = 'Leve este folheto à Rina, ao Kenji e à Akiko no pomar do sul. Volte aqui depois e eu pago ' + FLYER_REWARD + ' ouro pela ajuda.';
+        closing = 'Vou pegar o folheto e seguir para o pomar.';
+        completion = 'takeFlyer';
+      } else if (flyerInProgress()) {
+        prompts = [prompts[0], 'Quem ainda falta avisar no pomar, Marta?'];
+        invitation = 'Procure ' + FLYER_RESIDENTS.filter(person => !flyerQuest().heard.includes(person.id)).map(person => person.name).join(', ') + ' no pomar do sul. Marquei os nomes em Objetivos.';
+        closing = 'Vou conferir a lista antes de ir ao pomar.';
+      } else {
+        prompts = [prompts[0], 'O pessoal do pomar comentou o aviso depois?'];
+        invitation = 'A Rina disse que levou o folheto para a feira. A notícia chegou a quem precisava, graças a você.';
+        closing = 'Que bom que deu certo! Agora posso ver as sementes?';
+      }
+    }
     startMigrationStory('counter', room, story[0], 'Olá, viajante! ' + story[1],
-      story[2] || 'Obrigada por avisar! Vou guardar o endereço. Podemos continuar?', invitation);
+      migrationChoices(prompts, story[2] || 'Obrigada por avisar! Vou guardar o endereço. Podemos continuar?', invitation, closing, completion));
     return true;
   }
 
@@ -3974,11 +4173,35 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       const dy = ry - actor.y;
       actor.dir = Math.abs(dx) > Math.abs(dy) ? dirOf(Math.sign(dx), 0) : dirOf(0, Math.sign(dy));
     }
-    startMigrationStory('street', actor, actor.name, streetStories[actor.name], streetReplies[actor.name], streetInvitations[actor.name]);
+    startMigrationStory('street', actor, actor.name, streetStories[actor.name],
+      migrationChoices(streetPrompts[actor.name], streetReplies[actor.name], streetInvitations[actor.name], 'Combinado! Vou passar a notícia adiante.'));
   }
 
   function residentSpeaking(person) {
     return migrationScene?.kind === 'street' && migrationScene.actor === person;
+  }
+
+  function startFlyerConversation(person) {
+    if (!flyerInProgress() || !flyerResidentNear(person) || flyerQuest().heard.includes(person.id)) return false;
+    if (migrationScene?.actor === person) return advanceMigrationSpeech();
+    if (migrationScene && migrationScene.kind !== 'idle') return false;
+    const choices = person.options.map(([text, reply]) => ({
+      text, reply, closing:'Obrigada por passar a notícia adiante!', completion:'notifyResident'
+    }));
+    startMigrationStory('orchard', person, person.name, person.greeting, choices);
+    return true;
+  }
+
+  function flyerCounterOffer() {
+    return atCounter('marta') && !flyerQuest() && migrationStoryActive()
+      ? '<button class="btn" data-a="flyer-talk">Conversar sobre o folheto</button>' : '';
+  }
+
+  function reopenFlyerConversation() {
+    if (!atCounter('marta') || flyerQuest()) return;
+    closeModal();
+    completedMigrationRoom = null;
+    greetMigrationCounter();
   }
 
   function advanceMigrationSpeech() {
@@ -3991,8 +4214,11 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       renderMigrationSpeech();
       if (scene.kind === 'counter' && scene.actor === S.indoor && atCounter(scene.actor.id) && !roomMotion) {
         completedMigrationRoom = scene.actor;
+        if (scene.completion === 'takeFlyer') acceptFlyerQuest();
+        if (scene.completion === 'claimFlyer') claimFlyerReward();
         serveCounter();
       }
+      if (scene.completion === 'notifyResident') notifyFlyerResident(scene.actor);
     } else {
       renderMigrationSpeech();
     }
@@ -4005,8 +4231,9 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     const choice = scene?.beats[scene.beat].choices?.[index];
     if (!choice || modalOpen()) return;
     scene.beats.push({name:scene.player, text:choice.text, player:true}, {name:scene.name, text:choice.reply});
-    if (choice.reply !== migrationDestination) scene.beats.push({name:scene.name, text:migrationDestination});
+    if (choice.reply !== migrationAddress()) scene.beats.push({name:scene.name, text:migrationAddress()});
     scene.beats.push({name:scene.player, text:choice.closing, player:true});
+    scene.completion = choice.completion;
     scene.beat++;
     renderMigrationSpeech();
     migrationSpeechNextButton.focus({preventScroll:true});
@@ -4057,7 +4284,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       migrationScene = null;
     }
 
-    if (paused || !migrationStoryActive()) {
+    if (paused || (!migrationStoryActive() && !flyerInProgress())) {
       migrationScene = null;
       migrationSpeechIdle = 0;
       renderMigrationSpeech();
@@ -4069,17 +4296,25 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       if (migrationScene?.kind !== 'counter' || !atCounter(S.indoor.id) || S.indoor !== migrationScene.actor || roomMotion) migrationScene = null;
       if (!migrationScene) greetMigrationCounter();
     } else {
-      migrationSpeechElapsed += dt;
-      if (!migrationSpeechRequested) prepareMigrationSpeech();
+      const announcement = migrationStoryActive();
+      if (announcement) {
+        migrationSpeechElapsed += dt;
+        if (!migrationSpeechRequested) prepareMigrationSpeech();
+      }
       if (migrationScene?.kind === 'counter') migrationScene = null;
+      if (migrationScene?.kind === 'orchard' && !flyerResidentNear(migrationScene.actor)) migrationScene = null;
       if (migrationScene?.kind === 'street') {
         const actor = migrationScene.actor;
         if (actor.inside || Math.abs(actor.x - rx) + Math.abs(actor.y - ry) > 5) migrationScene = null;
       }
       if (moving && migrationScene?.kind === 'idle') migrationScene = null;
-      if (!migrationScene && !moving) beginStreetStory();
+      if (!migrationScene && !moving && flyerInProgress()) {
+        const person = FLYER_RESIDENTS.find(resident => flyerResidentNear(resident) && !flyerQuest().heard.includes(resident.id));
+        if (person) startFlyerConversation(person);
+      }
+      if (announcement && !migrationScene && !moving) beginStreetStory();
       migrationSpeechIdle = moving || migrationScene ? 0 : migrationSpeechIdle + dt;
-      if (!migrationScene && migrationSpeechIdle >= 3 && migrationSpeechElapsed >= migrationSpeechNext) {
+      if (announcement && !migrationScene && migrationSpeechIdle >= 3 && migrationSpeechElapsed >= migrationSpeechNext) {
         const remark = migrationRemarks.length ? migrationRemarks[migrationSpeechIndex % migrationRemarks.length] + ' ' : '';
         migrationScene = {kind:'idle', beats:[{name:S.profile.name || 'Fazendeira', text:remark + migrationDestination, player:true}], beat:0};
         migrationSpeechIndex++;
@@ -4109,7 +4344,10 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     }
     const lastBeat = !choosing && migrationScene.beat === migrationScene.beats.length - 1;
     let label = 'Avançar';
-    if (lastBeat && migrationScene.kind === 'counter') label = migrationScene.actor.id === 'marta' ? 'Abrir loja' : 'Abrir atendimento';
+    if (lastBeat && migrationScene.completion === 'takeFlyer') label = 'Pegar folheto';
+    else if (lastBeat && migrationScene.completion === 'claimFlyer') label = 'Receber ' + FLYER_REWARD + ' ouro';
+    else if (lastBeat && migrationScene.completion === 'notifyResident') label = 'Confirmar entrega';
+    else if (lastBeat && migrationScene.kind === 'counter') label = migrationScene.actor.id === 'marta' ? 'Abrir loja' : 'Abrir atendimento';
     else if (lastBeat) label = 'Encerrar';
     if (migrationSpeechNextLabel.textContent !== label) migrationSpeechNextLabel.textContent = label;
     positionMigrationSpeech(beat);
@@ -4178,7 +4416,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   function renderShop() {
     if(!atCounter('marta'))return;
     var h = '<div class="card"><div class="card-head"><h2>Loja da Marta</h2><span class="coin" style="font-family:var(--font-display);font-size:20px">' + fmt(S.gold) + ' ouro</span></div><div class="rows"><div class="sec">Sementes de ' + SEASONS[S.season % 4].toLowerCase() + '</div>';
-    h += starterKitOffer();
+    h += flyerCounterOffer() + starterKitOffer();
     seasonList().forEach(function (k) {
       var c = CROPS[k];
       var info = 'Cresce em ' + c.dias + ' dias. Vende por ' + c.preco + '.' + (c.rebrota ? ' Dá de novo a cada ' + c.rebrota + ' dias.' : '');
@@ -4219,6 +4457,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     var a = b.dataset.a;
     if (handleSidebarAction(a)) return;
     if (handleHomesteadAction(a)) return;
+    if (a === 'flyer-talk') { reopenFlyerConversation(); return; }
     if (handleImmersionAction(b)) return;
     if (handleLivingAction(b)) return;
     if (handleJourneyAction(b)) return;
