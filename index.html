@@ -262,6 +262,13 @@ body:has(#valleyMigrationNotice[open]) { overflow: hidden; }
 .valley-notice-details li + li { border-left-color: #d5ac64; }
 .valley-notice-details strong { color: #f4e9cc; font-size: 14px; }
 .valley-notice-done { justify-self: end; min-width: 110px; min-height: 44px; }
+.card .npc-migration-line {
+  padding: 10px 13px;
+  border-left: 3px solid #d5ac64;
+  border-radius: 6px;
+  background: #384637;
+  color: #f4dfb6;
+}
 
 .valley-migration-speech {
   position: absolute;
@@ -1145,7 +1152,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     if(q&&q.npc===id)quest='<section class="journey-quest"><span class="eyebrow">HISTÓRIA PRINCIPAL</span><h3>'+q.title+'</h3><p>'+q.desc+'</p><p>'+requirements(q.need)+'</p><button class="btn primary" data-a="journey-deliver" data-id="'+id+'" '+(!canMake(q.need)?'disabled':'')+'>Entregar · +'+q.reward+' ouro</button></section>';
     var req=TRAVEL_REQUESTS[id],done=S.journey.requests[id];
     var rows=n.goods.map(function(k){var left=8-(S.journey.stock[id+':'+k]||0),price=tradePrice(n,k,true);return '<div class="trade-row"><div><b>'+itemName(k)+'</b><small>Você: '+quantity(k)+' · Estoque: '+left+'</small></div><button class="btn" data-a="journey-buy" data-id="'+id+'" data-item="'+k+'" '+(S.gold<price||!left?'disabled':'')+'>Comprar · '+price+'</button><button class="btn" data-a="journey-sell" data-id="'+id+'" data-item="'+k+'" '+(!quantity(k)?'disabled':'')+'>Vender · '+tradePrice(n,k,false)+'</button></div>';}).join('');
-    panel(n.name+' · '+n.role,'“'+contextDialogue(n.id)+'”','<button class="btn" data-a="life-talk" data-id="'+id+'">Conversar com '+n.name+'</button><div class="journey-wallet">'+S.gold+' ouro <span>Reputação '+S.journey.rep+' · comércio local</span></div>'+quest+'<h3>Mercadorias</h3>'+rows+'<section class="journey-quest"><h3>Pedido do dia</h3><p>'+requirements(req.need)+' → '+req.reward+' ouro e +1 reputação</p><button class="btn" data-a="journey-request" data-id="'+id+'" '+(done||!canMake(req.need)?'disabled':'')+'>'+(done?'Entregue hoje':'Entregar pedido')+'</button></section>',true);
+    panel(n.name+' · '+n.role,'“'+contextDialogue(n.id)+'”',npcMigrationMarkup(id)+'<button class="btn" data-a="life-talk" data-id="'+id+'">Conversar com '+n.name+'</button><div class="journey-wallet">'+S.gold+' ouro <span>Reputação '+S.journey.rep+' · comércio local</span></div>'+quest+'<h3>Mercadorias</h3>'+rows+'<section class="journey-quest"><h3>Pedido do dia</h3><p>'+requirements(req.need)+' → '+req.reward+' ouro e +1 reputação</p><button class="btn" data-a="journey-request" data-id="'+id+'" '+(done||!canMake(req.need)?'disabled':'')+'>'+(done?'Entregue hoje':'Entregar pedido')+'</button></section>',true);
   }
   function openJourney() {
     var q=currentChapter();
@@ -1384,6 +1391,8 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     var id=S.indoor&&S.indoor.id;if(!id||modalEl.hidden)return;
     var npc=Object.keys(NPC_ROOMS).find(function(n){return NPC_ROOMS[n]===id;})||id;
     var card=modalEl.querySelector('.card');
+    var heading=card?.querySelector('.card-head') || card?.querySelector('h2');
+    if(heading && !card.querySelector('.npc-migration-line')) heading.insertAdjacentHTML('afterend',npcMigrationMarkup(npc));
     if(card)card.insertAdjacentHTML('beforeend','<div class="living-options">'+(!modalEl.querySelector('[data-a="life-talk"]')?'<button class="btn" data-a="life-talk" data-id="'+npc+'">Conversar</button>':'')+(id==='garage'?'<button class="btn" data-a="life-nico">Mercadorias do Nico</button>':'')+'</div>');
   }
   function serveCounterService(){
@@ -1499,7 +1508,12 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   function escapeLiving(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
   function talkAllowed(id){var n=npcById(id);return n?nearNpc(n):atCounter(id);}
   function openConversation(id){if(!talkAllowed(id))return;S.life.talks[id]=(S.life.talks[id]||0)+1;var n=npcById(id),p=roomById(id);activeConversation={id:id,name:n?n.name:p?p.name:'Morador',history:[],waiting:false};showConversation(contextDialogue(id),'Conversa');}
-  function showConversation(text,status){var c=activeConversation;if(!c)return;panel(c.name,status,'<div class="npc-speech" id="npcSpeech">'+escapeLiving(text)+'</div><div class="living-options"><button class="btn" data-a="life-topic" data-id="cidade">Como está a cidade?</button><button class="btn" data-a="life-topic" data-id="historia">Conte uma história sua</button><button class="btn" data-a="life-topic" data-id="conselho">Algum conselho de viagem?</button></div><label class="chat-label" for="npcQuestion">O que você quer dizer?</label><textarea id="npcQuestion" maxlength="220" rows="2" placeholder="Escreva sua fala…"></textarea><button class="btn primary" data-a="life-send" '+(c.waiting?'disabled':'')+'>'+(c.waiting?'Ouvindo…':'Falar')+'</button><small id="npcAiStatus">'+escapeLiving(status)+'</small>');}
+  function showConversation(text,status){
+    var c=activeConversation;if(!c)return;
+    var announcement=npcMigrationLine(c.id);
+    var speech=announcement?announcement+'\n\n'+text:text;
+    panel(c.name,status,'<div class="npc-speech" id="npcSpeech">'+escapeLiving(speech)+'</div><div class="living-options"><button class="btn" data-a="life-topic" data-id="cidade">Como está a cidade?</button><button class="btn" data-a="life-topic" data-id="historia">Conte uma história sua</button><button class="btn" data-a="life-topic" data-id="conselho">Algum conselho de viagem?</button></div><label class="chat-label" for="npcQuestion">O que você quer dizer?</label><textarea id="npcQuestion" maxlength="220" rows="2" placeholder="Escreva sua fala…"></textarea><button class="btn primary" data-a="life-send" '+(c.waiting?'disabled':'')+'>'+(c.waiting?'Ouvindo…':'Falar')+'</button><small id="npcAiStatus">'+escapeLiving(status)+'</small>');
+  }
   async function sendConversation(question){var c=activeConversation;if(!c||c.waiting||!talkAllowed(c.id))return;question=String(question||'').trim().slice(0,220);if(!question)return;c.waiting=true;var seq=++talkSequence;c.history.push({role:'user',content:question});showConversation('…','Pensando na resposta');
     try{if(!DIALOGUE_API)throw Error('offline');var controller=new AbortController(),timer=setTimeout(function(){controller.abort();},18000);var response=await fetch(DIALOGUE_API+'/dialogue',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({npc:c.id,question:question,context:{playerName:S.profile.name,weekday:civilClock().weekday,phase:civilClock().phase,bareFarm:!!S.homestead,farmName:S.profile.farm,objectives:S.imm.claimed.length,reservation:S.imm.reservation?HOTEL_ROOMS.find(function(r){return r.id===S.imm.reservation.type;}).name:null,region:regionAt(S.px,S.py).name,day:S.day,season:SEASONS[S.season%4],hour:civilClock().hour,rain:S.rain,reputation:S.journey.rep,chapter:S.journey.chapter,recent:S.life.log.slice(0,2).map(function(l){return l.title;})},history:c.history.slice(-5)}),signal:controller.signal});clearTimeout(timer);if(!response.ok)throw Error('unavailable');var data=await response.json();if(typeof data.text!=='string'||!data.text.trim())throw Error('empty');if(activeConversation!==c||seq!==talkSequence)return;c.waiting=false;c.history.push({role:'assistant',content:data.text.slice(0,900)});c.history=c.history.slice(-6);if(!modalOpen()||!talkAllowed(c.id)||!modalEl.querySelector('#npcSpeech'))return;showConversation(data.text.slice(0,900),'Diálogo com IA · Groq');}
     catch(error){clearTimeout(timer);if(activeConversation!==c||seq!==talkSequence)return;c.waiting=false;if(modalOpen()&&talkAllowed(c.id)&&modalEl.querySelector('#npcSpeech'))showConversation(contextDialogue(c.id),'Fala local · IA indisponível no momento');}
@@ -3727,9 +3741,9 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   const migrationSpeech = $('valleyMigrationSpeech');
   const migrationSpeechUntil = Date.UTC(2026, 10, 23, 3);
   const migrationMessages = [
-    'O Vale vai mudar em breve.',
-    'Em breve, o Vale vai para o site do NewOption.',
-    'Logo a gente se encontra no site do NewOption.'
+    'O Vale vai sair deste xatspace e passar para o site oficial do NewOption.',
+    'Logo o Vale sai deste xatspace. A gente se encontra no site oficial do NewOption!',
+    'O Vale vai deixar este xatspace. Depois da mudança, o jogo fica no site oficial do NewOption.'
   ];
   let migrationRemarks = [];
   let migrationSpeechRequested = false;
@@ -3738,6 +3752,16 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   let migrationSpeechEnd = 0;
   let migrationSpeechNext = 24;
   let migrationSpeechIndex = 0;
+
+  function npcMigrationLine(id) {
+    if (Date.now() >= migrationSpeechUntil) return '';
+    return migrationMessages[(S.life.talks[id] || 0) % migrationMessages.length];
+  }
+
+  function npcMigrationMarkup(id) {
+    const line = npcMigrationLine(id);
+    return line ? '<p class="npc-migration-line">“' + escapeLiving(line) + '”</p>' : '';
+  }
 
   async function prepareMigrationSpeech() {
     migrationSpeechRequested = true;
@@ -3780,7 +3804,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       const remark = migrationRemarks.length ? migrationRemarks[migrationSpeechIndex % migrationRemarks.length] : '';
       migrationSpeech.textContent = remark ? remark + ' ' + message : message;
       migrationSpeechIndex++;
-      migrationSpeechEnd = migrationSpeechElapsed + 8;
+      migrationSpeechEnd = migrationSpeechElapsed + 10;
       migrationSpeechNext = migrationSpeechElapsed + 240 + Math.random() * 120;
       migrationSpeech.hidden = false;
     }
@@ -3792,7 +3816,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     const y = (ry * TS - camY) * height / LH;
     const edge = Math.min(120, width / 2);
     const center = Math.max(edge, Math.min(x, width - edge));
-    const below = y < 88;
+    const below = y < 110;
     migrationSpeech.style.left = center + 'px';
     migrationSpeech.style.top = (below ? y + TS * height / LH + 8 : y - 8) + 'px';
     migrationSpeech.style.setProperty('--speech-pointer', (x - center) + 'px');
