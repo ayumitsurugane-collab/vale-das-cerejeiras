@@ -283,6 +283,36 @@ body:has(#valleyMigrationNotice[open]) { overflow: hidden; }
   color: #465c39;
   font: 700 16px/1 var(--font-display);
 }
+.valley-speech-next {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  width: 100%;
+  margin-top: 7px;
+  padding: 5px 0 0;
+  border: 0;
+  border-top: 1px solid #6150353d;
+  background: transparent;
+  color: #39533a;
+  font: 700 12px/1.3 var(--font-body);
+  pointer-events: auto;
+  cursor: pointer;
+}
+.valley-speech-next::before {
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  content: "";
+}
+.valley-speech-next:focus-visible { outline: none; }
+.valley-speech-next:focus-visible::before { outline: 2px solid #55723e; outline-offset: 2px; }
+.valley-speech-next kbd {
+  padding: 1px 4px;
+  border: 1px solid #6d82578c;
+  border-radius: 4px;
+  background: #7894591f;
+}
 .valley-migration-speech::after {
   content: "";
   position: absolute;
@@ -531,8 +561,11 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
         <button class="tb" id="tNew" type="button"><span class="ic" data-px="sprout"></span><span class="lb"></span></button>
         <button class="tb" id="tSet" type="button"><span class="ic" data-px="gear"></span><span class="lb"></span></button>
       </div><p id="tInfo"></p></div></div></div>
-    <div id="valleyMigrationSpeech" class="valley-migration-speech" role="status" aria-atomic="true" hidden>
-      <strong id="valleySpeechName"></strong><span id="valleySpeechText"></span>
+    <div id="valleyMigrationSpeech" class="valley-migration-speech" hidden>
+      <div role="status" aria-atomic="true"><strong id="valleySpeechName"></strong><span id="valleySpeechText"></span></div>
+      <button id="valleySpeechNext" class="valley-speech-next" type="button" aria-keyshortcuts="E">
+        <span id="valleySpeechNextLabel">Avançar</span><kbd aria-hidden="true">E</kbd>
+      </button>
     </div>
     <div id="modal" hidden></div>
   </div>
@@ -1373,7 +1406,15 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   }
   function roomWalkable(x,y,id){if(x===8&&y===11)return true;if(x<1||x>15||y<3||y>10)return false;if(roomById(id).kind!=='guest'&&y===4&&x>=5&&x<=11)return false;return !roomFurniture(id).some(function(f){return x>=f.x&&x<f.x+f.w&&y>=f.y&&y<f.y+f.h;});}
   function roomFindPath(sx,sy,goals,id){var q=[[sx,sy]],head=0,prev={},key=function(x,y){return y*17+x;};prev[key(sx,sy)]=null;while(head<q.length){var p=q[head++];if(goals.some(function(g){return g[0]===p[0]&&g[1]===p[1];})){var out=[],k=key(p[0],p[1]);while(prev[k]!==null){out.unshift([k%17,Math.floor(k/17)]);k=prev[k];}return out;}[[1,0],[-1,0],[0,1],[0,-1]].forEach(function(d){var nx=p[0]+d[0],ny=p[1]+d[1],nk=key(nx,ny);if(roomWalkable(nx,ny,id)&&!(nk in prev)){prev[nk]=key(p[0],p[1]);q.push([nx,ny]);}});}return null;}
-  function planRoomPath(x,y){var r=S.indoor;if(!r)return;if(roomById(r.id).kind==='guest'){guestClick(x,y);return;}var counter=y<=4&&x>=5&&x<=11,door=x===8&&y>=10;var goals=counter?[[8,5],[7,5],[9,5]]:door?[[8,11]]:[[x,y]];var path=roomFindPath(r.x,r.y,goals,r.id);if(path){roomPath=path;roomPending=counter?'counter':door?'exit':null;}else toast('Esse caminho está ocupado pelos móveis.');}
+  function planRoomPath(x,y){
+    var r=S.indoor;if(!r)return;
+    if(roomById(r.id).kind==='guest'){guestClick(x,y);return;}var counter=y<=4&&x>=5&&x<=11,door=x===8&&y>=10;
+    if(counter && atCounter(r.id) && migrationScene?.kind==='counter' && migrationScene.actor===r){advanceMigrationSpeech();return;}
+    var goals=counter?[[8,5],[7,5],[9,5]]:door?[[8,11]]:[[x,y]];
+    var path=roomFindPath(r.x,r.y,goals,r.id);
+    if(path){roomPath=path;roomPending=counter?'counter':door?'exit':null;}
+    else toast('Esse caminho está ocupado pelos móveis.');
+  }
   function roomMetrics(){var z=Math.min((LW-36)/(17*TS),(LH-112)/(12*TS));return {z:z,x:(LW-17*TS*z)/2,y:52+(LH-112-12*TS*z)/2};}
   function interiorClick(x,y){var m=roomMetrics(),tx=Math.floor((x-m.x)/m.z/TS),ty=Math.floor((y-m.y)/m.z/TS);if(y<43){openCityLife();return;}if(tx>=0&&tx<17&&ty>=0&&ty<12)planRoomPath(tx,ty);}
   function roomStep(dx,dy){var r=S.indoor;if(!r||!roomWalkable(r.x+dx,r.y+dy,r.id))return false;r.dir=dirOf(dx,dy);roomMotion={fx:r.x,fy:r.y,tx:r.x+dx,ty:r.y+dy,t:0};r.x+=dx;r.y+=dy;return true;}
@@ -1387,6 +1428,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   function interiorHint(){if(roomById(S.indoor.id).kind==='guest')return 'Clique na cama para descansar · porta ao sul: recepção';return atCounter(S.indoor.id)?'<b>E</b> ou toque no balcão para ser atendida':'Clique no balcão para caminhar até ele · saída na porta ao sul';}
   function serveCounter(){
     if(!S.indoor||!atCounter(S.indoor.id))return;
+    if(migrationScene?.kind==='counter' && migrationScene.actor===S.indoor)return;
     serveCounterService();
     var id=S.indoor&&S.indoor.id;if(!id||modalEl.hidden)return;
     var npc=Object.keys(NPC_ROOMS).find(function(n){return NPC_ROOMS[n]===id;})||id;
@@ -3738,6 +3780,8 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   const migrationSpeech = $('valleyMigrationSpeech');
   const migrationSpeechName = $('valleySpeechName');
   const migrationSpeechText = $('valleySpeechText');
+  const migrationSpeechNextButton = $('valleySpeechNext');
+  const migrationSpeechNextLabel = $('valleySpeechNextLabel');
   const migrationSpeechUntil = Date.UTC(2026, 10, 23, 3);
   const migrationDestination = 'Dia 23/11, o Vale sai deste xatspace e passa para o site oficial do NewOption.';
   const streetStories = {
@@ -3753,8 +3797,21 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     Luna: 'Sora deixou o recado na pousada. Passei na livraria da Yuna para contar antes de voltar à serra.',
     Noa: 'Davi viu o recado na Casa dos Viajantes. Pedi uma cópia para pôr junto das peças novas do ateliê.'
   };
+  const streetReplies = {
+    Yuri: 'Vou perguntar à Marta se ela já recebeu o aviso.',
+    Lia: 'Vou guardar o nome. E na próxima pausa, aceito um café!',
+    Bento: 'Boa ideia avisar quem pega o táxi. Eu quase perdi a notícia.',
+    Sora: 'Que bom que você separou os folhetos. Vou contar lá na fazenda.',
+    Davi: 'Vou olhar o folheto quando passar pela praça.',
+    Nina: 'Vou passar no mercado e perguntar à Hana se ela guardou uma cópia.',
+    Caio: 'A notícia chegou depressa ao cais. Vou guardar o endereço.',
+    Emi: 'Vou anotar o nome também, antes que eu esqueça!',
+    Ivo: 'Obrigada por levar a notícia a quem embarca no cais.',
+    Luna: 'Vou lembrar disso quando passar na livraria.',
+    Noa: 'Vou olhar o folheto quando visitar o ateliê.'
+  };
   const counterStories = {
-    marta: ['Marta', 'O Yuri me trouxe o folheto da mudança do Vale. Deixei aqui, ao lado das sementes, para mostrar a quem passar.'],
+    marta: ['Marta', 'O Yuri me trouxe o folheto da mudança do Vale. Deixei aqui, ao lado das sementes, para mostrar a quem passar.', 'Vou anotar o endereço. Agora, posso dar uma olhada nas sementes?'],
     market: ['Hana', 'A Nina trouxe a notícia de manhã. Ela veio correndo da pousada só para me mostrar o folheto!'],
     cafe: ['Lia', 'O Yuri me contou a novidade enquanto esperava o café. Anotei NewOption atrás da comanda da Emi.'],
     inn: ['Sora', 'Vi o Ren pendurar o aviso. Guardei uma cópia aqui para avisar quem chega de viagem.'],
@@ -3791,12 +3848,13 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   }
 
   function startMigrationStory(kind, actor, name, firstLine, response) {
-    const beats = [
-      {name, text:firstLine, seconds:8},
-      {name, text:migrationDestination, seconds:8}
-    ];
-    if (response) beats.push({name:S.profile.name, text:response, seconds:5, player:true});
-    migrationScene = {kind, actor, beats, beat:0, elapsed:0};
+    const player = S.profile.name || 'Fazendeira';
+    migrationScene = {kind, actor, beat:0, beats:[
+      {name, text:firstLine},
+      {name:player, text:'E onde a gente vai encontrar o Vale depois da mudança?', player:true},
+      {name, text:migrationDestination},
+      {name:player, text:response, player:true}
+    ]};
   }
 
   function greetMigrationCounter() {
@@ -3806,7 +3864,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     greetedMigrationRoom = room;
     actHeld = actEdge = false;
     startMigrationStory('counter', room, story[0], 'Olá, viajante! ' + story[1],
-      room.id === 'marta' ? 'Então era sobre isso o folheto do Yuri. Vou guardar o nome do site!' : '');
+      story[2] || 'Obrigada por avisar! Vou guardar o endereço. Podemos continuar?');
     return true;
   }
 
@@ -3835,6 +3893,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   }
 
   function greetMigrationTraveler(traveler) {
+    if (migrationScene?.kind === 'street' && migrationScene.actor === traveler) return advanceMigrationSpeech();
     if (S.indoor || !migrationStoryActive() || !streetStoryReady(traveler)) return false;
     actHeld = actEdge = false;
     startStreetStory(traveler);
@@ -3849,13 +3908,27 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       const dy = ry - actor.y;
       actor.dir = Math.abs(dx) > Math.abs(dy) ? dirOf(Math.sign(dx), 0) : dirOf(0, Math.sign(dy));
     }
-    startMigrationStory('street', actor, actor.name, streetStories[actor.name],
-      actor.name === 'Yuri' ? 'Vou perguntar à Marta se ela já recebeu o aviso.' : '');
+    startMigrationStory('street', actor, actor.name, streetStories[actor.name], streetReplies[actor.name]);
   }
 
   function residentSpeaking(person) {
     return migrationScene?.kind === 'street' && migrationScene.actor === person;
   }
+
+  function advanceMigrationSpeech() {
+    if (!migrationScene || modalOpen()) return false;
+    const scene = migrationScene;
+    actHeld = actEdge = false;
+    if (++scene.beat >= scene.beats.length) {
+      migrationScene = null;
+      renderMigrationSpeech();
+      if (scene.kind === 'counter' && scene.actor === S.indoor && atCounter(scene.actor.id) && !roomMotion) serveCounter();
+    } else {
+      renderMigrationSpeech();
+    }
+    return true;
+  }
+  migrationSpeechNextButton.addEventListener('click', advanceMigrationSpeech);
 
   async function prepareMigrationSpeech() {
     migrationSpeechRequested = true;
@@ -3911,28 +3984,26 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       migrationSpeechIdle = moving || migrationScene ? 0 : migrationSpeechIdle + dt;
       if (!migrationScene && migrationSpeechIdle >= 3 && migrationSpeechElapsed >= migrationSpeechNext) {
         const remark = migrationRemarks.length ? migrationRemarks[migrationSpeechIndex % migrationRemarks.length] + ' ' : '';
-        migrationScene = {kind:'idle', beats:[{name:S.profile.name, text:remark + migrationDestination, seconds:10, player:true}], beat:0, elapsed:0};
+        migrationScene = {kind:'idle', beats:[{name:S.profile.name || 'Fazendeira', text:remark + migrationDestination, player:true}], beat:0};
         migrationSpeechIndex++;
         migrationSpeechNext = migrationSpeechElapsed + 240 + Math.random() * 120;
       }
     }
 
-    if (migrationScene) {
-      const beat = migrationScene.beats[migrationScene.beat];
-      migrationScene.elapsed += dt;
-      if (migrationScene.elapsed >= beat.seconds) {
-        migrationScene.elapsed = 0;
-        if (++migrationScene.beat >= migrationScene.beats.length) migrationScene = null;
-      }
-    }
+    renderMigrationSpeech();
+  }
 
+  function renderMigrationSpeech() {
     migrationSpeech.hidden = !migrationScene;
     if (!migrationScene) return;
     const beat = migrationScene.beats[migrationScene.beat];
-    if (migrationSpeechText.textContent !== beat.text) {
-      migrationSpeechName.textContent = beat.name;
-      migrationSpeechText.textContent = beat.text;
-    }
+    if (migrationSpeechName.textContent !== beat.name) migrationSpeechName.textContent = beat.name;
+    if (migrationSpeechText.textContent !== beat.text) migrationSpeechText.textContent = beat.text;
+    const lastBeat = migrationScene.beat === migrationScene.beats.length - 1;
+    let label = 'Avançar';
+    if (lastBeat && migrationScene.kind === 'counter') label = migrationScene.actor.id === 'marta' ? 'Abrir loja' : 'Abrir atendimento';
+    else if (lastBeat) label = 'Encerrar';
+    if (migrationSpeechNextLabel.textContent !== label) migrationSpeechNextLabel.textContent = label;
     positionMigrationSpeech(beat);
   }
 
@@ -4146,7 +4217,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
 
   window.addEventListener('keydown', function (e) {
     if (e.ctrlKey || e.metaKey || e.altKey) return;
-    if (migrationNotice.open || (e.target === migrationNoticeButton && e.key === 'Enter')) return;
+    if (migrationNotice.open || (e.key === 'Enter' && (e.target === migrationNoticeButton || e.target === migrationSpeechNextButton))) return;
     if (sidebarMenuOpen) {
       if (e.key === 'Escape') { e.preventDefault(); setSidebarMenu(false, true); }
       return;
@@ -4162,6 +4233,11 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       if (e.key === 'Escape' || ((e.key === 'b' || e.key === 'B') && modalEl.querySelector('[data-bag]'))) closeModal();
       return;
     }
+    if (e.key.toLowerCase() === 'e' && (migrationScene || e.repeat)) {
+      e.preventDefault();
+      if (!e.repeat) advanceMigrationSpeech();
+      return;
+    }
     if (e.key === ' ' && e.target?.closest?.('button')) return;
     if(placingItem&&e.key==='Escape'){placingItem=null;toast('Colocação cancelada.');return;}
     if (e.key === 'Escape') { e.preventDefault(); openSettings(); return; }
@@ -4172,7 +4248,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   });
   window.addEventListener('keyup', function (e) {
     if (KEYDIR[e.key]) popDir(KEYDIR[e.key]);
-    if (ACTKEYS[e.key]) { actHeld = false; if (!modalOpen()) e.preventDefault(); }
+    if (ACTKEYS[e.key]) { actHeld = false; if (!modalOpen() && !(e.key === ' ' && e.target === migrationSpeechNextButton)) e.preventDefault(); }
   });
   window.addEventListener('blur', function () { dirStack.length = 0; actHeld = false; });
 
@@ -4182,7 +4258,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (ev) { b.addEventListener(ev, function () { b.classList.remove('on'); popDir(d); }); });
   });
   var actBtn = $('btnAct');
-  actBtn.addEventListener('pointerdown', function (e) { e.preventDefault(); actBtn.classList.add('on'); actHeld = true; actEdge = true; });
+  actBtn.addEventListener('pointerdown', function (e) { e.preventDefault(); if (advanceMigrationSpeech()) return; actBtn.classList.add('on'); actHeld = true; actEdge = true; });
   ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (ev) { actBtn.addEventListener(ev, function () { actBtn.classList.remove('on'); actHeld = false; }); });
 
   $('btnBag').addEventListener('click', function (e) { e.currentTarget.blur(); if (!modalOpen()) openBag(); });
