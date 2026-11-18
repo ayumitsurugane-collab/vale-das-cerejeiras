@@ -89,10 +89,13 @@ export function createApp({env=process.env,fetchImpl=fetch,now=Date.now}={}) {
         max_completion_tokens: 450,
         reasoning_effort: 'low',
         reasoning_format: 'hidden',
-        messages: [{
-          role: 'system',
-          content: 'Escreva quatro falas breves para uma jovem fazendeira em Vale das Cerejeiras. Ela para por um instante, animada ou curiosa com uma mudança que vem chegando. Cada fala é uma reação que ela diz em voz alta, em português brasileiro, com 2 a 7 palavras, numa linha, sem lista, datas, lugares, nomes, números ou promessas. Seja casual e escreva em primeira pessoa. O jogo acrescentará o aviso da mudança depois de cada reação. Termine cada reação com ponto ou exclamação.'
-        }]
+        messages: [
+          {
+            role: 'system',
+            content: 'Escreva falas breves para uma jovem fazendeira em Vale das Cerejeiras. Ela para por um instante, animada ou curiosa com uma mudança que vem chegando. Cada fala é uma reação em primeira pessoa e em português brasileiro, com 2 a 7 palavras, sem datas, lugares, nomes, números ou promessas. O jogo acrescentará o aviso depois de cada reação.'
+          },
+          { role: 'user', content: 'Escreva quatro reações diferentes, uma por linha, sem numeração e com ponto ou exclamação no fim de cada uma.' }
+        ]
       })
     });
     if (!response.ok) throw Error('Migration dialogue unavailable');
