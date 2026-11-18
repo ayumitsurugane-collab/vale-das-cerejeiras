@@ -262,29 +262,26 @@ body:has(#valleyMigrationNotice[open]) { overflow: hidden; }
 .valley-notice-details li + li { border-left-color: #d5ac64; }
 .valley-notice-details strong { color: #f4e9cc; font-size: 14px; }
 .valley-notice-done { justify-self: end; min-width: 110px; min-height: 44px; }
-.card .npc-migration-line {
-  padding: 10px 13px;
-  border-left: 3px solid #d5ac64;
-  border-radius: 6px;
-  background: #384637;
-  color: #f4dfb6;
-}
-
 .valley-migration-speech {
   position: absolute;
   z-index: 4;
   width: max-content;
-  max-width: min(224px, calc(100% - 16px));
+  max-width: min(274px, calc(100% - 16px));
   padding: 8px 11px;
   border: 2px solid #5e4529;
   border-radius: 9px;
   background: #fff0cb;
   color: #342b20;
   box-shadow: 0 3px 0 #382c2266;
-  font: 700 13px/1.35 var(--font-body);
-  text-align: center;
+  font: 600 13px/1.35 var(--font-body);
   pointer-events: none;
   transform: translate(-50%, -100%);
+}
+.valley-migration-speech strong {
+  display: block;
+  margin-bottom: 3px;
+  color: #465c39;
+  font: 700 16px/1 var(--font-display);
 }
 .valley-migration-speech::after {
   content: "";
@@ -534,7 +531,9 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
         <button class="tb" id="tNew" type="button"><span class="ic" data-px="sprout"></span><span class="lb"></span></button>
         <button class="tb" id="tSet" type="button"><span class="ic" data-px="gear"></span><span class="lb"></span></button>
       </div><p id="tInfo"></p></div></div></div>
-    <div id="valleyMigrationSpeech" class="valley-migration-speech" role="status" hidden></div>
+    <div id="valleyMigrationSpeech" class="valley-migration-speech" role="status" aria-atomic="true" hidden>
+      <strong id="valleySpeechName"></strong><span id="valleySpeechText"></span>
+    </div>
     <div id="modal" hidden></div>
   </div>
   <div class="valley-footer">
@@ -1148,11 +1147,12 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   }
   function openNpc(id) {
     var n=npcById(id);if(!nearNpc(n)){toast('Caminhe até o viajante para conversar.');return;}
+    if(greetMigrationTraveler(n))return;
     refreshTradeStock();var q=currentChapter(),quest='';
     if(q&&q.npc===id)quest='<section class="journey-quest"><span class="eyebrow">HISTÓRIA PRINCIPAL</span><h3>'+q.title+'</h3><p>'+q.desc+'</p><p>'+requirements(q.need)+'</p><button class="btn primary" data-a="journey-deliver" data-id="'+id+'" '+(!canMake(q.need)?'disabled':'')+'>Entregar · +'+q.reward+' ouro</button></section>';
     var req=TRAVEL_REQUESTS[id],done=S.journey.requests[id];
     var rows=n.goods.map(function(k){var left=8-(S.journey.stock[id+':'+k]||0),price=tradePrice(n,k,true);return '<div class="trade-row"><div><b>'+itemName(k)+'</b><small>Você: '+quantity(k)+' · Estoque: '+left+'</small></div><button class="btn" data-a="journey-buy" data-id="'+id+'" data-item="'+k+'" '+(S.gold<price||!left?'disabled':'')+'>Comprar · '+price+'</button><button class="btn" data-a="journey-sell" data-id="'+id+'" data-item="'+k+'" '+(!quantity(k)?'disabled':'')+'>Vender · '+tradePrice(n,k,false)+'</button></div>';}).join('');
-    panel(n.name+' · '+n.role,'“'+contextDialogue(n.id)+'”',npcMigrationMarkup(id)+'<button class="btn" data-a="life-talk" data-id="'+id+'">Conversar com '+n.name+'</button><div class="journey-wallet">'+S.gold+' ouro <span>Reputação '+S.journey.rep+' · comércio local</span></div>'+quest+'<h3>Mercadorias</h3>'+rows+'<section class="journey-quest"><h3>Pedido do dia</h3><p>'+requirements(req.need)+' → '+req.reward+' ouro e +1 reputação</p><button class="btn" data-a="journey-request" data-id="'+id+'" '+(done||!canMake(req.need)?'disabled':'')+'>'+(done?'Entregue hoje':'Entregar pedido')+'</button></section>',true);
+    panel(n.name+' · '+n.role,'“'+contextDialogue(n.id)+'”','<button class="btn" data-a="life-talk" data-id="'+id+'">Conversar com '+n.name+'</button><div class="journey-wallet">'+S.gold+' ouro <span>Reputação '+S.journey.rep+' · comércio local</span></div>'+quest+'<h3>Mercadorias</h3>'+rows+'<section class="journey-quest"><h3>Pedido do dia</h3><p>'+requirements(req.need)+' → '+req.reward+' ouro e +1 reputação</p><button class="btn" data-a="journey-request" data-id="'+id+'" '+(done||!canMake(req.need)?'disabled':'')+'>'+(done?'Entregue hoje':'Entregar pedido')+'</button></section>',true);
   }
   function openJourney() {
     var q=currentChapter();
@@ -1380,19 +1380,17 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   function updateInterior(dt){
     var r=S.indoor;if(!r)return;acc+=dt;roomClock+=dt;if(acc>=4){acc-=4;S.minutes+=10;onTime();}
     if(roomMotion){roomMotion.t+=dt/.16;if(roomMotion.t>=1)roomMotion=null;}
-    if(!roomMotion){if(r.x===8&&r.y===11){exitRoom();return;}if(dirStack.length){roomPath=[];roomPending=null;var d=DIRS[dirStack[dirStack.length-1]];roomStep(d[0],d[1]);}else if(roomPath.length){var next=roomPath.shift();roomStep(next[0]-r.x,next[1]-r.y);}else if(roomPending){var pending=roomPending;roomPending=null;if(pending==='counter'){r.dir='up';serveCounter();}else if(pending==='guest-bed')openGuestBed();else exitRoom();}}
+    if(!roomMotion){if(r.x===8&&r.y===11){exitRoom();return;}if(dirStack.length){roomPath=[];roomPending=null;var d=DIRS[dirStack[dirStack.length-1]];roomStep(d[0],d[1]);}else if(roomPath.length){var next=roomPath.shift();roomStep(next[0]-r.x,next[1]-r.y);}else if(roomPending){var pending=roomPending;roomPending=null;if(pending==='counter'){r.dir='up';if(!greetMigrationCounter())serveCounter();}else if(pending==='guest-bed')openGuestBed();else exitRoom();}}
     if((actEdge||actHeld)&&clock>=actCool){actEdge=false;actCool=clock+.25;interiorAct();}
   }
-  function interiorAct(){if(!S.indoor)return;if(roomById(S.indoor.id).kind==='guest'){if(guestNearBed())openGuestBed();else if(S.indoor.x===8&&S.indoor.y>=10)exitRoom();else toast('Caminhe até a cama para dormir.');return;}if(atCounter(S.indoor.id))serveCounter();else if(S.indoor.x===8&&S.indoor.y>=10)exitRoom();else toast('Caminhe até o balcão ou até a porta de saída.');}
-  function interiorHint(){if(roomById(S.indoor.id).kind==='guest')return 'Clique na cama para descansar · porta ao sul: recepção';return atCounter(S.indoor.id)?'<b>E:</b> conversar no balcão':'Clique no balcão para caminhar até ele · saída na porta ao sul';}
+  function interiorAct(){if(!S.indoor)return;if(roomById(S.indoor.id).kind==='guest'){if(guestNearBed())openGuestBed();else if(S.indoor.x===8&&S.indoor.y>=10)exitRoom();else toast('Caminhe até a cama para dormir.');return;}if(atCounter(S.indoor.id)){if(!greetMigrationCounter())serveCounter();}else if(S.indoor.x===8&&S.indoor.y>=10)exitRoom();else toast('Caminhe até o balcão ou até a porta de saída.');}
+  function interiorHint(){if(roomById(S.indoor.id).kind==='guest')return 'Clique na cama para descansar · porta ao sul: recepção';return atCounter(S.indoor.id)?'<b>E</b> ou toque no balcão para ser atendida':'Clique no balcão para caminhar até ele · saída na porta ao sul';}
   function serveCounter(){
     if(!S.indoor||!atCounter(S.indoor.id))return;
     serveCounterService();
     var id=S.indoor&&S.indoor.id;if(!id||modalEl.hidden)return;
     var npc=Object.keys(NPC_ROOMS).find(function(n){return NPC_ROOMS[n]===id;})||id;
     var card=modalEl.querySelector('.card');
-    var heading=card?.querySelector('.card-head') || card?.querySelector('h2');
-    if(heading && !card.querySelector('.npc-migration-line')) heading.insertAdjacentHTML('afterend',npcMigrationMarkup(npc));
     if(card)card.insertAdjacentHTML('beforeend','<div class="living-options">'+(!modalEl.querySelector('[data-a="life-talk"]')?'<button class="btn" data-a="life-talk" data-id="'+npc+'">Conversar</button>':'')+(id==='garage'?'<button class="btn" data-a="life-nico">Mercadorias do Nico</button>':'')+'</div>');
   }
   function serveCounterService(){
@@ -1474,6 +1472,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       if(dist<=step+.001){t.x=next.x;t.y=next.y;t.stop=(t.stop+1)%route.stops.length;t.completed++;t.passengers=(t.passengers+1)%4;t.wait=3+(i%2);}
     });
     rt.people.forEach(function(p,i){
+      if(residentSpeaking(p))return;
       if(p.wait>0){p.wait-=dt;return;}
       if(!p.path.length){p.inside=false;var next=placeById(p.itinerary[(p.leg+1)%p.itinerary.length]),e=roomEntrance(next);p.path=pedestrianPath(Math.round(p.x),Math.round(p.y),e[0],e[1])||[];if(!p.path.length){p.wait=5;return;}}
       var target=p.path[0],dx=target[0]-p.x,dy=target[1]-p.y,d=Math.abs(dx)+Math.abs(dy),step=Math.min(d,dt*(1.25+(i%3)*.12));p.dir=dirOf(Math.sign(dx),Math.sign(dy));if(Math.abs(dx)>.001)p.x+=Math.sign(dx)*step;else p.y+=Math.sign(dy)*step;
@@ -1510,9 +1509,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   function openConversation(id){if(!talkAllowed(id))return;S.life.talks[id]=(S.life.talks[id]||0)+1;var n=npcById(id),p=roomById(id);activeConversation={id:id,name:n?n.name:p?p.name:'Morador',history:[],waiting:false};showConversation(contextDialogue(id),'Conversa');}
   function showConversation(text,status){
     var c=activeConversation;if(!c)return;
-    var announcement=npcMigrationLine(c.id);
-    var speech=announcement?announcement+'\n\n'+text:text;
-    panel(c.name,status,'<div class="npc-speech" id="npcSpeech">'+escapeLiving(speech)+'</div><div class="living-options"><button class="btn" data-a="life-topic" data-id="cidade">Como está a cidade?</button><button class="btn" data-a="life-topic" data-id="historia">Conte uma história sua</button><button class="btn" data-a="life-topic" data-id="conselho">Algum conselho de viagem?</button></div><label class="chat-label" for="npcQuestion">O que você quer dizer?</label><textarea id="npcQuestion" maxlength="220" rows="2" placeholder="Escreva sua fala…"></textarea><button class="btn primary" data-a="life-send" '+(c.waiting?'disabled':'')+'>'+(c.waiting?'Ouvindo…':'Falar')+'</button><small id="npcAiStatus">'+escapeLiving(status)+'</small>');
+    panel(c.name,status,'<div class="npc-speech" id="npcSpeech">'+escapeLiving(text)+'</div><div class="living-options"><button class="btn" data-a="life-topic" data-id="cidade">Como está a cidade?</button><button class="btn" data-a="life-topic" data-id="historia">Conte uma história sua</button><button class="btn" data-a="life-topic" data-id="conselho">Algum conselho de viagem?</button></div><label class="chat-label" for="npcQuestion">O que você quer dizer?</label><textarea id="npcQuestion" maxlength="220" rows="2" placeholder="Escreva sua fala…"></textarea><button class="btn primary" data-a="life-send" '+(c.waiting?'disabled':'')+'>'+(c.waiting?'Ouvindo…':'Falar')+'</button><small id="npcAiStatus">'+escapeLiving(status)+'</small>');
   }
   async function sendConversation(question){var c=activeConversation;if(!c||c.waiting||!talkAllowed(c.id))return;question=String(question||'').trim().slice(0,220);if(!question)return;c.waiting=true;var seq=++talkSequence;c.history.push({role:'user',content:question});showConversation('…','Pensando na resposta');
     try{if(!DIALOGUE_API)throw Error('offline');var controller=new AbortController(),timer=setTimeout(function(){controller.abort();},18000);var response=await fetch(DIALOGUE_API+'/dialogue',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({npc:c.id,question:question,context:{playerName:S.profile.name,weekday:civilClock().weekday,phase:civilClock().phase,bareFarm:!!S.homestead,farmName:S.profile.farm,objectives:S.imm.claimed.length,reservation:S.imm.reservation?HOTEL_ROOMS.find(function(r){return r.id===S.imm.reservation.type;}).name:null,region:regionAt(S.px,S.py).name,day:S.day,season:SEASONS[S.season%4],hour:civilClock().hour,rain:S.rain,reputation:S.journey.rep,chapter:S.journey.chapter,recent:S.life.log.slice(0,2).map(function(l){return l.title;})},history:c.history.slice(-5)}),signal:controller.signal});clearTimeout(timer);if(!response.ok)throw Error('unavailable');var data=await response.json();if(typeof data.text!=='string'||!data.text.trim())throw Error('empty');if(activeConversation!==c||seq!==talkSequence)return;c.waiting=false;c.history.push({role:'assistant',content:data.text.slice(0,900)});c.history=c.history.slice(-6);if(!modalOpen()||!talkAllowed(c.id)||!modalEl.querySelector('#npcSpeech'))return;showConversation(data.text.slice(0,900),'Diálogo com IA · Groq');}
@@ -3739,28 +3736,125 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   }
 
   const migrationSpeech = $('valleyMigrationSpeech');
+  const migrationSpeechName = $('valleySpeechName');
+  const migrationSpeechText = $('valleySpeechText');
   const migrationSpeechUntil = Date.UTC(2026, 10, 23, 3);
-  const migrationMessages = [
-    'O Vale vai sair deste xatspace e passar para o site oficial do NewOption.',
-    'Logo o Vale sai deste xatspace. A gente se encontra no site oficial do NewOption!',
-    'O Vale vai deixar este xatspace. Depois da mudança, o jogo fica no site oficial do NewOption.'
-  ];
+  const migrationDestination = 'Dia 23/11, o Vale sai deste xatspace e passa para o site oficial do NewOption.';
+  const streetStories = {
+    Yuri: 'A Sora me entregou um folheto sobre a mudança do Vale. Foi o Ren quem pendurou o aviso na estação!',
+    Lia: 'Quando veio tomar café, Yuri me contou que o Vale vai mudar. A chaleira ferveu duas vezes e eu nem ouvi!',
+    Bento: 'Sora deixou um recado na garagem. Nico já quer contar a novidade aos passageiros do táxi.',
+    Sora: 'Vi o Ren pendurar o aviso na estação. Levei um folheto para a pousada e dei outro ao Yuri.',
+    Davi: 'Noa fez uma cópia do folheto. Disse que ela devia ficar na praça, onde todo mundo passa.',
+    Nina: 'Ouvi a notícia da Sora na recepção. Passei no mercado só para contar a novidade à Hana.',
+    Caio: 'O Nico me contou na garagem. Eu ia levar a notícia ao cais, mas a estação já estava cheia de recados.',
+    Emi: 'A Lia me contou no Café das Flores. Ela escreveu NewOption atrás da comanda para eu lembrar.',
+    Ivo: 'O Ren me mostrou o aviso antes de abrir a estação. Guardei um folheto para levar para o cais.',
+    Luna: 'Sora deixou o recado na pousada. Passei na livraria da Yuna para contar antes de voltar à serra.',
+    Noa: 'Davi viu o recado na Casa dos Viajantes. Pedi uma cópia para pôr junto das peças novas do ateliê.'
+  };
+  const counterStories = {
+    marta: ['Marta', 'O Yuri me trouxe o folheto da mudança do Vale. Deixei aqui, ao lado das sementes, para mostrar a quem passar.'],
+    market: ['Hana', 'A Nina trouxe a notícia de manhã. Ela veio correndo da pousada só para me mostrar o folheto!'],
+    cafe: ['Lia', 'O Yuri me contou a novidade enquanto esperava o café. Anotei NewOption atrás da comanda da Emi.'],
+    inn: ['Sora', 'Vi o Ren pendurar o aviso. Guardei uma cópia aqui para avisar quem chega de viagem.'],
+    station: ['Ren', 'Escrevi o novo endereço no quadro de partidas. Sora foi a primeira a levar uma cópia.'],
+    garage: ['Nico', 'O Bento trouxe o recado da pousada. Já estou contando a novidade para quem pega o táxi.'],
+    guild: ['Aki', 'Davi trouxe um folheto da estação. Pusemos uma cópia no mural para orientar as caravanas.'],
+    homes1: ['Emi', 'A Lia me contou enquanto me servia um chá. Guardei a comanda com o endereço anotado.'],
+    homes2: ['Noa', 'O Davi me emprestou o folheto. Deixei uma cópia na bancada, ao lado da argila.'],
+    homes3: ['Yuna', 'A Luna veio contar a novidade. Agora deixo um folheto entre os livros de viagem.'],
+    camp: ['Aya', 'A última caravana levou um recado do Yuri. Prendi o papel na barraca para ninguém esquecer.'],
+    portStation: ['Ivo', 'O Ren me passou a notícia em Hanami. Trouxe uma cópia para quem pega o trem aqui no porto.'],
+    fishMarket: ['Rui', 'O Ivo trouxe um folheto da estação. Pendurei o recado ao lado da tabela de peixes.'],
+    lighthouse: ['Caio', 'A estação das Marés recebeu o recado. Trouxe uma cópia para mostrar a quem chega pelo cais.'],
+    mountainStation: ['Luna', 'Soube pela Sora em Hanami. Trouxe o aviso comigo para deixar no balcão da serra.'],
+    lodge: ['Tomo', 'A Luna trouxe a notícia no primeiro trem. Eu tinha acabado de acender o fogo do refúgio.'],
+    temple: ['Mei', 'A Aya trouxe o aviso com a caravana. Agora já sei o que dizer a quem vier para o festival.'],
+    workshop: ['Otávio', 'O Yuri me deixou um folheto. Eu o prendi no mural para ler assim que terminei o serviço.'],
+    mine: ['Bento', 'A Sora me contou na pousada. Levei o recado comigo para avisar o pessoal da mina.']
+  };
   let migrationRemarks = [];
   let migrationSpeechRequested = false;
   let migrationSpeechElapsed = 0;
   let migrationSpeechIdle = 0;
-  let migrationSpeechEnd = 0;
   let migrationSpeechNext = 24;
   let migrationSpeechIndex = 0;
+  let migrationScene = null;
+  let migrationSave = null;
+  let greetedMigrationRoom = null;
+  let streetStoryNext = 0;
+  const heardStreetStories = new Map();
 
-  function npcMigrationLine(id) {
-    if (Date.now() >= migrationSpeechUntil) return '';
-    return migrationMessages[(S.life.talks[id] || 0) % migrationMessages.length];
+  function migrationStoryActive() {
+    return Date.now() < migrationSpeechUntil;
   }
 
-  function npcMigrationMarkup(id) {
-    const line = npcMigrationLine(id);
-    return line ? '<p class="npc-migration-line">“' + escapeLiving(line) + '”</p>' : '';
+  function startMigrationStory(kind, actor, name, firstLine, response) {
+    const beats = [
+      {name, text:firstLine, seconds:8},
+      {name, text:migrationDestination, seconds:8}
+    ];
+    if (response) beats.push({name:S.profile.name, text:response, seconds:5, player:true});
+    migrationScene = {kind, actor, beats, beat:0, elapsed:0};
+  }
+
+  function greetMigrationCounter() {
+    const room = S.indoor;
+    const story = room && counterStories[room.id];
+    if (!story || !migrationStoryActive() || room === greetedMigrationRoom || roomMotion || !atCounter(room.id)) return false;
+    greetedMigrationRoom = room;
+    actHeld = actEdge = false;
+    startMigrationStory('counter', room, story[0], 'Olá, viajante! ' + story[1],
+      room.id === 'marta' ? 'Então era sobre isso o folheto do Yuri. Vou guardar o nome do site!' : '');
+    return true;
+  }
+
+  function beginStreetStory() {
+    if (clock < streetStoryNext) return;
+    const actors = getLiving().people.filter(person => !person.inside)
+      .concat(NPCS.filter(npc => !NPC_ROOMS[npc.id] && regionOpen(npc.region)));
+    let closest = null;
+    let nearest = 3.4;
+    for (const actor of actors) {
+      const distance = Math.abs(actor.x - rx) + Math.abs(actor.y - ry);
+      if (distance <= nearest && streetStoryReady(actor)) {
+        closest = actor;
+        nearest = distance;
+      }
+    }
+    if (!closest) {
+      streetStoryNext = clock + .4;
+      return;
+    }
+    startStreetStory(closest);
+  }
+
+  function streetStoryReady(actor) {
+    return streetStories[actor.name] && (heardStreetStories.get(actor.name) ?? -120) + 120 <= clock;
+  }
+
+  function greetMigrationTraveler(traveler) {
+    if (S.indoor || !migrationStoryActive() || !streetStoryReady(traveler)) return false;
+    actHeld = actEdge = false;
+    startStreetStory(traveler);
+    return true;
+  }
+
+  function startStreetStory(actor) {
+    heardStreetStories.set(actor.name, clock);
+    streetStoryNext = clock + 20;
+    if (actor.itinerary) {
+      const dx = rx - actor.x;
+      const dy = ry - actor.y;
+      actor.dir = Math.abs(dx) > Math.abs(dy) ? dirOf(Math.sign(dx), 0) : dirOf(0, Math.sign(dy));
+    }
+    startMigrationStory('street', actor, actor.name, streetStories[actor.name],
+      actor.name === 'Yuri' ? 'Vou perguntar à Marta se ela já recebeu o aviso.' : '');
+  }
+
+  function residentSpeaking(person) {
+    return migrationScene?.kind === 'street' && migrationScene.actor === person;
   }
 
   async function prepareMigrationSpeech() {
@@ -3782,44 +3876,88 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   }
 
   function updateMigrationSpeech(dt, paused) {
-    const active = !paused && !S.indoor && Date.now() < migrationSpeechUntil;
-    if (active) {
-      migrationSpeechElapsed += dt;
-      if (!migrationSpeechRequested) prepareMigrationSpeech();
+    if (migrationSave !== S) {
+      migrationSave = S;
+      greetedMigrationRoom = null;
+      heardStreetStories.clear();
+      streetStoryNext = 0;
+      migrationSpeechElapsed = migrationSpeechIdle = 0;
+      migrationSpeechNext = 24;
+      migrationSpeechIndex = 0;
+      migrationScene = null;
     }
-    if (!active || mv || dirStack.length || mouse.down || mouse.dest || fishing || actHeld || actEdge || placingItem) {
+
+    if (paused || !migrationStoryActive()) {
+      migrationScene = null;
       migrationSpeechIdle = 0;
-      migrationSpeechEnd = 0;
-      if (!migrationSpeech.hidden) migrationSpeech.hidden = true;
+      migrationSpeech.hidden = true;
       return;
     }
 
-    migrationSpeechIdle += dt;
-    if (migrationSpeechEnd && migrationSpeechElapsed >= migrationSpeechEnd) {
-      migrationSpeech.hidden = true;
-      migrationSpeechEnd = 0;
+    const moving = mv || dirStack.length || mouse.down || mouse.dest || fishing || actHeld || actEdge || placingItem;
+    if (S.indoor) {
+      if (migrationScene?.kind !== 'counter' || !atCounter(S.indoor.id) || S.indoor !== migrationScene.actor || roomMotion) migrationScene = null;
+      if (!migrationScene) greetMigrationCounter();
+    } else {
+      migrationSpeechElapsed += dt;
+      if (!migrationSpeechRequested) prepareMigrationSpeech();
+      if (migrationScene?.kind === 'counter') migrationScene = null;
+      if (migrationScene?.kind === 'street') {
+        const actor = migrationScene.actor;
+        if (actor.inside || Math.abs(actor.x - rx) + Math.abs(actor.y - ry) > 5) migrationScene = null;
+      }
+      if (moving && migrationScene?.kind === 'idle') migrationScene = null;
+      if (!migrationScene && !moving) beginStreetStory();
+      migrationSpeechIdle = moving || migrationScene ? 0 : migrationSpeechIdle + dt;
+      if (!migrationScene && migrationSpeechIdle >= 3 && migrationSpeechElapsed >= migrationSpeechNext) {
+        const remark = migrationRemarks.length ? migrationRemarks[migrationSpeechIndex % migrationRemarks.length] + ' ' : '';
+        migrationScene = {kind:'idle', beats:[{name:S.profile.name, text:remark + migrationDestination, seconds:10, player:true}], beat:0, elapsed:0};
+        migrationSpeechIndex++;
+        migrationSpeechNext = migrationSpeechElapsed + 240 + Math.random() * 120;
+      }
     }
-    if (!migrationSpeechEnd && migrationSpeechElapsed >= migrationSpeechNext && migrationSpeechIdle >= 3) {
-      const message = migrationMessages[migrationSpeechIndex % migrationMessages.length];
-      const remark = migrationRemarks.length ? migrationRemarks[migrationSpeechIndex % migrationRemarks.length] : '';
-      migrationSpeech.textContent = remark ? remark + ' ' + message : message;
-      migrationSpeechIndex++;
-      migrationSpeechEnd = migrationSpeechElapsed + 10;
-      migrationSpeechNext = migrationSpeechElapsed + 240 + Math.random() * 120;
-      migrationSpeech.hidden = false;
-    }
-    if (!migrationSpeechEnd) return;
 
+    if (migrationScene) {
+      const beat = migrationScene.beats[migrationScene.beat];
+      migrationScene.elapsed += dt;
+      if (migrationScene.elapsed >= beat.seconds) {
+        migrationScene.elapsed = 0;
+        if (++migrationScene.beat >= migrationScene.beats.length) migrationScene = null;
+      }
+    }
+
+    migrationSpeech.hidden = !migrationScene;
+    if (!migrationScene) return;
+    const beat = migrationScene.beats[migrationScene.beat];
+    if (migrationSpeechText.textContent !== beat.text) {
+      migrationSpeechName.textContent = beat.name;
+      migrationSpeechText.textContent = beat.text;
+    }
+    positionMigrationSpeech(beat);
+  }
+
+  function positionMigrationSpeech(beat) {
+    let x, y;
+    if (migrationScene.kind === 'counter') {
+      const room = migrationScene.actor;
+      const m = roomMetrics();
+      x = m.x + ((beat.player ? room.x : 8) * TS + TS / 2) * m.z;
+      y = m.y + ((beat.player ? room.y : 3) * TS - 7) * m.z;
+    } else {
+      const actor = migrationScene.actor;
+      x = (beat.player ? rx : actor.x) * TS + TS / 2 - camX;
+      y = (beat.player ? ry : actor.y) * TS - 7 - camY;
+    }
     const width = cv.clientWidth;
     const height = cv.clientHeight;
-    const x = (rx * TS + TS / 2 - camX) * width / LW;
-    const y = (ry * TS - camY) * height / LH;
-    const edge = Math.min(120, width / 2);
-    const center = Math.max(edge, Math.min(x, width - edge));
-    const below = y < 110;
+    const anchorX = x * width / LW;
+    const anchorY = y * height / LH;
+    const edge = Math.min(145, width / 2);
+    const center = Math.max(edge, Math.min(anchorX, width - edge));
+    const below = anchorY < migrationSpeech.offsetHeight + 13;
     migrationSpeech.style.left = center + 'px';
-    migrationSpeech.style.top = (below ? y + TS * height / LH + 8 : y - 8) + 'px';
-    migrationSpeech.style.setProperty('--speech-pointer', (x - center) + 'px');
+    migrationSpeech.style.top = (anchorY + (below ? 23 : -7)) + 'px';
+    migrationSpeech.style.setProperty('--speech-pointer', (anchorX - center) + 'px');
     migrationSpeech.dataset.placement = below ? 'below' : 'above';
   }
 
