@@ -105,11 +105,14 @@ body{padding:12px!important;display:grid!important;align-content:center;min-heig
   .app[data-sidebar-collapsed="true"] .valley-sidebar { display: none; }
   .app[data-sidebar-collapsed="true"] #valleyMenuExpand { display: block; }
   .app[data-sidebar-collapsed="true"] #game { max-height: calc(var(--game-fit-height) - 8px); }
+  /* In the xatspace, the host's logo sits over the frame's upper-left corner. */
+  .app[data-embedded="true"][data-sidebar-collapsed="true"] .life-strip { padding-inline-start: 102px; }
 }
 @media (max-width: 820px) {
   .app { display: block !important; max-width: min(100%, calc((100dvh - 102px) * 1.9333)) !important; }
   .valley-play { gap: 6px; }
   .valley-mobile-bar { display: flex; align-items: center; gap: 10px; }
+  .app[data-embedded="true"] .valley-mobile-bar { padding-inline-start: 102px; }
   .valley-mobile-bar strong { font-family: var(--font-display); font-size: clamp(14px, 4vw, 21px); }
   #valleyMenuToggle, #valleyMenuClose { display: block; min-height: 40px; padding: 6px 10px; white-space: nowrap; }
   #valleyMenuClose { font-size: 19px; }
@@ -3800,6 +3803,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     if (!modalEl.hidden) syncSidebarPanel();
   });
   labelSidebarClose();
+  if (window.parent && window.parent !== window) $('valleyShell').dataset.embedded = 'true';
   let storedSidebarCollapse = false;
   try { storedSidebarCollapse = localStorage.getItem(sidebarPreferenceKey) === 'true'; } catch {}
   renderDesktopSidebar(storedSidebarCollapse);
