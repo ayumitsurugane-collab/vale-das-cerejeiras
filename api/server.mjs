@@ -1,6 +1,6 @@
 import http from 'node:http';
 import { pathToFileURL } from 'node:url';
-import { createHash } from 'node:crypto';
+import { createHash, timingSafeEqual } from 'node:crypto';
 import { join } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 
@@ -44,7 +44,15 @@ function openPlayerRegistry(path) {
   const count = db.prepare('SELECT COUNT(*) AS total FROM players');
   const register = db.prepare(`INSERT INTO players (id, nickname, registered_at) VALUES (?, ?, ?)
     ON CONFLICT(id) DO UPDATE SET nickname = excluded.nickname WHERE nickname != excluded.nickname`);
-  return { db, count, register };
+  const list = db.prepare(`SELECT nickname, registered_at AS registeredAt FROM players
+    ORDER BY registered_at DESC, id ASC LIMIT 100 OFFSET ?`);
+  return { db, count, register, list };
+}
+
+function authorizedOwner(header, expectedHash) {
+  if (!expectedHash || typeof header !== 'string' || !/^Bearer [0-9a-f]{64}$/.test(header)) return false;
+  const actualHash = createHash('sha256').update(header.slice(7)).digest();
+  return timingSafeEqual(actualHash, expectedHash);
 }
 
 async function readJson(req, maxBytes) {
@@ -65,12 +73,27 @@ export function createApp({env=process.env,fetchImpl=fetch,now=Date.now}={}) {
   const signupClients = new Map();
   const registryPath = env.PLAYER_DB_PATH || (env.RAILWAY_VOLUME_MOUNT_PATH && join(env.RAILWAY_VOLUME_MOUNT_PATH, 'players.sqlite'));
   const registry = registryPath ? openPlayerRegistry(registryPath) : null;
+  const ownerHash = /^[0-9a-f]{64}$/i.test(env.PLAYER_ADMIN_TOKEN_SHA256 || '')
+    ? Buffer.from(env.PLAYER_ADMIN_TOKEN_SHA256, 'hex') : null;
   const dailyLimit=integer(env.DAILY_DIALOGUE_LIMIT||1500,1,100000);
   const server = http.createServer(async(req,res)=>{
     const origin=req.headers.origin;
     res.setHeader('Cache-Control','no-store');res.setHeader('X-Content-Type-Options','nosniff');
     const reply=(status,data)=>{if(!res.writableEnded){res.writeHead(status,{'Content-Type':'application/json; charset=utf-8'});res.end(JSON.stringify(data));}};
     if(req.url==='/health'&&req.method==='GET')return reply(200,{ok:true,model:env.GROQ_MODEL||'openai/gpt-oss-120b',configured:!!env.GROQ_API_KEY});
+    const [path, query] = req.url.split('?', 2);
+    if (path === '/admin/players' && req.method === 'GET') {
+      if (!ownerHash) return reply(404, { error: 'not_found' });
+      if (origin || !authorizedOwner(req.headers.authorization, ownerHash)) {
+        return reply(401, { error: 'unauthorized' });
+      }
+      const offset = Number(new URLSearchParams(query).get('offset') ?? '0');
+      if (!Number.isSafeInteger(offset) || offset < 0) return reply(400, { error: 'invalid_offset' });
+      try {
+        if (!registry) return reply(503, { error: 'unavailable' });
+        return reply(200, { ...registry.count.get(), players: registry.list.all(offset) });
+      } catch { return reply(503, { error: 'unavailable' }); }
+    }
     if (req.url === '/players/count' && req.method === 'GET') {
       res.setHeader('Access-Control-Allow-Origin', '*');
       try { return registry ? reply(200, registry.count.get()) : reply(503, { error: 'unavailable' }); }
