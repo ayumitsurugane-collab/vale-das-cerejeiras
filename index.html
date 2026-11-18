@@ -533,7 +533,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
 </main>
 
 <dialog id="valleyMigrationNotice" aria-labelledby="valleyMigrationTitle" aria-describedby="valleyMigrationSummary">
-  <form method="dialog" class="valley-notice-content">
+  <div class="valley-notice-content">
     <header class="valley-notice-head">
       <span class="valley-notice-mark" aria-hidden="true"></span>
       <p>Mudança em <time datetime="2026-11-23">23/11/2026</time></p>
@@ -544,8 +544,8 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       <li><strong>Seu progresso será preservado</strong><span>Nada será perdido na migração. Você poderá continuar de onde parou.</span></li>
       <li><strong>Uma nova versão em 3D</strong><span>O Vale será reformulado em 3D, com cenários mais detalhados e uma experiência de jogo mais elaborada.</span></li>
     </ul>
-    <button class="btn primary valley-notice-done" type="submit" autofocus>Entendi</button>
-  </form>
+    <button id="valleyMigrationClose" class="btn primary valley-notice-done" type="button" autofocus>Entendi</button>
+  </div>
 </dialog>
 
 <script>
@@ -3698,6 +3698,9 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     mouseClear();
     mouse.down = null;
     mouse.followed = false;
+  });
+  $('valleyMigrationClose').addEventListener('click', function () {
+    migrationNotice.close();
   });
   var modalEl = $('modal');
   function modalOpen() { return migrationNotice.open || !modalEl.hidden || titleOn || sidebarMenuOpen; }
