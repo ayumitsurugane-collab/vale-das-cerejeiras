@@ -76,6 +76,34 @@ export function createApp({env=process.env,fetchImpl=fetch,now=Date.now}={}) {
   const ownerHash = /^[0-9a-f]{64}$/i.test(env.PLAYER_ADMIN_TOKEN_SHA256 || '')
     ? Buffer.from(env.PLAYER_ADMIN_TOKEN_SHA256, 'hex') : null;
   const dailyLimit=integer(env.DAILY_DIALOGUE_LIMIT||1500,1,100000);
+  let migrationLines, migrationRequest, migrationRetryAt = 0;
+
+  async function generateMigrationLines() {
+    const response = await fetchImpl('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${env.GROQ_API_KEY}`, 'Content-Type': 'application/json' },
+      signal: AbortSignal.timeout(10000),
+      body: JSON.stringify({
+        model: env.GROQ_MODEL || 'openai/gpt-oss-120b',
+        temperature: 0.85,
+        max_completion_tokens: 450,
+        reasoning_effort: 'low',
+        reasoning_format: 'hidden',
+        messages: [{
+          role: 'system',
+          content: 'Escreva quatro falas breves para uma jovem fazendeira em Vale das Cerejeiras. Ela para por um instante, animada ou curiosa com uma mudança que vem chegando. Cada fala é uma reação que ela diz em voz alta, em português brasileiro, com 2 a 7 palavras, numa linha, sem lista, datas, lugares, nomes, números ou promessas. Seja casual e escreva em primeira pessoa. O jogo acrescentará o aviso da mudança depois de cada reação. Termine cada reação com ponto ou exclamação.'
+        }]
+      })
+    });
+    if (!response.ok) throw Error('Migration dialogue unavailable');
+    const data = await response.json();
+    const message = data.choices?.[0]?.message?.content;
+    const lines = (typeof message === 'string' ? message.slice(0, 450).split('\n') : [])
+      .map(line => clean(line, 100).trim().replace(/^[-•\d.)\s]+/, '').replace(/^["“]+|["”]+$/g, ''))
+      .filter(line => /^[\p{L}\p{M} ,…’'!?-]{8,48}[.!?]$/u.test(line));
+    if (!lines.length) throw Error('No usable migration dialogue');
+    return [...new Set(lines)].slice(0, 4);
+  }
   const server = http.createServer(async(req,res)=>{
     const origin=req.headers.origin;
     res.setHeader('Cache-Control','no-store');res.setHeader('X-Content-Type-Options','nosniff');
@@ -103,6 +131,21 @@ export function createApp({env=process.env,fetchImpl=fetch,now=Date.now}={}) {
     res.setHeader('Access-Control-Allow-Origin',origin);res.setHeader('Vary','Origin');
     res.setHeader('Access-Control-Allow-Methods','POST, OPTIONS');res.setHeader('Access-Control-Allow-Headers','Content-Type');
     if(req.method==='OPTIONS'){res.writeHead(204);return res.end();}
+    if (req.url === '/migration-lines' && req.method === 'POST') {
+      const timestamp = now();
+      if (timestamp >= Date.UTC(2026, 10, 23, 3)) return reply(410, { error: 'expired' });
+      if (!env.GROQ_API_KEY || timestamp < migrationRetryAt) return reply(503, { error: 'unavailable' });
+      if (migrationLines) return reply(200, { lines: migrationLines });
+      migrationRequest ??= generateMigrationLines().then(lines => {
+        migrationLines = lines;
+        return lines;
+      }).catch(() => {
+        migrationRetryAt = now() + 60000;
+        return null;
+      }).finally(() => { migrationRequest = null; });
+      const lines = await migrationRequest;
+      return lines ? reply(200, { lines }) : reply(503, { error: 'unavailable' });
+    }
     if (req.url === '/players/register' && req.method === 'POST') {
       if (!registry) return reply(503, { error: 'unavailable' });
       const timestamp = now();

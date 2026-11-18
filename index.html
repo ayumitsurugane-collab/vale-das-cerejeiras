@@ -262,6 +262,41 @@ body:has(#valleyMigrationNotice[open]) { overflow: hidden; }
 .valley-notice-details li + li { border-left-color: #d5ac64; }
 .valley-notice-details strong { color: #f4e9cc; font-size: 14px; }
 .valley-notice-done { justify-self: end; min-width: 110px; min-height: 44px; }
+
+.valley-migration-speech {
+  position: absolute;
+  z-index: 4;
+  width: max-content;
+  max-width: min(224px, calc(100% - 16px));
+  padding: 8px 11px;
+  border: 2px solid #5e4529;
+  border-radius: 9px;
+  background: #fff0cb;
+  color: #342b20;
+  box-shadow: 0 3px 0 #382c2266;
+  font: 700 13px/1.35 var(--font-body);
+  text-align: center;
+  pointer-events: none;
+  transform: translate(-50%, -100%);
+}
+.valley-migration-speech::after {
+  content: "";
+  position: absolute;
+  left: clamp(10px, calc(50% + var(--speech-pointer, 0px)), calc(100% - 10px));
+  bottom: -6px;
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid #5e4529;
+  border-bottom: 2px solid #5e4529;
+  background: #fff0cb;
+  transform: translateX(-50%) rotate(45deg);
+}
+.valley-migration-speech[data-placement="below"] { transform: translateX(-50%); }
+.valley-migration-speech[data-placement="below"]::after {
+  top: -6px;
+  bottom: auto;
+  transform: translateX(-50%) rotate(225deg);
+}
 </style>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Pixelify+Sans:wght@500;700&display=swap">
@@ -492,6 +527,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
         <button class="tb" id="tNew" type="button"><span class="ic" data-px="sprout"></span><span class="lb"></span></button>
         <button class="tb" id="tSet" type="button"><span class="ic" data-px="gear"></span><span class="lb"></span></button>
       </div><p id="tInfo"></p></div></div></div>
+    <div id="valleyMigrationSpeech" class="valley-migration-speech" role="status" hidden></div>
     <div id="modal" hidden></div>
   </div>
   <div class="valley-footer">
@@ -3688,6 +3724,81 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     if (!S.goalHit && S.earned - S.seasonStart >= GOAL) { S.goalHit = true; setTimeout(function () { toast('Meta da estação alcançada! Continue crescendo.'); }, 1400); }
   }
 
+  const migrationSpeech = $('valleyMigrationSpeech');
+  const migrationSpeechUntil = Date.UTC(2026, 10, 23, 3);
+  const migrationMessages = [
+    'O Vale vai mudar em breve.',
+    'Em breve, o Vale vai para o site do NewOption.',
+    'Logo a gente se encontra no site do NewOption.'
+  ];
+  let migrationRemarks = [];
+  let migrationSpeechRequested = false;
+  let migrationSpeechElapsed = 0;
+  let migrationSpeechIdle = 0;
+  let migrationSpeechEnd = 0;
+  let migrationSpeechNext = 24;
+  let migrationSpeechIndex = 0;
+
+  async function prepareMigrationSpeech() {
+    migrationSpeechRequested = true;
+    if (window.location?.hostname !== 'ayumitsurugane-collab.github.io') return;
+    try {
+      const response = await fetch(DIALOGUE_API + '/migration-lines', {
+        method: 'POST',
+        signal: AbortSignal.timeout(12000)
+      });
+      if (!response.ok) return;
+      const { lines } = await response.json();
+      if (Array.isArray(lines)) {
+        migrationRemarks = lines.filter(line => typeof line === 'string' && line.length <= 50).slice(0, 4);
+      }
+    } catch {
+      // The announcement is still available with its fixed lines.
+    }
+  }
+
+  function updateMigrationSpeech(dt, paused) {
+    const active = !paused && !S.indoor && Date.now() < migrationSpeechUntil;
+    if (active) {
+      migrationSpeechElapsed += dt;
+      if (!migrationSpeechRequested) prepareMigrationSpeech();
+    }
+    if (!active || mv || dirStack.length || mouse.down || mouse.dest || fishing || actHeld || actEdge || placingItem) {
+      migrationSpeechIdle = 0;
+      migrationSpeechEnd = 0;
+      if (!migrationSpeech.hidden) migrationSpeech.hidden = true;
+      return;
+    }
+
+    migrationSpeechIdle += dt;
+    if (migrationSpeechEnd && migrationSpeechElapsed >= migrationSpeechEnd) {
+      migrationSpeech.hidden = true;
+      migrationSpeechEnd = 0;
+    }
+    if (!migrationSpeechEnd && migrationSpeechElapsed >= migrationSpeechNext && migrationSpeechIdle >= 3) {
+      const message = migrationMessages[migrationSpeechIndex % migrationMessages.length];
+      const remark = migrationRemarks.length ? migrationRemarks[migrationSpeechIndex % migrationRemarks.length] : '';
+      migrationSpeech.textContent = remark ? remark + ' ' + message : message;
+      migrationSpeechIndex++;
+      migrationSpeechEnd = migrationSpeechElapsed + 8;
+      migrationSpeechNext = migrationSpeechElapsed + 240 + Math.random() * 120;
+      migrationSpeech.hidden = false;
+    }
+    if (!migrationSpeechEnd) return;
+
+    const width = cv.clientWidth;
+    const height = cv.clientHeight;
+    const x = (rx * TS + TS / 2 - camX) * width / LW;
+    const y = (ry * TS - camY) * height / LH;
+    const edge = Math.min(120, width / 2);
+    const center = Math.max(edge, Math.min(x, width - edge));
+    const below = y < 88;
+    migrationSpeech.style.left = center + 'px';
+    migrationSpeech.style.top = (below ? y + TS * height / LH + 8 : y - 8) + 'px';
+    migrationSpeech.style.setProperty('--speech-pointer', (x - center) + 'px');
+    migrationSpeech.dataset.placement = below ? 'below' : 'above';
+  }
+
   /* ---------- Modais ---------- */
   const migrationNotice = $('valleyMigrationNotice');
   const migrationNoticeButton = $('valleyMigrationButton');
@@ -3980,6 +4091,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     if (h !== lastHint) { lastHint = h; $('hint').innerHTML = tr(h); }
 
     render(dt);
+    updateMigrationSpeech(dt, paused);
     requestAnimationFrame(frame);
   }
 
