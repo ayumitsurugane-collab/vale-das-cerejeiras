@@ -32,6 +32,96 @@ body{padding:12px!important;display:grid!important;align-content:center;min-heig
 @media (max-width: 540px) {
   .player-community { order: 1; flex-basis: 100%; justify-content: flex-start; }
 }
+
+/* Exploration sits beside the canvas; small screens open the same menu as a drawer. */
+.app {
+  --sidebar-width: clamp(172px, 15vw, 204px);
+  display: grid !important;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  align-items: start;
+  max-width: min(1540px, calc((100dvh - 90px) * 1.9333 + var(--sidebar-width) + 10px)) !important;
+}
+.valley-play { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.valley-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 13px;
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
+  border: 1px solid #47604e;
+  border-radius: 10px;
+  background: #21372c;
+}
+.valley-sidebar-head { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+.valley-sidebar .valley-brand { white-space: normal; gap: 8px; }
+.valley-sidebar .brand-mark { display: block; font-size: 25px; flex: none; }
+.valley-sidebar .valley-brand strong { font-size: 19px; }
+.valley-sidebar nav { display: grid; gap: 4px; }
+.valley-sidebar nav button, #valleyMenuToggle, #valleyMenuClose {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: #2b4436;
+  color: #ebe8d4;
+  cursor: pointer;
+}
+.valley-sidebar nav button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 38px;
+  padding: 7px 9px;
+  font-size: 13px;
+  text-align: left;
+}
+.valley-sidebar nav button:hover, #valleyMenuToggle:hover, #valleyMenuClose:hover { background: #3b5543; }
+.valley-sidebar nav button[aria-expanded="true"] { border-color: #c4aa6d; color: #ffdf93; background: #415241; }
+.valley-sidebar kbd { color: #cdd1b9; font-size: 10px; padding: 0 4px; border: 1px solid #60705b; border-radius: 4px; }
+.valley-mobile-bar, #valleyMenuClose, #valleyMenuBackdrop { display: none; }
+.stage #modal[data-sidebar-view] {
+  position: absolute !important;
+  justify-items: start;
+  align-items: stretch;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+  padding: 8px;
+  overflow: hidden;
+  background: #0b1d1699;
+}
+#modal[data-sidebar-view] .expansion-card { max-height: 100%; }
+#modal[data-sidebar-view] .expansion-card.wide { width: min(710px, 100%); }
+#modal[data-sidebar-view] .card-head { position: sticky; top: -22px; padding: 10px 0; background: #20392e; z-index: 1; }
+#modal[data-sidebar-view] .card-head button { flex: none; }
+.sidebar-preview { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 10px; background: #304737; border: 1px solid #5e6b4f; border-radius: 7px; }
+.sidebar-preview p { flex: 1 1 190px; font-size: 12px; }
+.sidebar-preview button { flex: none; }
+
+@media (max-width: 820px) {
+  .app { display: block !important; max-width: min(100%, calc((100dvh - 102px) * 1.9333)) !important; }
+  .valley-play { gap: 6px; }
+  .valley-mobile-bar { display: flex; align-items: center; gap: 10px; }
+  .valley-mobile-bar strong { font-family: var(--font-display); font-size: clamp(14px, 4vw, 21px); }
+  #valleyMenuToggle, #valleyMenuClose { display: block; min-height: 40px; padding: 6px 10px; white-space: nowrap; }
+  #valleyMenuClose { font-size: 19px; }
+  .valley-sidebar {
+    display: none;
+    position: fixed;
+    z-index: 40;
+    inset: 0 auto 0 0;
+    width: min(265px, 86vw);
+    max-height: 100dvh;
+    overscroll-behavior: contain;
+    border-radius: 0 10px 10px 0;
+  }
+  .valley-sidebar[data-open="true"] { display: flex; }
+  .valley-sidebar nav button { min-height: 44px; }
+  #valleyMenuBackdrop { display: block; position: fixed; inset: 0; z-index: 35; background: #071711b3; }
+  .stage #modal[data-sidebar-view] { position: fixed !important; grid-template-columns: minmax(0, 560px); }
+  #modal[data-sidebar-view] .card-head { top: -13px; }
+}
+@media (min-width: 821px) and (max-height: 530px) {
+  .stage #modal[data-sidebar-view] { position: fixed !important; }
+}
 </style>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Pixelify+Sans:wght@500;700&display=swap">
@@ -222,7 +312,29 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
 </style>
 
 <main class="app">
-  <div class="valley-bar"><div class="valley-brand"><span class="brand-mark">✿</span><div><strong>Vale das Cerejeiras</strong><small>EuComoSushi · VIDA NO VALE</small></div></div><nav aria-label="Exploração"><button data-exp="map">Mundo <kbd>M</kbd></button><button data-exp="journey">Jornada</button><button data-exp="travel">Transportes</button><button data-exp="journal">Encomendas</button><button data-exp="build">Construções</button><button data-exp="resources">Recursos</button><button data-exp="life">Acontecimentos</button><button data-exp="goals">Objetivos</button><button data-exp="farm">Minha fazenda</button></nav></div>
+  <div id="valleyMenuBackdrop" hidden></div>
+  <aside class="valley-sidebar" id="valleySidebar">
+    <div class="valley-sidebar-head">
+      <div class="valley-brand"><span class="brand-mark" aria-hidden="true">✿</span><div><strong>Vale das Cerejeiras</strong><small>EuComoSushi</small></div></div>
+      <button type="button" id="valleyMenuClose" aria-label="Fechar menu">×</button>
+    </div>
+    <nav aria-label="Exploração">
+        <button type="button" data-exp="map" aria-expanded="false" aria-controls="modal"><span>Mundo</span><kbd aria-hidden="true">M</kbd></button>
+        <button type="button" data-exp="journey" aria-expanded="false" aria-controls="modal"><span>Jornada</span></button>
+        <button type="button" data-exp="travel" aria-expanded="false" aria-controls="modal"><span>Transportes</span></button>
+        <button type="button" data-exp="journal" aria-expanded="false" aria-controls="modal"><span>Encomendas</span><kbd aria-hidden="true">J</kbd></button>
+        <button type="button" data-exp="build" aria-expanded="false" aria-controls="modal"><span>Construções</span></button>
+        <button type="button" data-exp="resources" aria-expanded="false" aria-controls="modal"><span>Recursos</span></button>
+        <button type="button" data-exp="life" aria-expanded="false" aria-controls="modal"><span>Acontecimentos</span></button>
+        <button type="button" data-exp="goals" aria-expanded="false" aria-controls="modal"><span>Objetivos</span><kbd aria-hidden="true">O</kbd></button>
+        <button type="button" data-exp="farm" aria-expanded="false" aria-controls="modal"><span>Minha fazenda</span></button>
+    </nav>
+  </aside>
+  <div class="valley-play" id="valleyPlay">
+    <header class="valley-mobile-bar">
+      <button type="button" id="valleyMenuToggle" aria-controls="valleySidebar" aria-expanded="false">☰ Menu</button>
+      <strong>Vale das Cerejeiras</strong>
+    </header>
   <header class="top" hidden>
     <div class="brand"><h1 id="gameName">Vale Pequeno</h1></div>
     <div class="top-actions">
@@ -274,6 +386,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
       <li>Para dormir, fique de frente para a porta da casa. Depois das 2h da manhã você desmaia e acorda com menos energia.</li>
     </ul>
   </details>
+  </div>
 </main>
 
 <script>
@@ -499,7 +612,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     floatText(x*TS+16,y*TS,'+'+n+' '+RESOURCE_NAMES[t.node],RESOURCE_COLORS[t.node]);sfx('harvest');save();return true;
   }
   function panel(title,sub,body,wide) {
-    showModal('<div class="card expansion-card'+(wide?' wide':'')+'"><div class="card-head"><div><span class="eyebrow">VALE DAS CEREJEIRAS</span><h2>'+title+'</h2></div><button class="btn small" data-a="close" aria-label="Fechar janela">Fechar</button></div><p>'+sub+'</p>'+body+'</div>');
+    showModal('<div class="card expansion-card'+(wide?' wide':'')+'"><div class="card-head"><div><h2 id="sidebarPanelTitle">'+title+'</h2></div><button class="btn small" data-a="close" aria-label="Fechar janela">Fechar</button></div><p>'+sub+'</p>'+sidebarPreviewControls()+body+'</div>');
   }
   function openFacility(id) {
     if((id==='workshop'||id==='mine')&&!atCounter(id)){enterFacilityRoom(id);return;}
@@ -1228,7 +1341,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     S.intro = true;
     save();
     closeModal();
-    openLifeGoals();
+    if (!resumeSidebarView()) openLifeGoals();
     if (registrationEndpoint()) submitPlayerRegistration();
     return true;
   }
@@ -1854,7 +1967,7 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     $('tSet').querySelector('.lb').textContent = tr('Configurações');
     $('tInfo').textContent = confirmNew ? tr('Apagar o jogo salvo? Toque de novo para confirmar.') : '';
   }
-  function showTitle() { titleOn = true; confirmNew = false; titleEl.hidden = false; refreshTitle(); renderPlayerRegistration(); if (!tRun) { tRun = true; requestAnimationFrame(drawTitleBg); } }
+  function showTitle() { titleOn = true; confirmNew = false; titleEl.hidden = false; sidebarAfterIdentity = ''; refreshTitle(); renderPlayerRegistration(); if (!tRun) { tRun = true; requestAnimationFrame(drawTitleBg); } }
   function hideTitle() { titleOn = false; titleEl.hidden = true; renderPlayerRegistration(); }
   /* >>> Edite aqui seu nome e suas redes sociais <<< */
   function openSettings(tab) {
@@ -3253,9 +3366,9 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
 
   /* ---------- Modais ---------- */
   var modalEl = $('modal');
-  function modalOpen() { return !modalEl.hidden || titleOn; }
-  function showModal(html) { fishing = null; actEdge = false; mouseClear(); mouse.down = null; mouse.followed = false; modalEl.innerHTML = tr(html); modalEl.hidden = false; modalEl.setAttribute('role','dialog'); modalEl.setAttribute('aria-modal','true'); modalEl.tabIndex = -1; modalEl.focus(); dirStack.length = 0; actHeld = false; }
-  function closeModal() { modalEl.hidden = true; modalEl.innerHTML = ''; }
+  function modalOpen() { return !modalEl.hidden || titleOn || sidebarMenuOpen; }
+  function showModal(html) { fishing = null; actEdge = false; mouseClear(); mouse.down = null; mouse.followed = false; modalEl.innerHTML = tr(html); modalEl.hidden = false; modalEl.setAttribute('role','dialog'); modalEl.setAttribute('aria-modal','true'); syncSidebarPanel(); modalEl.tabIndex = -1; modalEl.focus(); dirStack.length = 0; actHeld = false; }
+  function closeModal() { modalEl.hidden = true; modalEl.innerHTML = ''; clearSidebarView(); }
 
   function openIntro() {
     showModal('<div class="card"><h2>Bem-vindo ao Vale das Cerejeiras</h2><p>Sua fazenda agora faz parte de um mundo com seis regiões. Abra Jornada para encontrar Yuri e começar sua primeira entrega. Visite Hanami, negocie com viajantes e desbloqueie o porto, a serra e o santuário. O trem, o táxi e seu próprio carro encurtam as viagens. Cada estação dura 28 dias.</p><ul>' +
@@ -3310,8 +3423,10 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   }
 
   modalEl.addEventListener('click', function (e) {
+    if (sidebarView && e.target === modalEl) { closeModal(); return; }
     var b = e.target.closest('[data-a]'); if (!b || b.disabled) return;
     var a = b.dataset.a;
+    if (handleSidebarAction(a)) return;
     if (handleImmersionAction(b)) return;
     if (handleLivingAction(b)) return;
     if (handleJourneyAction(b)) return;
@@ -3420,15 +3535,23 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
 
   window.addEventListener('keydown', function (e) {
     if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (sidebarMenuOpen) {
+      if (e.key === 'Escape') { e.preventDefault(); setSidebarMenu(false, true); }
+      return;
+    }
+    if (e.key === 'Escape' && sidebarView) { e.preventDefault(); closeModal(); return; }
+    if (modalEl.hidden) {
+      const shortcuts = { m: 'map', j: 'journal', o: 'goals' };
+      const view = shortcuts[e.key.toLowerCase()];
+      if (view) { e.preventDefault(); showSidebarView(view); return; }
+    }
     if (modalOpen()) {
       if(!S.profile.created&&!titleOn)return;
       if (e.key === 'Escape' || ((e.key === 'b' || e.key === 'B') && modalEl.querySelector('[data-bag]'))) closeModal();
       return;
     }
+    if (e.key === ' ' && e.target?.closest?.('button')) return;
     if(placingItem&&e.key==='Escape'){placingItem=null;toast('Colocação cancelada.');return;}
-    if(e.key.toLowerCase()==='o'){openLifeGoals();return;}
-    if (e.key.toLowerCase() === 'm') { e.preventDefault(); openAtlas(); return; }
-    if (e.key.toLowerCase() === 'j') { e.preventDefault(); openJournal(); return; }
     if (e.key === 'Escape') { e.preventDefault(); openSettings(); return; }
     if (e.key === 'b' || e.key === 'B') { e.preventDefault(); openBag(); return; }
     if (KEYDIR[e.key]) { e.preventDefault(); pushDir(KEYDIR[e.key]); }
@@ -3521,14 +3644,114 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
     requestAnimationFrame(frame);
   }
 
-  document.querySelectorAll('[data-exp]').forEach(function(b){b.addEventListener('click',function(){
-    if (titleOn) {toast('Comece ou continue uma fazenda para explorar.'); return;}
-    if(!S.profile.created){openIdentity();return;}
-    if(b.dataset.exp==='goals'){openLifeGoals();return;}
-    if(b.dataset.exp==='farm'){openMyFarm();return;}
-    if(b.dataset.exp==='life'){openCityLife();return;}
-    if(b.dataset.exp==='map') openAtlas(); else if(b.dataset.exp==='journey') openJourney(); else if(b.dataset.exp==='travel') openTransport(); else if(b.dataset.exp==='journal') openJournal(); else if(b.dataset.exp==='build') openProjects(); else openResources();
-  });});
+  const sidebarViews = {
+    map: openAtlas,
+    journey: openJourney,
+    travel: openTransport,
+    journal: openJournal,
+    build: openProjects,
+    resources: openResources,
+    life: openCityLife,
+    goals: openLifeGoals,
+    farm: openMyFarm
+  };
+  const sidebarButtons = Array.from(document.querySelectorAll('[data-exp]'));
+  const narrowSidebar = window.matchMedia?.('(max-width: 820px)');
+  let sidebarView = '';
+  let sidebarMenuOpen = false;
+  let sidebarAfterIdentity = '';
+
+  function setSidebarMenu(open, restoreFocus = false) {
+    sidebarMenuOpen = open;
+    const sidebar = $('valleySidebar');
+    const toggle = $('valleyMenuToggle');
+    sidebar.dataset.open = String(open);
+    $('valleyPlay').inert = open;
+    $('valleyMenuBackdrop').hidden = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+    if (open) {
+      dirStack.length = 0;
+      actHeld = actEdge = false;
+      mouseClear();
+      $('valleyMenuClose').focus();
+    } else if (restoreFocus) {
+      toggle.focus();
+    }
+  }
+
+  function showSidebarView(id) {
+    if (!Object.hasOwn(sidebarViews, id)) return;
+    setSidebarMenu(false);
+    if (!titleOn && !S.profile.created) {
+      sidebarAfterIdentity = id;
+      openIdentity();
+      return;
+    }
+    sidebarView = id;
+    for (const button of sidebarButtons) button.setAttribute('aria-expanded', String(button.dataset.exp === id));
+    sidebarViews[id]();
+  }
+
+  function sidebarPreviewControls() {
+    if (!sidebarView || !titleOn) return '';
+    const action = hadSave ? 'Continuar partida' : 'Começar nova partida';
+    return '<div class="sidebar-preview"><p>Você está vendo uma prévia. Entre na partida para usar as ações deste menu.</p>' +
+      '<button type="button" class="btn primary" data-a="sidebar-play">' + action + '</button></div>';
+  }
+
+  function syncSidebarPanel() {
+    if (!sidebarView) return;
+    modalEl.dataset.sidebarView = sidebarView;
+    modalEl.setAttribute('aria-modal', narrowSidebar?.matches ? 'true' : 'false');
+    modalEl.setAttribute('aria-labelledby', 'sidebarPanelTitle');
+    if (!titleOn) return;
+    for (const button of modalEl.querySelectorAll('button[data-a]:not([data-a="close"]):not([data-a="sidebar-play"])')) {
+      button.disabled = true;
+    }
+  }
+
+  function clearSidebarView() {
+    if (!sidebarView) return;
+    const trigger = sidebarButtons.find(button => button.dataset.exp === sidebarView);
+    sidebarView = '';
+    delete modalEl.dataset.sidebarView;
+    modalEl.removeAttribute('aria-labelledby');
+    if (trigger) {
+      trigger.setAttribute('aria-expanded', 'false');
+      (narrowSidebar?.matches ? $('valleyMenuToggle') : trigger).focus();
+    }
+  }
+
+  function handleSidebarAction(action) {
+    if (!sidebarView) return false;
+    if (action === 'close') { closeModal(); return true; }
+    if (!titleOn) return false;
+    if (action === 'sidebar-play') {
+      sidebarAfterIdentity = sidebarView;
+      closeModal();
+      if (hadSave) continueFromTitle();
+      else startNewFromTitle();
+    }
+    return true;
+  }
+
+  function resumeSidebarView() {
+    if (!sidebarAfterIdentity) return false;
+    const id = sidebarAfterIdentity;
+    sidebarAfterIdentity = '';
+    showSidebarView(id);
+    return true;
+  }
+
+  for (const button of sidebarButtons) button.addEventListener('click', () => showSidebarView(button.dataset.exp));
+  $('valleyMenuToggle').addEventListener('click', () => setSidebarMenu(!sidebarMenuOpen));
+  $('valleyMenuClose').addEventListener('click', () => setSidebarMenu(false, true));
+  $('valleyMenuBackdrop').addEventListener('click', () => setSidebarMenu(false, true));
+  narrowSidebar?.addEventListener('change', () => {
+    setSidebarMenu(false);
+    if (!modalEl.hidden) syncSidebarPanel();
+  });
+
   /* ---------- Início ---------- */
   buildHotbar();
   buildGroundPetals();
@@ -3536,11 +3759,19 @@ body { padding-block: 4px; padding-left: max(4px, env(safe-area-inset-left, 0px)
   updateHud();
   setInterval(function () { if (!modalOpen() && !fade) save(); }, 10000);
   hadSave = !!savedGame;
-  $('tCont').addEventListener('click', function () { if (!hadSave) return; hideTitle(); if(!S.profile.created)openIdentity(); else { if (!S.intro) openLifeGoals(); if (S.profile.registration === "pending") submitPlayerRegistration(); } });
-  $('tNew').addEventListener('click', function () {
+  function continueFromTitle() {
+    if (!hadSave) return;
+    hideTitle();
+    if (!S.profile.created) { openIdentity(); return; }
+    if (!resumeSidebarView() && !S.intro) openLifeGoals();
+    if (S.profile.registration === 'pending') submitPlayerRegistration();
+  }
+  function startNewFromTitle() {
     if (hadSave && !confirmNew) { confirmNew = true; refreshTitle(); return; }
     S = newGame(); syncHot(); applySeasonPalette(); resetView(); hadSave = true; confirmNew = false; hideTitle(); save(); updateHud(); applyLang(); openIdentity();
-  });
+  }
+  $('tCont').addEventListener('click', continueFromTitle);
+  $('tNew').addEventListener('click', startNewFromTitle);
   $('tSet').addEventListener('click', openSettings);
   modalEl.addEventListener('input', function (e) { if (e.target.id === 'volRange') { CFG.vol = e.target.value / 100; saveCfg(); } if (e.target.id === 'musRange') { CFG.mvol = e.target.value / 100; saveCfg(); musicWatch(); } });
   modalEl.addEventListener('change', function (e) { if (e.target.id === 'volRange') { sfx('coin'); } });
